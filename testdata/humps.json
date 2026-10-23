@@ -1,0 +1,337 @@
+{
+  "words": [
+    {
+      "in": "hello_world",
+      "camelize": "helloWorld",
+      "decamelize": "hello_world",
+      "depascalize": "hello_world",
+      "pascalize": "HelloWorld"
+    },
+    {
+      "in": "helloWorld",
+      "camelize": "helloWorld",
+      "decamelize": "hello_world",
+      "depascalize": "hello_world",
+      "pascalize": "HelloWorld"
+    },
+    {
+      "in": "HelloWorld",
+      "camelize": "helloWorld",
+      "decamelize": "hello_world",
+      "depascalize": "hello_world",
+      "pascalize": "HelloWorld"
+    },
+    {
+      "in": "APIResponse",
+      "camelize": "APIResponse",
+      "decamelize": "api_response",
+      "depascalize": "api_response",
+      "pascalize": "APIResponse"
+    },
+    {
+      "in": "status_code",
+      "camelize": "statusCode",
+      "decamelize": "status_code",
+      "depascalize": "status_code",
+      "pascalize": "StatusCode"
+    },
+    {
+      "in": "room_name",
+      "camelize": "roomName",
+      "decamelize": "room_name",
+      "depascalize": "room_name",
+      "pascalize": "RoomName"
+    },
+    {
+      "in": "a",
+      "camelize": "a",
+      "decamelize": "a",
+      "depascalize": "a",
+      "pascalize": "A"
+    },
+    {
+      "in": "",
+      "camelize": "",
+      "decamelize": "",
+      "depascalize": "",
+      "pascalize": ""
+    },
+    {
+      "in": "_private",
+      "camelize": "_private",
+      "decamelize": "_private",
+      "depascalize": "_private",
+      "pascalize": "_Private"
+    },
+    {
+      "in": "__dunder__",
+      "camelize": "__dunder__",
+      "decamelize": "__dunder__",
+      "depascalize": "__dunder__",
+      "pascalize": "__Dunder__"
+    },
+    {
+      "in": "already_camelCase",
+      "camelize": "alreadyCamelCase",
+      "decamelize": "already_camel_case",
+      "depascalize": "already_camel_case",
+      "pascalize": "AlreadyCamelCase"
+    },
+    {
+      "in": "with-dash",
+      "camelize": "withDash",
+      "decamelize": "with-dash",
+      "depascalize": "with-dash",
+      "pascalize": "WithDash"
+    },
+    {
+      "in": "ID",
+      "camelize": "ID",
+      "decamelize": "ID",
+      "depascalize": "ID",
+      "pascalize": "ID"
+    },
+    {
+      "in": "user_id",
+      "camelize": "userId",
+      "decamelize": "user_id",
+      "depascalize": "user_id",
+      "pascalize": "UserId"
+    },
+    {
+      "in": "userID",
+      "camelize": "userID",
+      "decamelize": "user_id",
+      "depascalize": "user_id",
+      "pascalize": "UserID"
+    },
+    {
+      "in": "HTTPServerError",
+      "camelize": "HTTPServerError",
+      "decamelize": "http_server_error",
+      "depascalize": "http_server_error",
+      "pascalize": "HTTPServerError"
+    },
+    {
+      "in": "x1_y2",
+      "camelize": "x1Y2",
+      "decamelize": "x1_y2",
+      "depascalize": "x1_y2",
+      "pascalize": "X1_Y2"
+    },
+    {
+      "in": "version",
+      "camelize": "version",
+      "decamelize": "version",
+      "depascalize": "version",
+      "pascalize": "Version"
+    },
+    {
+      "in": "v2_api",
+      "camelize": "v2Api",
+      "decamelize": "v2_api",
+      "depascalize": "v2_api",
+      "pascalize": "V2Api"
+    },
+    {
+      "in": "snake__double",
+      "camelize": "snakeDouble",
+      "decamelize": "snake__double",
+      "depascalize": "snake__double",
+      "pascalize": "SnakeDouble"
+    },
+    {
+      "in": "trailing_",
+      "camelize": "trailing_",
+      "decamelize": "trailing_",
+      "depascalize": "trailing_",
+      "pascalize": "Trailing_"
+    },
+    {
+      "in": "ChatMessage",
+      "camelize": "chatMessage",
+      "decamelize": "chat_message",
+      "depascalize": "chat_message",
+      "pascalize": "ChatMessage"
+    },
+    {
+      "in": "ChatConsumer",
+      "camelize": "chatConsumer",
+      "decamelize": "chat_consumer",
+      "depascalize": "chat_consumer",
+      "pascalize": "ChatConsumer"
+    },
+    {
+      "in": "RoomTopic",
+      "camelize": "roomTopic",
+      "decamelize": "room_topic",
+      "depascalize": "room_topic",
+      "pascalize": "RoomTopic"
+    },
+    {
+      "in": "SystemNotify",
+      "camelize": "systemNotify",
+      "decamelize": "system_notify",
+      "depascalize": "system_notify",
+      "pascalize": "SystemNotify"
+    },
+    {
+      "in": "PingMessage",
+      "camelize": "pingMessage",
+      "decamelize": "ping_message",
+      "depascalize": "ping_message",
+      "pascalize": "PingMessage"
+    },
+    {
+      "in": "JobResult",
+      "camelize": "jobResult",
+      "decamelize": "job_result",
+      "depascalize": "job_result",
+      "pascalize": "JobResult"
+    },
+    {
+      "in": "XMLHttpRequest",
+      "camelize": "XMLHttpRequest",
+      "decamelize": "xml_http_request",
+      "depascalize": "xml_http_request",
+      "pascalize": "XMLHttpRequest"
+    },
+    {
+      "in": "getHTTPResponse",
+      "camelize": "getHTTPResponse",
+      "decamelize": "get_http_response",
+      "depascalize": "get_http_response",
+      "pascalize": "GetHTTPResponse"
+    },
+    {
+      "in": "simple",
+      "camelize": "simple",
+      "decamelize": "simple",
+      "depascalize": "simple",
+      "pascalize": "Simple"
+    },
+    {
+      "in": "two words",
+      "camelize": "twowords",
+      "decamelize": "twowords",
+      "depascalize": "twowords",
+      "pascalize": "Twowords"
+    },
+    {
+      "in": "123",
+      "camelize": "123",
+      "decamelize": "123",
+      "depascalize": "123",
+      "pascalize": "123"
+    },
+    {
+      "in": "a_1",
+      "camelize": "a1",
+      "decamelize": "a_1",
+      "depascalize": "a_1",
+      "pascalize": "A_1"
+    },
+    {
+      "in": "a1B2",
+      "camelize": "a1B2",
+      "decamelize": "a1_b2",
+      "depascalize": "a1_b2",
+      "pascalize": "A1B2"
+    },
+    {
+      "in": "UPPER",
+      "camelize": "UPPER",
+      "decamelize": "UPPER",
+      "depascalize": "UPPER",
+      "pascalize": "UPPER"
+    },
+    {
+      "in": "Upper_case",
+      "camelize": "upperCase",
+      "decamelize": "upper_case",
+      "depascalize": "upper_case",
+      "pascalize": "UpperCase"
+    }
+  ],
+  "nested": [
+    {
+      "in": {
+        "action": "chat",
+        "payload": {
+          "room_name": "x",
+          "status_code": 1,
+          "nested_list": [
+            {
+              "inner_key": 1
+            },
+            "plain_string"
+          ]
+        }
+      },
+      "camelize": {
+        "action": "chat",
+        "payload": {
+          "roomName": "x",
+          "statusCode": 1,
+          "nestedList": [
+            {
+              "innerKey": 1
+            },
+            "plain_string"
+          ]
+        }
+      },
+      "decamelize": {
+        "action": "chat",
+        "payload": {
+          "room_name": "x",
+          "status_code": 1,
+          "nested_list": [
+            {
+              "inner_key": 1
+            },
+            "plain_string"
+          ]
+        }
+      }
+    },
+    {
+      "in": {
+        "action": "chat",
+        "payload": {
+          "roomName": "x",
+          "statusCode": 1,
+          "nestedList": [
+            {
+              "innerKey": 1
+            }
+          ]
+        }
+      },
+      "camelize": {
+        "action": "chat",
+        "payload": {
+          "roomName": "x",
+          "statusCode": 1,
+          "nestedList": [
+            {
+              "innerKey": 1
+            }
+          ]
+        }
+      },
+      "decamelize": {
+        "action": "chat",
+        "payload": {
+          "room_name": "x",
+          "status_code": 1,
+          "nested_list": [
+            {
+              "inner_key": 1
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

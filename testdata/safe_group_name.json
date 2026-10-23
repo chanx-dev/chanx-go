@@ -1,0 +1,76 @@
+[
+  {
+    "parts": [
+      "user",
+      "42"
+    ],
+    "namespace": "notification",
+    "name": "notification.user.42"
+  },
+  {
+    "parts": [
+      "room",
+      "Weekly Sync!"
+    ],
+    "namespace": null,
+    "name": "room.Weekly-Sync"
+  },
+  {
+    "parts": [
+      "room:lobby"
+    ],
+    "namespace": "RoomTopic",
+    "name": "RoomTopic.room-lobby"
+  },
+  {
+    "parts": [
+      "a/b c"
+    ],
+    "namespace": "X",
+    "name": "X.a-b-c"
+  },
+  {
+    "parts": [
+      "--x--",
+      "",
+      "y"
+    ],
+    "namespace": null,
+    "name": "x.y"
+  },
+  {
+    "parts": [
+      "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    ],
+    "namespace": "RoomTopic",
+    "name": "RoomTopic.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.8fb907ce21e5"
+  },
+  {
+    "parts": [
+      "run:yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"
+    ],
+    "namespace": "RunTopic",
+    "name": "RunTopic.run-yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy.f7adf56769a8"
+  },
+  {
+    "parts": [
+      "é ü ✓"
+    ],
+    "namespace": "T",
+    "name": "T"
+  },
+  {
+    "parts": [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "namespace": null,
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  {
+    "parts": [
+      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "namespace": null,
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.aa3918874ba9"
+  }
+]

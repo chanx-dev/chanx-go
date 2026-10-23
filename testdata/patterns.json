@@ -1,0 +1,90 @@
+[
+  {
+    "pattern": "room:{room_name}",
+    "params": [
+      "room_name"
+    ],
+    "parse": [
+      {
+        "topic": "room:lobby",
+        "params": {
+          "room_name": "lobby"
+        }
+      },
+      {
+        "topic": "room:a:b",
+        "params": null
+      },
+      {
+        "topic": "room:",
+        "params": null
+      },
+      {
+        "topic": "other:x",
+        "params": null
+      },
+      {
+        "topic": "room:a.b-c",
+        "params": {
+          "room_name": "a.b-c"
+        }
+      }
+    ]
+  },
+  {
+    "pattern": "run:{run_id}:step:{step}",
+    "params": [
+      "run_id",
+      "step"
+    ],
+    "parse": [
+      {
+        "topic": "run:1:step:2",
+        "params": {
+          "run_id": "1",
+          "step": "2"
+        }
+      },
+      {
+        "topic": "run:1:step:",
+        "params": null
+      },
+      {
+        "topic": "run:a:b:step:2",
+        "params": null
+      }
+    ]
+  },
+  {
+    "pattern": "plain",
+    "params": [],
+    "parse": [
+      {
+        "topic": "plain",
+        "params": {}
+      },
+      {
+        "topic": "plainx",
+        "params": null
+      }
+    ]
+  },
+  {
+    "pattern": "v{n}.x",
+    "params": [
+      "n"
+    ],
+    "parse": [
+      {
+        "topic": "v1.x",
+        "params": {
+          "n": "1"
+        }
+      },
+      {
+        "topic": "v1x",
+        "params": null
+      }
+    ]
+  }
+]
