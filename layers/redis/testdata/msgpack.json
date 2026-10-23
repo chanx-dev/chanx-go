@@ -1,0 +1,87 @@
+[
+  {
+    "msgpack": "gqR0eXBltGhhbmRsZV9jaGFubmVsX2V2ZW50qmV2ZW50X2RhdGGCpmFjdGlvbqZub3RpZnmncGF5bG9hZKJoaQ==",
+    "value": {
+      "type": "handle_channel_event",
+      "event_data": {
+        "action": "notify",
+        "payload": "hi"
+      }
+    }
+  },
+  {
+    "msgpack": "hKR0eXBltGhhbmRsZV9ncm91cF9tZXNzYWdlp21lc3NhZ2WCpmFjdGlvbqRjaGF0p3BheWxvYWSCp21lc3NhZ2WqaMOpbGxvIOKck6FuBK9leGNsdWRlX2N1cnJlbnTDrGZyb21fY2hhbm5lbLBhc2dpc3BlY2lmaWMuYWJj",
+    "value": {
+      "type": "handle_group_message",
+      "message": {
+        "action": "chat",
+        "payload": {
+          "message": "héllo ✓",
+          "n": {
+            "$i": "4"
+          }
+        }
+      },
+      "exclude_current": true,
+      "from_channel": "asgispecific.abc"
+    }
+  },
+  {
+    "msgpack": "hKR0eXBlsmhhbmRsZV90b3BpY19ldmVudKV0b3BpY6pyb29tOmxvYmJ5o3Nlcc8AAAEAAAAAAKpldmVudF9kYXRhgqZhY3Rpb26qcm9vbV9ldmVudKdwYXlsb2FkgqRib2R5oXilbGlrZXP9",
+    "value": {
+      "type": "handle_topic_event",
+      "topic": "room:lobby",
+      "seq": {
+        "$i": "1099511627776"
+      },
+      "event_data": {
+        "action": "room_event",
+        "payload": {
+          "body": "x",
+          "likes": {
+            "$i": "-3"
+          }
+        }
+      }
+    }
+  },
+  {
+    "msgpack": "hqR0eXBlpnZhbHVlc6Fmy0AAAAAAAAAAoWfLP/gAAAAAAACkbm9uZcCkbGlzdJMBkgKhYYGha8KjbmVn0oAAAAA=",
+    "value": {
+      "type": "values",
+      "f": {
+        "$f": 2.0
+      },
+      "g": {
+        "$f": 1.5
+      },
+      "none": null,
+      "list": [
+        {
+          "$i": "1"
+        },
+        [
+          {
+            "$i": "2"
+          },
+          "a"
+        ],
+        {
+          "k": false
+        }
+      ],
+      "neg": {
+        "$i": "-2147483648"
+      }
+    }
+  },
+  {
+    "msgpack": "gqR0eXBlpWJ5dGVzo3Jhd8QIAAFiaW5hcnk=",
+    "value": {
+      "type": "bytes",
+      "raw": {
+        "$b": "AAFiaW5hcnk="
+      }
+    }
+  }
+]
