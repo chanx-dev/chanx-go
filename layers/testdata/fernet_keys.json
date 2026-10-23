@@ -1,0 +1,10 @@
+[
+  {
+    "key": "first-key",
+    "fernet": "9e24b55356ef2a121ab5fd1a3ee8a3c9191e837f3853e399a369e9044ff183f7"
+  },
+  {
+    "key": "second-key",
+    "fernet": "f397f260a275cc4d42e7965c556167bf3f068aed491d35a8f5b38c8c2db96bb0"
+  }
+]

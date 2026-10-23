@@ -1,0 +1,78 @@
+[
+  {
+    "json": "{\"type\": \"handle_channel_event\", \"event_data\": {\"action\": \"notify\", \"payload\": \"hi\"}}",
+    "value": {
+      "type": "handle_channel_event",
+      "event_data": {
+        "action": "notify",
+        "payload": "hi"
+      }
+    }
+  },
+  {
+    "json": "{\"type\": \"handle_group_message\", \"message\": {\"action\": \"chat\", \"payload\": {\"message\": \"h\\u00e9llo \\u2713\", \"n\": 4}}, \"exclude_current\": true, \"from_channel\": \"asgispecific.abc\"}",
+    "value": {
+      "type": "handle_group_message",
+      "message": {
+        "action": "chat",
+        "payload": {
+          "message": "héllo ✓",
+          "n": {
+            "$i": "4"
+          }
+        }
+      },
+      "exclude_current": true,
+      "from_channel": "asgispecific.abc"
+    }
+  },
+  {
+    "json": "{\"type\": \"handle_topic_event\", \"topic\": \"room:lobby\", \"seq\": 1099511627776, \"event_data\": {\"action\": \"room_event\", \"payload\": {\"body\": \"x\", \"likes\": -3}}}",
+    "value": {
+      "type": "handle_topic_event",
+      "topic": "room:lobby",
+      "seq": {
+        "$i": "1099511627776"
+      },
+      "event_data": {
+        "action": "room_event",
+        "payload": {
+          "body": "x",
+          "likes": {
+            "$i": "-3"
+          }
+        }
+      }
+    }
+  },
+  {
+    "json": "{\"type\": \"values\", \"f\": 2.0, \"g\": 1.5, \"none\": null, \"list\": [1, [2, \"a\"], {\"k\": false}], \"neg\": -2147483648}",
+    "value": {
+      "type": "values",
+      "f": {
+        "$f": 2.0
+      },
+      "g": {
+        "$f": 1.5
+      },
+      "none": null,
+      "list": [
+        {
+          "$i": "1"
+        },
+        [
+          {
+            "$i": "2"
+          },
+          "a"
+        ],
+        {
+          "k": false
+        }
+      ],
+      "neg": {
+        "$i": "-2147483648"
+      }
+    }
+  }
+]
