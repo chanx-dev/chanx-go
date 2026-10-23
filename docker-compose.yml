@@ -1,0 +1,14 @@
+# Redis for the layer tests: two servers so the shard ring is exercised. Own
+# project name and ports, so it never touches other repos' Redis.
+#   docker compose up -d
+#   CHANX_GO_REDIS=redis://localhost:6393,redis://localhost:6394 go test ./...
+name: chanx-go
+services:
+  redis:
+    image: redis:7
+    ports:
+      - '6393:6379'
+  redis-2:
+    image: redis:7
+    ports:
+      - '6394:6379'
