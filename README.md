@@ -88,12 +88,13 @@ payloads are validated strictly (Pydantic coerces `"3"` into an int, chanx-go an
 ## Development
 
 ```bash
-go test -race ./...                      # every module is in go.work
-docker compose up -d                     # two Redis for the layer tests
-CHANX_GO_REDIS=redis://localhost:6393,redis://localhost:6394 go test ./layers/redis/...
+docker compose up -d   # two Redis for the layer tests
+make test              # go test -race in every module
+make lint
 ```
 
-See [AGENTS.md](AGENTS.md) for conventions.
+Setup, the checks a pull request needs, the commit convention and releasing are in
+[CONTRIBUTING.md](CONTRIBUTING.md); code conventions in [AGENTS.md](AGENTS.md).
 
 ## License
 
