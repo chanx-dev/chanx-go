@@ -22,3 +22,11 @@ commit_parsers = [
   { message = "^(chore|ci|test|build)", group = "Maintenance" },
 ]
 tag_pattern = "^v[0-9]"
+
+# The next version comes from the commits since the last root tag (vX.Y.Z), as
+# commitizen's bump: fix -> patch, feat -> minor, a breaking change -> major. While
+# on 0.x, a breaking change bumps the minor, so v1.0.0 is only cut on purpose.
+[bump]
+features_always_bump_minor = true
+breaking_always_bump_major = false
+initial_tag = "v0.1.0"
