@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Release notes
+        uses: orhun/git-cliff-action@v4
+        id: notes
+        with:
+          args: --latest --strip header
+      - uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.notes.outputs.content }}
+      - name: Warm proxy.golang.org
+        run: |
+          v="${GITHUB_REF_NAME}"
+          for m in "" /layers /layers/redis /adapters/gin /adapters/echo /adapters/fiber; do
+            curl -sf "https://proxy.golang.org/github.com/huynguyengl99/chanx-go$m/@v/$v.info" || true
+          done

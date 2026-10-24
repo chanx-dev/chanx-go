@@ -1,0 +1,31 @@
+# One job per adapter module, so a framework release that breaks one adapter
+# fails only that job.
+name: Adapters
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'
+
+jobs:
+  adaptertest:
+    name: ${{ matrix.adapter }} (go ${{ matrix.go }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ['1.25', '1.26']
+        adapter: [gin, echo, fiber]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - working-directory: adapters/${{ matrix.adapter }}
+        run: go vet ./... && go test -race ./...
+      - name: against the framework's latest release
+        if: matrix.go == '1.26'
+        working-directory: adapters/${{ matrix.adapter }}
+        run: GOWORK=off go get -u -t ./... && go test -race ./...
