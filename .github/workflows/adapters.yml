@@ -18,14 +18,21 @@ jobs:
       matrix:
         go: ['1.25', '1.26']
         adapter: [gin, echo, fiber]
+    env:
+      # Each module on its own, as users get it, on exactly the toolchain under test.
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
+          check-latest: true
       - working-directory: adapters/${{ matrix.adapter }}
         run: go vet ./... && go test -race ./...
       - name: against the framework's latest release
         if: matrix.go == '1.26'
         working-directory: adapters/${{ matrix.adapter }}
-        run: GOWORK=off go get -u -t ./... && go test -race ./...
+        env:
+          GOTOOLCHAIN: auto # the latest releases may need a newer Go
+        run: go get -u -t ./... && go test -race ./...

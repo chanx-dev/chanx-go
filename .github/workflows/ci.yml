@@ -14,6 +14,14 @@ jobs:
       matrix:
         go: ['1.25', '1.26']
         module: [., layers, layers/redis, examples]
+        exclude:
+          # examples is not published and follows the latest Go (see its go.mod).
+          - go: '1.25'
+            module: examples
+    env:
+      # Each module on its own, as users get it, on exactly the toolchain under test.
+      GOWORK: 'off'
+      GOTOOLCHAIN: local
     services:
       redis:
         image: redis:7
@@ -26,6 +34,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: ${{ matrix.go }}
+          check-latest: true
       - name: gofmt
         run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
       - name: vet
@@ -52,6 +61,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26'
+          check-latest: true
       - uses: golangci/golangci-lint-action@v8
         with:
           version: latest
