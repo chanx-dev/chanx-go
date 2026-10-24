@@ -4,9 +4,11 @@ import (
 	"context"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	chanx "github.com/huynguyengl99/chanx-go"
+	"github.com/huynguyengl99/chanx-go/asyncapi"
 	"github.com/huynguyengl99/chanx-go/chanxtest/adaptertest"
 	chanxhttp "github.com/huynguyengl99/chanx-go/nethttp"
 	"github.com/huynguyengl99/chanx-go/transport"
@@ -59,4 +61,18 @@ func TestDispatcher(t *testing.T) {
 		mux.Handle("/ws/", chanxhttp.Dispatcher(e))
 		return serve(t, mux)
 	})
+}
+
+func TestMountDocs(t *testing.T) {
+	e := chanx.New(chanx.Config{})
+	defer func() { _ = e.Shutdown(context.Background()) }()
+	mux := http.NewServeMux()
+	chanxhttp.MountDocs(mux, e, "/asyncapi", asyncapi.Info{Title: "Docs"})
+	for _, p := range []string{"/asyncapi", "/asyncapi.json", "/asyncapi.yaml"} {
+		rec := httptest.NewRecorder()
+		mux.ServeHTTP(rec, httptest.NewRequest(http.MethodGet, p, nil))
+		if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), "Docs") {
+			t.Errorf("%s: %d", p, rec.Code)
+		}
+	}
 }
