@@ -8,7 +8,7 @@ commit convention releases are built from, and how a release is cut. Code style 
 
 | Tool | Why |
 | --- | --- |
-| Go 1.25 or later | every module's floor; CI also runs the latest release |
+| Go 1.26 | the workspace and `examples`; with Go 1.25, `go` fetches 1.26 itself. Published modules support Go 1.25 |
 | Docker | two Redis servers for the Redis layer tests |
 | [golangci-lint](https://golangci-lint.run) | `make lint` |
 | [git-cliff](https://git-cliff.org) and a GPG signing key | releases only |
@@ -45,8 +45,9 @@ Before opening a pull request:
 - Tests cover the change. Behaviour visible on the wire must match Python chanx; pin it
   with a vector recorded from Python or a test asserting Python's exact frames.
 - A framework adapter passes `chanxtest/adaptertest`.
-- Every `go.mod` stays on `go 1.25.0`. If a dependency's newest release needs a newer
-  Go, require the newest one that does not.
+- Every published module's `go.mod` stays on `go 1.25.0`: CI tests each one alone on Go
+  1.25, with `GOWORK=off`. If a dependency's newest release needs a newer Go, require
+  the newest one that does not.
 - `GOWORK=off go mod tidy` leaves the touched modules unchanged.
 
 ## Commits
