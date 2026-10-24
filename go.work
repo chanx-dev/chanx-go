@@ -3,6 +3,7 @@ go 1.25.0
 use (
 	.
 	./adapters/echo
+	./adapters/fiber
 	./adapters/gin
 	./layers
 	./layers/redis
