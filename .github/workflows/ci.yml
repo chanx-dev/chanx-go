@@ -46,6 +46,8 @@ jobs:
           CHANX_GO_REDIS: redis://localhost:6393,redis://localhost:6394
         run: go test -race -coverprofile=coverage.out ./...
       - name: govulncheck
+        # govulncheck itself needs the latest Go; the dependencies it checks are the same.
+        if: matrix.go == '1.26'
         working-directory: ${{ matrix.module }}
         run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 
