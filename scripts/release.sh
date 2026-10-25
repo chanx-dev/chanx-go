@@ -51,7 +51,7 @@ fi
 
 MODULE=github.com/huynguyengl99/chanx-go
 NESTED=(layers layers/redis adapters/gin adapters/echo adapters/fiber)
-ALL=(. "${NESTED[@]}" examples)
+ALL=(. "${NESTED[@]}" examples docs)
 
 if [ -n "$(git status --porcelain)" ]; then
 	echo "working tree not clean" >&2

@@ -5,6 +5,7 @@ use (
 	./adapters/echo
 	./adapters/fiber
 	./adapters/gin
+	./docs
 	./examples
 	./layers
 	./layers/redis

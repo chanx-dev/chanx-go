@@ -28,3 +28,11 @@ jobs:
           for m in "" /layers /layers/redis /adapters/gin /adapters/echo /adapters/fiber; do
             curl -sf "https://proxy.golang.org/github.com/huynguyengl99/chanx-go$m/@v/$v.info" || true
           done
+
+  docs:
+    needs: release
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/docs.yml

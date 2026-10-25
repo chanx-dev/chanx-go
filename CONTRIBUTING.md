@@ -8,9 +8,10 @@ commit convention releases are built from, and how a release is cut. Code style 
 
 | Tool | Why |
 | --- | --- |
-| Go 1.26 | the workspace and `examples`; with Go 1.25, `go` fetches 1.26 itself. Published modules support Go 1.25 |
+| Go 1.26 | the workspace, `examples` and `docs`; with Go 1.25, `go` fetches 1.26 itself. Published modules support Go 1.25 |
 | Docker | two Redis servers for the Redis layer tests |
 | [golangci-lint](https://golangci-lint.run) | `make lint` |
+| Node 22 and pnpm | the documentation site only |
 | [git-cliff](https://git-cliff.org) and a GPG signing key | releases only |
 
 ## Setup
@@ -22,8 +23,8 @@ docker compose up -d   # Redis on 6393 and 6394, project "chanx-go"
 make test
 ```
 
-The repo has seven modules (the root, `layers`, `layers/redis`, `adapters/gin`,
-`adapters/echo`, `adapters/fiber`, `examples`), tied together by `go.work`, so a change in
+The repo has eight modules (the root, `layers`, `layers/redis`, `adapters/gin`,
+`adapters/echo`, `adapters/fiber`, `examples`, `docs`), tied together by `go.work`, so a change in
 the root is picked up by the adapters without publishing anything.
 
 ## Checks
@@ -49,6 +50,27 @@ Before opening a pull request:
   1.25, with `GOWORK=off`. If a dependency's newest release needs a newer Go, require
   the newest one that does not.
 - `GOWORK=off go mod tidy` leaves the touched modules unchanged.
+
+## Documentation
+
+| Where | What |
+| --- | --- |
+| doc comments and `Example*` functions | the API reference on pkg.go.dev |
+| `README.md` in each published module | its landing page on GitHub and pkg.go.dev |
+| `docs/` | the guide site, VitePress, at huynguyengl99.github.io/chanx-go |
+
+```bash
+make docs-dev   # the site at http://localhost:5173/chanx-go/, reloading on save
+make docs       # build it; dead links fail
+```
+
+Code on the site comes from `docs/snippets/`, a Go module tested like the others: each
+snippet package has a test pinning the frames its page shows. Include a region with
+`<<< @/snippets/<dir>/<file>.go#<region>`. The voice and the rules are in
+[.claude/skills/docs/SKILL.md](.claude/skills/docs/SKILL.md).
+
+The site deploys when a release is tagged, or by hand from the Docs workflow. Pages must
+be enabled once in the repository settings, with GitHub Actions as the source.
 
 ## Commits
 

@@ -7,6 +7,11 @@ document and shares a Redis channel layer with Python (and Node) processes, so
 `@chanx-js/client`, `@chanx-js/codegen` and chanx's Python client generator work against
 it unchanged.
 
+**[Documentation](https://huynguyengl99.github.io/chanx-go/)** ·
+[Quick start](https://huynguyengl99.github.io/chanx-go/introduction/quick-start) ·
+[Why chanx-go?](https://huynguyengl99.github.io/chanx-go/introduction/why) ·
+[API](https://pkg.go.dev/github.com/huynguyengl99/chanx-go)
+
 ```go
 type ChatPayload struct {
 	Message string `json:"message"`
@@ -84,7 +89,7 @@ casing, Pydantic's validation errors, the Redis shard ring, msgpack and JSON enc
 Fernet tokens (byte for byte), and the AsyncAPI document of `sandbox_fastapi`, which the
 Go port in `examples/sandbox` reproduces exactly.
 
-Known differences, by decision (see [docs/guide.md](docs/guide.md#differences-from-python)):
+Known differences, by decision (see [Differences from Python](https://huynguyengl99.github.io/chanx-go/reference/differences)):
 payloads are validated strictly (Pydantic coerces `"3"` into an int, chanx-go answers
 `int_type`); the JSON decoder's error text after `Invalid JSON: ` is Go's.
 

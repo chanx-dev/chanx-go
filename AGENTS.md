@@ -35,7 +35,7 @@ make release                   # bump, changelog, signed commit and lockstep tag
 
 - **Parity is tested, not assumed.** A behaviour visible on the wire must match Python
   chanx: pin it with a vector recorded from Python or a test asserting Python's exact
-  frames. When Go differs on purpose, list it in docs/guide.md.
+  frames. When Go differs on purpose, list it in docs/reference/differences.md.
 - **Go floor is 1.25** in every published module's `go.mod`; `examples` and `go.work`
   follow the latest Go. When a dependency's newest release needs a newer Go, pin the
   newest one that does not (see `layers/redis`, `adapters/fiber`).

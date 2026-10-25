@@ -1,0 +1,46 @@
+name: Docs
+
+# Called by Release once the version is tagged, so the site never documents what cannot
+# be installed yet. Run it by hand for a docs-only fix.
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: docs/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      # Dead links fail the build. The Go snippets the pages include are tested by CI.
+      - run: pnpm build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
