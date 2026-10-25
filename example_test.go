@@ -1,7 +1,6 @@
 package chanx_test
 
 import (
-	"context"
 	"fmt"
 
 	chanx "github.com/huynguyengl99/chanx-go"
@@ -11,50 +10,41 @@ type GreetPayload struct {
 	Name string `json:"name"`
 }
 
+// GreetMessage is what a client sends: {"action": "greet", "payload": {"name": "Ann"}}.
 type GreetMessage struct {
 	chanx.BaseMessage `action:"greet" description:"Ask for a greeting"`
 	Payload           GreetPayload `json:"payload"`
 }
 
+// GreetingMessage is the reply: {"action": "greeting", "payload": "Hello, Ann"}.
 type GreetingMessage struct {
 	chanx.BaseMessage `action:"greeting"`
 	Payload           string `json:"payload"`
 }
 
-// GreeterConsumer answers greet with greeting; the reply echoes the frame's ref.
+// GreeterConsumer serves one route. Each exported method taking a *chanx.Context
+// and a message is a handler, routed by the message's action.
 type GreeterConsumer struct{}
 
 func (GreeterConsumer) HandleGreet(ctx *chanx.Context, m GreetMessage) (GreetingMessage, error) {
 	return GreetingMessage{Payload: "Hello, " + m.Payload.Name}, nil
 }
 
+func (GreeterConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {
+	return chanx.PongMessage{}, nil
+}
+
+// A consumer is a struct of handlers; the engine routes frames to them, validates
+// payloads and answers bad ones with an error frame. Mount the engine on any
+// framework: chanxhttp.Mount(mux, engine), chanxgin.Mount(r, engine)...
 func Example() {
 	engine := chanx.New(chanx.Config{})
-	engine.Handle("/ws/greeter", GreeterConsumer{}, chanx.Description("Greets people"))
-	// Mount it: chanxhttp.Mount(mux, engine), chanxgin.Mount(r, engine)...
-	fmt.Println(engine.Routes()[0].Path)
-	// Output: /ws/greeter
-}
+	route := engine.Handle("/ws/greeter", GreeterConsumer{}, chanx.Description("Greets people"))
 
-func ExampleOn() {
-	hub := chanx.NewConsumer("hub")
-	chanx.On(hub, func(ctx *chanx.Context, m GreetMessage) (GreetingMessage, error) {
-		return GreetingMessage{Payload: "Hi " + m.Payload.Name}, nil
-	})
-	fmt.Println(chanx.Check(hub))
-	// Output: <nil>
-}
-
-type LobbyTopic struct {
-	chanx.BaseTopic `pattern:"lobby:{floor}"`
-}
-
-func ExampleBroadcastTopic() {
-	engine := chanx.New(chanx.Config{})
-	topic, _ := chanx.FormatTopic[LobbyTopic](chanx.Params{"floor": "3"})
-	err := chanx.BroadcastTopic[LobbyTopic](context.Background(), engine.Publisher(), topic,
-		GreetingMessage{Payload: "doors open"}, chanx.Seq(1))
-	group, _ := chanx.TopicGroup[LobbyTopic](topic)
-	fmt.Println(topic, group, err)
-	// Output: lobby:3 LobbyTopic.lobby-3 <nil>
+	for _, h := range route.Info().Consumer.Handlers {
+		fmt.Println(h.Action, "->", h.Outputs[0].Action)
+	}
+	// Output:
+	// greet -> greeting
+	// ping -> pong
 }

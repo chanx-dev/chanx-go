@@ -51,7 +51,7 @@ before a comment.
   from outside (a Python behaviour, a library trap), or an algorithm a reader would
   otherwise reverse-engineer. Never restate what the line does.
 - Doc comments on exported API, short; more lines only for a non-obvious contract.
-- Package comments on the package's main file only.
+- Package comments on the package's main file only; `chanx` keeps its overview in `doc.go`.
 - No section dividers, commented-out code or TODOs without an owner.
 - No long dashes in comments or docs. Use a colon, a comma or a new sentence.
 - Name things after their Python counterpart when chanx or channels has one.

@@ -1,10 +1,3 @@
-// Package chanx is the Go implementation of the chanx WebSocket protocol:
-// consumers and topics written as structs with handler methods, structured
-// validation errors, groups and events over a channel layer shared with other
-// chanx servers, AsyncAPI generation, and a test client.
-//
-// The engine knows nothing about HTTP; adapters (chanx-go/nethttp, adapters/gin,
-// adapters/echo, adapters/fiber) mount its routes in a framework's router.
 package chanx
 
 import (

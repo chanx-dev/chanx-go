@@ -30,6 +30,9 @@ func (ChatConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.P
 	return chanx.PongMessage{}, nil
 }
 
+// Emits declares what HandleChat broadcasts, so the AsyncAPI document lists it.
+func (ChatConsumer) Emits() []chanx.Message { return []chanx.Message{ChatNotification{}} }
+
 func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
 	return ctx.Broadcast(ChatNotification{Payload: m.Payload}, chanx.ExcludeSelf())
 }
