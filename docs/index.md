@@ -48,5 +48,10 @@ A frame that does not match the message never reaches `HandleChat`:
 < {"action": "error", "payload": [{"type": "missing", "loc": ["chat", "payload", "text"], "msg": "Field required"}]}
 ```
 
+The server documents itself at `/asyncapi.json`. Generate a typed client from it, in Go
+with [`chanx-codegen`](/guide/go-client) or in TypeScript with
+[`@chanx-js/codegen`](/reference/clients), and a misspelled field fails to compile
+instead of reaching the server.
+
 [Build it in five minutes](/introduction/quick-start), or read
 [what chanx-go is](/introduction/) first.

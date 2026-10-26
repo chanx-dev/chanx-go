@@ -2,10 +2,49 @@
 
 Go has excellent WebSocket libraries, gorilla/websocket and coder/websocket, but they
 stop at the socket. Everything after the upgrade is left to you, and every team writes
-the same code: a read loop, a `switch` on a type field, hand-rolled validation, a hub
-for rooms, Redis pub/sub for more than one process, and docs that drift from the code.
+the same loop:
 
-chanx-go is that code, written once and tested.
+```go
+for {
+	var msg struct {
+		Action  string          `json:"action"`
+		Payload json.RawMessage `json:"payload"`
+	}
+	if err := conn.ReadJSON(&msg); err != nil {
+		return
+	}
+	switch msg.Action {
+	case "chat":
+		var p ChatPayload
+		if json.Unmarshal(msg.Payload, &p) != nil || p.Text == "" {
+			conn.WriteJSON(map[string]string{"error": "bad payload"})
+			continue
+		}
+		hub.Broadcast(room, p) // your own hub, and one process only
+	case "ping":
+		// ...
+	}
+}
+```
+
+Then it grows: a hub for rooms, Redis pub/sub once there is more than one process, a
+validation helper per message, and API docs written by hand that fall behind the code.
+
+With chanx-go, the same chat is a struct and a method:
+
+```go
+type ChatMessage struct {
+	chanx.BaseMessage `action:"chat"`
+	Payload           ChatPayload `json:"payload"`
+}
+
+func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
+	return ctx.Broadcast(ChatNotification{Payload: m.Payload})
+}
+```
+
+The loop, the validation, the hub and the docs are chanx-go's job, written once and
+tested.
 
 ## What you get
 
