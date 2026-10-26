@@ -1,4 +1,5 @@
 # Changelog
+
 ## 0.2.0 (2026-10-26)
 
 ### Documentation
@@ -14,6 +15,7 @@
 ### Maintenance
 - Push the root release tag on its own
 - Run the humanizer and diataxis checks in the docs skill
+
 ## 0.1.0 (2026-10-26)
 
 ### Documentation
@@ -24,8 +26,6 @@
 - Add Go client guide
 
 ### Features
-- **layers**: Add channel layer interface, in-memory layer and serializers
-- **layers/redis**: Add Redis pub/sub layer
 - **protocol**: Add wire protocol helpers
 - Add message schema inference and validation
 - **transport**: Add connection interface and websocket transports
@@ -34,10 +34,6 @@
 - **nethttp**: Add net/http adapter
 - **asyncapi**: Add AsyncAPI 3.0 generator
 - Add auth helpers and delta tracker
-- **adapters/gin**: Add gin adapter
-- **adapters/echo**: Add echo v5 adapter
-- **adapters/fiber**: Add fiber v3 adapter
-- **examples**: Add sandbox example
 - **client**: Add Go client for chanx servers
 - **codegen**: Generate typed Go clients from AsyncAPI documents
 
@@ -49,4 +45,3 @@
 - **examples**: Require go 1.26 for patched dependencies
 - Run govulncheck on the latest go only
 - Add docs writing skill
-- **examples**: Drive a generated client against the sandbox

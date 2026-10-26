@@ -95,26 +95,33 @@ Scopes name the package or module: `layers`, `layers/redis`, `protocol`, `transp
 
 ## Releasing
 
-Maintainers only. Every module is released together, at the same version.
+Maintainers only. Each module has its own version and changelog, as each chanx-js
+package does: `layers/vX.Y.Z` tags `go.chanx.dev/layers`, `vX.Y.Z` tags the root module.
 
 ```bash
-make release-dry                 # next version and its changelog, nothing changed
-make release                     # bump, CHANGELOG.md, signed commit, one tag per module
-git push origin main layers/vX.Y.Z layers/redis/vX.Y.Z adapters/{gin,echo,fiber}/vX.Y.Z
-git push origin vX.Y.Z           # alone: it runs release.yml
+make release-dry                 # each module's next version and changelog, nothing changed
+make release                     # bump, <module>/CHANGELOG.md, signed commit, one tag per module
+git push origin main
+for t in TAGS; do git push origin "$t"; done   # one at a time: each runs release.yml
 ```
 
-`make release` refuses a dirty tree or a history with nothing to release. It bumps the
-requires between this repo's modules, writes `CHANGELOG.md`, commits
-`chore(release): X.Y.Z` and tags `vX.Y.Z`, `layers/vX.Y.Z`, `layers/redis/vX.Y.Z` and
-`adapters/{gin,echo,fiber}/vX.Y.Z`. `scripts/release.sh X.Y.Z` forces a version.
+A module releases when a `feat`, `fix`, `perf` or breaking commit touched its directory
+since its last tag. A commit touching the core and an adapter releases both; one touching
+only the core leaves the adapters alone. The root module ignores `layers/`, `adapters/`,
+`examples/` and `go.work`.
 
-The root tag goes last and on its own because GitHub starts no workflow for a push of
-more than three tags. It runs `release.yml`, which publishes the GitHub release, asks
-proxy.golang.org to fetch the new versions and deploys the docs. Check from a directory outside the repo:
+`make release` refuses a dirty tree or a history with nothing to release. It makes every
+`go.mod` require the latest version of this repo's modules, so a released adapter requires
+the core it was tested with. Then it writes each released module's `CHANGELOG.md`, commits
+`chore(release): layers 0.3.0, adapters/gin 0.2.1` and tags each one.
+`scripts/release.sh layers=0.3.0` forces a module's version (`.` is the root).
+
+Tags go up one push at a time because GitHub starts no workflow for a push of more than
+three tags. Each runs `release.yml`, which publishes the module's GitHub release, asks
+proxy.golang.org to fetch it and deploys the docs. Check from a directory outside the repo:
 
 ```bash
-go get go.chanx.dev@vX.Y.Z
+go get go.chanx.dev@vX.Y.Z go.chanx.dev/adapters/gin@vX.Y.Z
 ```
 
 A published version can never be changed. To withdraw a bad one, release the next patch

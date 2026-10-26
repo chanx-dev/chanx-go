@@ -28,8 +28,8 @@ Python.
 make test                      # go test -race in every module
 make lint                      # golangci-lint in every module
 docker compose up -d           # Redis on 6393 and 6394 (project chanx-go)
-make release-dry               # next version (from the commits) and its changelog
-make release                   # bump, changelog, signed commit and lockstep tags
+make release-dry               # each changed module's next version and changelog
+make release                   # bump, changelogs, signed commit and one tag per module
 ```
 
 ## Rules

@@ -14,7 +14,7 @@ docs:
 docs-dev:
 	@cd docs && pnpm install && pnpm dev
 
-# Version bumped from the conventional commits since the last tag.
+# Each changed module bumped from the conventional commits since its last tag.
 release:
 	@scripts/release.sh
 
