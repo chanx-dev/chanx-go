@@ -7,7 +7,7 @@ require (
 	github.com/fasthttp/websocket v1.5.12
 	github.com/gofiber/contrib/v3/websocket v1.2.4
 	github.com/gofiber/fiber/v3 v3.5.0
-	github.com/huynguyengl99/chanx-go v0.0.0-00010101000000-000000000000
+	github.com/huynguyengl99/chanx-go v0.1.0
 )
 
 require (
@@ -18,7 +18,7 @@ require (
 	github.com/gofiber/utils/v2 v2.4.3 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/google/uuid v1.6.0 // indirect
-	github.com/huynguyengl99/chanx-go/layers v0.0.0-00010101000000-000000000000 // indirect
+	github.com/huynguyengl99/chanx-go/layers v0.1.0 // indirect
 	github.com/klauspost/compress v1.20.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect

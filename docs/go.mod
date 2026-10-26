@@ -7,12 +7,12 @@ require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/google/jsonschema-go v0.4.3
-	github.com/huynguyengl99/chanx-go v0.0.0-00010101000000-000000000000
-	github.com/huynguyengl99/chanx-go/adapters/echo v0.0.0-00010101000000-000000000000
-	github.com/huynguyengl99/chanx-go/adapters/fiber v0.0.0-00010101000000-000000000000
-	github.com/huynguyengl99/chanx-go/adapters/gin v0.0.0-00010101000000-000000000000
-	github.com/huynguyengl99/chanx-go/layers v0.0.0-00010101000000-000000000000
-	github.com/huynguyengl99/chanx-go/layers/redis v0.0.0-00010101000000-000000000000
+	github.com/huynguyengl99/chanx-go v0.1.0
+	github.com/huynguyengl99/chanx-go/adapters/echo v0.1.0
+	github.com/huynguyengl99/chanx-go/adapters/fiber v0.1.0
+	github.com/huynguyengl99/chanx-go/adapters/gin v0.1.0
+	github.com/huynguyengl99/chanx-go/layers v0.1.0
+	github.com/huynguyengl99/chanx-go/layers/redis v0.1.0
 	github.com/labstack/echo/v5 v5.4.2
 )
 
