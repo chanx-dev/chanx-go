@@ -49,12 +49,19 @@ jobs:
             gh release create "$tag" --target "$SHA" --title "$tag" \
               --notes-file "$RUNNER_TEMP/notes.md" --latest="$latest"
           done <"$RUNNER_TEMP/pending"
+      # A tag made through the API takes a moment to show up over git, and the proxy caches
+      # an "unknown revision" for a while, so ask only after a pause, and retry.
       - name: Warm proxy.golang.org
         run: |
+          sleep 60
           while read -r tag; do
             dir="${tag%v*}"
             module="$(awk '/^module /{print $2}' "${dir:-./}go.mod")"
-            curl -sf "https://proxy.golang.org/$module/@v/v${tag##*v}.info" || true
+            for _ in 1 2 3 4 5; do
+              curl -sf "https://proxy.golang.org/$module/@v/v${tag##*v}.info" && break
+              sleep 30
+            done
+            echo
           done <"$RUNNER_TEMP/pending"
 
   docs:
