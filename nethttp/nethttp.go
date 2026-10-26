@@ -14,9 +14,9 @@ import (
 	"net"
 	"net/http"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/coderws"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/coderws"
 )
 
 // Router is what Mount registers routes on; *http.ServeMux and chi.Router

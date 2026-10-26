@@ -15,7 +15,7 @@ import (
 	"testing"
 	"time"
 
-	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/v2"
 )
 
 // Factory returns a fresh, empty layer; Run closes it.

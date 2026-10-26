@@ -11,7 +11,7 @@ It builds on the [quick start](/introduction/quick-start); reading that first he
 ```bash
 mkdir rooms && cd rooms
 go mod init example.com/rooms
-go get go.chanx.dev go.chanx.dev/layers/redis
+go get go.chanx.dev/v2 go.chanx.dev/layers/redis/v2
 ```
 
 Everything below goes in `main.go`, and the tests in `main_test.go`.

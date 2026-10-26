@@ -1,4 +1,4 @@
-module go.chanx.dev/adapters/fiber
+module go.chanx.dev/adapters/fiber/v2
 
 go 1.25.0
 
@@ -7,7 +7,7 @@ require (
 	github.com/fasthttp/websocket v1.5.12
 	github.com/gofiber/contrib/v3/websocket v1.2.4
 	github.com/gofiber/fiber/v3 v3.5.0
-	go.chanx.dev v0.2.0
+	go.chanx.dev/v2 v2.0.0
 )
 
 require (
@@ -27,7 +27,7 @@ require (
 	github.com/tinylib/msgp v1.6.4 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasthttp v1.73.0 // indirect
-	go.chanx.dev/layers v0.2.0 // indirect
+	go.chanx.dev/layers/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
@@ -35,6 +35,6 @@ require (
 )
 
 replace (
-	go.chanx.dev => ../../
-	go.chanx.dev/layers => ../../layers
+	go.chanx.dev/layers/v2 => ../../layers
+	go.chanx.dev/v2 => ../../
 )

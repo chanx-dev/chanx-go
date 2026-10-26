@@ -7,7 +7,7 @@ the consumer, the client IP is `c.RealIP()`, and failures before the upgrade go 
 echo's `HTTPErrorHandler`.
 
 ```bash
-go get go.chanx.dev/adapters/echo
+go get go.chanx.dev/adapters/echo/v2
 ```
 
 ```go

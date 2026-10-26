@@ -5,7 +5,7 @@
   </picture>
 </h1>
 
-[![Go Reference](https://pkg.go.dev/badge/go.chanx.dev.svg)](https://pkg.go.dev/go.chanx.dev)
+[![Go Reference](https://pkg.go.dev/badge/go.chanx.dev/v2.svg)](https://pkg.go.dev/go.chanx.dev/v2)
 [![CI](https://github.com/chanx-dev/chanx-go/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/chanx-dev/chanx-go/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
@@ -19,7 +19,7 @@ echo and Fiber.
 [Quick start](https://go.chanx.dev/introduction/quick-start) ·
 [Tutorial](https://go.chanx.dev/tutorial/chat-server) ·
 [Why chanx-go?](https://go.chanx.dev/introduction/why) ·
-[API reference](https://pkg.go.dev/go.chanx.dev)
+[API reference](https://pkg.go.dev/go.chanx.dev/v2)
 
 ![A typed Go handler, the AsyncAPI docs chanx-go generates from it, generating a Go client, and the compiler catching a typo](https://raw.githubusercontent.com/chanx-dev/chanx-go/main/docs/public/chanx-go-demo.gif)
 
@@ -78,7 +78,7 @@ From that, you get:
 ## Install
 
 ```bash
-go get go.chanx.dev
+go get go.chanx.dev/v2
 ```
 
 Go 1.25 or later. The gin, echo and Fiber adapters and the Redis layer are separate
@@ -95,9 +95,9 @@ import (
 	"log"
 	"net/http"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 type ChatPayload struct {
@@ -180,7 +180,7 @@ Clients are generated from the server's AsyncAPI document, so they match the ser
 **Go**, with `chanx-codegen`:
 
 ```bash
-go run go.chanx.dev/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
+go run go.chanx.dev/v2/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
 ```
 
 ```go
@@ -256,13 +256,13 @@ differences, such as strict type checks on payloads, are listed in
 
 | Module | What |
 | --- | --- |
-| `go.chanx.dev` | The framework: messages, consumers, topics, engine, publisher, `nethttp`, `asyncapi`, `chanxtest`, `auth`, the Go client and `chanx-codegen` |
+| `go.chanx.dev/v2` | The framework: messages, consumers, topics, engine, publisher, `nethttp`, `asyncapi`, `chanxtest`, `auth`, the Go client and `chanx-codegen` |
 | [`.../layers`](layers) | Channel layer interface, in-memory layer and conformance suite. Standard library only, usable without chanx |
 | [`.../layers/redis`](layers/redis) | Redis pub/sub layer, shared with Python and Node |
 | [`.../adapters/gin`](adapters/gin), [`echo`](adapters/echo), [`fiber`](adapters/fiber) | Framework adapters |
 | [`.../examples`](examples) | Python's `sandbox_fastapi` in Go, one entry point per framework |
 
-Every package is listed on [pkg.go.dev](https://pkg.go.dev/go.chanx.dev).
+Every package is listed on [pkg.go.dev](https://pkg.go.dev/go.chanx.dev/v2).
 
 ## Learn more
 

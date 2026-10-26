@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"go.chanx.dev/chanxtest"
+	"go.chanx.dev/v2/chanxtest"
 )
 
 func TestSandbox(t *testing.T) {

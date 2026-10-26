@@ -10,7 +10,7 @@ document into typed code.
 [Go client](/guide/go-client) guide covers it.
 
 ```bash
-go run go.chanx.dev/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
+go run go.chanx.dev/v2/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
 ```
 
 ## TypeScript and JavaScript

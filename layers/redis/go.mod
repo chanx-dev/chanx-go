@@ -1,11 +1,11 @@
-module go.chanx.dev/layers/redis
+module go.chanx.dev/layers/redis/v2
 
 go 1.25.0
 
 require (
 	github.com/redis/go-redis/v9 v9.22.0
 	github.com/vmihailenco/msgpack/v5 v5.4.1
-	go.chanx.dev/layers v0.2.0
+	go.chanx.dev/layers/v2 v2.0.0
 )
 
 require (
@@ -15,4 +15,4 @@ require (
 	golang.org/x/sys v0.47.0 // indirect
 )
 
-replace go.chanx.dev/layers => ../
+replace go.chanx.dev/layers/v2 => ../

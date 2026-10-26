@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/layers/v2/inmemory"
 )
 
 func ExampleNew() {

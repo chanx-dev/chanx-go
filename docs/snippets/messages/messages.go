@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/jsonschema-go/jsonschema"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // #region basic

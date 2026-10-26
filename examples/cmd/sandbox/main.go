@@ -14,9 +14,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"go.chanx.dev/asyncapi"
 	"go.chanx.dev/examples/sandbox"
-	chanxhttp "go.chanx.dev/nethttp"
+	"go.chanx.dev/v2/asyncapi"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 func main() {

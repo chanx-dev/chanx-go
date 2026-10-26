@@ -8,7 +8,7 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/adaptor"
 
-	chanxfiber "go.chanx.dev/adapters/fiber"
+	chanxfiber "go.chanx.dev/adapters/fiber/v2"
 	"go.chanx.dev/examples/sandbox"
 )
 

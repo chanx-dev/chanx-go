@@ -3,7 +3,7 @@ package chanx
 import (
 	"strings"
 
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/v2/protocol"
 )
 
 // RouteInfo describes a mounted route for documentation tools.

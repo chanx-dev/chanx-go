@@ -3,7 +3,7 @@ package protocol_test
 import (
 	"fmt"
 
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/v2/protocol"
 )
 
 // Servers in every language build the same group name from the same parts, so they

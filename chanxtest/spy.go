@@ -4,9 +4,9 @@ import (
 	"context"
 	"sync"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/layers"
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/layers/v2"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/protocol"
 )
 
 // SpyLayer wraps a layer and records what is sent through it, to assert on

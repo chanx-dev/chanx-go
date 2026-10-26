@@ -5,8 +5,8 @@ import (
 	"errors"
 	"log/slog"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/v2/protocol"
 )
 
 // Context is created per frame or event. As a context.Context it is canceled when

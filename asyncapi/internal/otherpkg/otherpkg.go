@@ -1,7 +1,7 @@
 // Package otherpkg declares a payload type named like one in the asyncapi tests.
 package otherpkg
 
-import chanx "go.chanx.dev"
+import chanx "go.chanx.dev/v2"
 
 // RoomPayload clashes by name with asyncapi_test.RoomPayload.
 type RoomPayload struct {

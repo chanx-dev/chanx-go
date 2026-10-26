@@ -10,15 +10,15 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/labstack/echo/v5"
 
-	chanx "go.chanx.dev"
-	chanxecho "go.chanx.dev/adapters/echo"
-	chanxfiber "go.chanx.dev/adapters/fiber"
-	chanxgin "go.chanx.dev/adapters/gin"
-	"go.chanx.dev/asyncapi"
-	chanxhttp "go.chanx.dev/nethttp"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/coderws"
-	"go.chanx.dev/transport/gorillaws"
+	chanxecho "go.chanx.dev/adapters/echo/v2"
+	chanxfiber "go.chanx.dev/adapters/fiber/v2"
+	chanxgin "go.chanx.dev/adapters/gin/v2"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	chanxhttp "go.chanx.dev/v2/nethttp"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/coderws"
+	"go.chanx.dev/v2/transport/gorillaws"
 )
 
 type ChatConsumer struct{}

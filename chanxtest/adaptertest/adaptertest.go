@@ -22,7 +22,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // Server is a running app.

@@ -3,14 +3,15 @@
 #
 #   scripts/release.sh                 # versions from the commits since each module's last tag
 #   scripts/release.sh --dry-run       # print the versions and changelogs, change nothing
-#   scripts/release.sh layers=1.0.0    # force a module's version (root is ".")
+#   scripts/release.sh layers=2.1.0    # force a module's version (root is ".")
 #   scripts/release.sh --pending       # each released version not tagged yet
 #   scripts/release.sh --notes TAG     # print the release notes of a tag
 #
 # A module releases when a feat, fix, perf or breaking commit touched its directory
-# since its last tag (vX.Y.Z for the root, layers/vX.Y.Z...). The bump follows
-# commitizen: fix and perf -> patch, feat -> minor, a breaking change -> major, or minor
-# while on 0.x so v1.0.0 is only cut on purpose.
+# since its last tag (vX.Y.Z for the root, layers/vX.Y.Z...): fix and perf bump the patch,
+# feat the minor. The major is the chanx contract, shared with chanx and chanx-js, so it
+# is never bumped from commits: a breaking commit is refused, and a new contract forces
+# every module to the new major (with its /vN module path).
 #
 # Every go.mod then requires the latest version of this repo's modules, each released
 # module gets <dir>/CHANGELOG.md, and one signed "chore(release): ..." commit carries
@@ -21,7 +22,6 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
-MODULE=go.chanx.dev
 # In dependency order, so a dependency is always tagged before what requires it.
 MODULES=(layers layers/redis . adapters/gin adapters/echo adapters/fiber)
 GOMODS=("${MODULES[@]}" examples docs)
@@ -36,7 +36,7 @@ excludes() {
 }
 
 prefix() { [ "$1" = . ] && echo "v" || echo "$1/v"; }
-import_path() { [ "$1" = . ] && echo "$MODULE" || echo "$MODULE/$1"; }
+import_path() { awk '/^module /{print $2}' "$1/go.mod"; }
 
 last_tag() { git describe --tags --abbrev=0 --match "$(prefix "$1")[0-9]*" "${2:-HEAD}" 2>/dev/null || true; }
 
@@ -61,7 +61,12 @@ next_version() {
 	fi
 	IFS=. read -r major minor patch <<<"${last##*v}"
 	if grep -qE '^[a-z]+(\([^)]*\))?!:|^BREAKING CHANGE' <<<"$commits"; then
-		[ "$major" = 0 ] && echo "0.$((minor + 1)).0" || echo "$((major + 1)).0.0"
+		if [ "$major" != 0 ]; then
+			echo "$dir: a breaking change, but the major version is the chanx contract's;" \
+				"keep the API compatible, or force every module to the next major" >&2
+			return 1
+		fi
+		echo "0.$((minor + 1)).0"
 	elif grep -qE '^feat(\([^)]*\))?:' <<<"$commits"; then
 		echo "$major.$((minor + 1)).0"
 	elif grep -qE '^(fix|perf)(\([^)]*\))?:' <<<"$commits"; then

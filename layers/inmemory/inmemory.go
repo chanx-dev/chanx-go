@@ -15,8 +15,8 @@ import (
 	"sync"
 	"time"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/serializer"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/layers/v2/serializer"
 )
 
 // Capacity sets the capacity of channels whose name matches a glob pattern

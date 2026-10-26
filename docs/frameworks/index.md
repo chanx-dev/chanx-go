@@ -19,7 +19,7 @@ gin, echo and Fiber adapters are separate modules, so a net/http user never down
 them:
 
 ```bash
-go get go.chanx.dev/adapters/gin
+go get go.chanx.dev/adapters/gin/v2
 ```
 
 ## What every adapter does

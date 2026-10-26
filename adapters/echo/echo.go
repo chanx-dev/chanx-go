@@ -12,11 +12,11 @@ import (
 
 	"github.com/labstack/echo/v5"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/protocol"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/coderws"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/protocol"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/coderws"
 )
 
 // Router is *echo.Echo or *echo.Group.

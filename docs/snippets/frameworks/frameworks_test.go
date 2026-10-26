@@ -9,7 +9,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // Each mount serves the route over a real socket; gin and echo hand the

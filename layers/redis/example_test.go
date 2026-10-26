@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/redis"
+	"go.chanx.dev/layers/redis/v2"
+	"go.chanx.dev/layers/v2"
 )
 
 func ExampleNewPubSub() {

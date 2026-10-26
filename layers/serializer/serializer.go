@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"time"
 
-	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/v2"
 )
 
 // Serializer converts layer messages to bytes and back.

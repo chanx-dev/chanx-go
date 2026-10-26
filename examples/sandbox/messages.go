@@ -3,7 +3,7 @@ package sandbox
 import (
 	"github.com/google/jsonschema-go/jsonschema"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // Mixin messages (sandbox_fastapi/apps/mixins.py).

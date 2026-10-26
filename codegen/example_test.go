@@ -8,9 +8,9 @@ import (
 	"slices"
 	"strings"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/codegen"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/codegen"
 )
 
 type ChatMessage struct {

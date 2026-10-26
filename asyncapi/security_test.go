@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
 )
 
 type SecureAsk struct {

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 
 const repo = 'https://github.com/chanx-dev/chanx-go';
-const pkg = 'https://pkg.go.dev/go.chanx.dev';
+const pkg = 'https://pkg.go.dev/go.chanx.dev/v2';
 
 const sidebar = [
   {

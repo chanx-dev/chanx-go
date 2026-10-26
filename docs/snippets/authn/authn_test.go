@@ -4,8 +4,8 @@ import (
 	"errors"
 	"testing"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/chanxtest"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/chanxtest"
 )
 
 func newEngine(cfg chanx.Config) *chanx.Engine {

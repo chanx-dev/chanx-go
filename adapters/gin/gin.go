@@ -13,11 +13,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/protocol"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/coderws"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/protocol"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/coderws"
 )
 
 // Option configures the adapter.

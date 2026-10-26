@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/v2/protocol"
 )
 
 // BaseTopic marks a struct as a topic, with its pattern in the tag:

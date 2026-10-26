@@ -7,7 +7,7 @@ middleware sets with `c.Set` are read by the consumer, and the client IP is
 `c.ClientIP()` with gin's trusted proxies.
 
 ```bash
-go get go.chanx.dev/adapters/gin
+go get go.chanx.dev/adapters/gin/v2
 ```
 
 ```go

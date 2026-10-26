@@ -21,10 +21,10 @@ import (
 	fws "github.com/gofiber/contrib/v3/websocket"
 	"github.com/gofiber/fiber/v3"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/protocol"
-	"go.chanx.dev/transport"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/protocol"
+	"go.chanx.dev/v2/transport"
 )
 
 // Option configures the adapter.

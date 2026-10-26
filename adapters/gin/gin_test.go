@@ -8,13 +8,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	chanx "go.chanx.dev"
-	chanxgin "go.chanx.dev/adapters/gin"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/chanxtest/adaptertest"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/coderws"
-	"go.chanx.dev/transport/gorillaws"
+	chanxgin "go.chanx.dev/adapters/gin/v2"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/chanxtest/adaptertest"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/coderws"
+	"go.chanx.dev/v2/transport/gorillaws"
 )
 
 func TestAdapter(t *testing.T) {

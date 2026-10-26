@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 // #region messages

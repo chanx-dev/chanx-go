@@ -9,12 +9,12 @@ import (
 	"strings"
 	"time"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/auth"
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/redis"
-	chanxhttp "go.chanx.dev/nethttp"
+	"go.chanx.dev/layers/redis/v2"
+	"go.chanx.dev/layers/v2"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/auth"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 // #region messages

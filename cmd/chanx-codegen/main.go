@@ -1,7 +1,7 @@
 // Command chanx-codegen generates a typed Go client from a chanx AsyncAPI 3
 // document, a file or a URL:
 //
-//	go run go.chanx.dev/cmd/chanx-codegen@latest -o ./chanxgen http://localhost:8000/asyncapi.json
+//	go run go.chanx.dev/v2/cmd/chanx-codegen@latest -o ./chanxgen http://localhost:8000/asyncapi.json
 package main
 
 import (
@@ -12,7 +12,7 @@ import (
 	"path/filepath"
 	"sort"
 
-	"go.chanx.dev/codegen"
+	"go.chanx.dev/v2/codegen"
 )
 
 func main() {

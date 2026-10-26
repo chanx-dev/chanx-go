@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // NotifyHandler is the external sender of sandbox_fastapi: POST

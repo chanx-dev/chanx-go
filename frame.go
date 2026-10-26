@@ -10,9 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"go.chanx.dev/internal/schema"
-	"go.chanx.dev/layers"
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/v2/internal/schema"
+	"go.chanx.dev/v2/protocol"
 )
 
 // stamp is the envelope written on an outgoing frame.

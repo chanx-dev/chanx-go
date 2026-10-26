@@ -6,8 +6,8 @@ import (
 	"errors"
 	"net/http"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/auth"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/auth"
 )
 
 // User is what authentication returns, kept on the connection.

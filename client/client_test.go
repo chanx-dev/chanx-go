@@ -13,9 +13,9 @@ import (
 	"github.com/coder/websocket"
 	"go.uber.org/goleak"
 
-	chanx "go.chanx.dev"
-	chanxclient "go.chanx.dev/client"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	chanxclient "go.chanx.dev/v2/client"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 func TestMain(m *testing.M) { goleak.VerifyTestMain(m) }

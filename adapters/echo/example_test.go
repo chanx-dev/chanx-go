@@ -5,9 +5,9 @@ import (
 
 	"github.com/labstack/echo/v5"
 
-	chanx "go.chanx.dev"
-	chanxecho "go.chanx.dev/adapters/echo"
-	"go.chanx.dev/asyncapi"
+	chanxecho "go.chanx.dev/adapters/echo/v2"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
 )
 
 type ChatConsumer struct{}

@@ -53,7 +53,8 @@ jobs:
         run: |
           while read -r tag; do
             dir="${tag%v*}"
-            curl -sf "https://proxy.golang.org/go.chanx.dev${dir:+/${dir%/}}/@v/v${tag##*v}.info" || true
+            module="$(awk '/^module /{print $2}' "${dir:-./}go.mod")"
+            curl -sf "https://proxy.golang.org/$module/@v/v${tag##*v}.info" || true
           done <"$RUNNER_TEMP/pending"
 
   docs:

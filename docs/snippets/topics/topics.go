@@ -4,7 +4,7 @@ package topics
 import (
 	"context"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 type PricePayload struct {

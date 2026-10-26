@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"sync"
 
-	chanx "go.chanx.dev"
+	chanx "go.chanx.dev/v2"
 )
 
 // Topic is a stream multiplexed over a connection.

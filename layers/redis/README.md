@@ -7,7 +7,7 @@ Python's [channels_redis](https://github.com/django/channels_redis) and
 Python and Node processes can share one Redis and meet in the same groups.
 
 ```bash
-go get go.chanx.dev/layers/redis
+go get go.chanx.dev/layers/redis/v2
 ```
 
 ```go

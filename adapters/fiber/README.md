@@ -5,7 +5,7 @@ Mounts a [chanx-go](https://github.com/chanx-dev/chanx-go) engine in a
 middleware are Fiber's, and failures before the upgrade go through its `ErrorHandler`.
 
 ```bash
-go get go.chanx.dev/adapters/fiber
+go get go.chanx.dev/adapters/fiber/v2
 ```
 
 ```go

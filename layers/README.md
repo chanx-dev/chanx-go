@@ -7,7 +7,7 @@ chanx: use it alone for fan-out between replicas, or under
 [chanx-go](https://github.com/chanx-dev/chanx-go).
 
 ```bash
-go get go.chanx.dev/layers
+go get go.chanx.dev/layers/v2
 ```
 
 ```go

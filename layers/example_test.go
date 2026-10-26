@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/v2"
 )
 
 // Int reads an integer whatever the serializer made of it: msgpack's uint8, a

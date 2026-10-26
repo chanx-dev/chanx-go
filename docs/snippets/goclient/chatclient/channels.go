@@ -6,8 +6,8 @@ package chatclient
 import (
 	"context"
 
-	chanx "go.chanx.dev"
-	chanxclient "go.chanx.dev/client"
+	chanx "go.chanx.dev/v2"
+	chanxclient "go.chanx.dev/v2/client"
 )
 
 // ChatChannel is /ws/chat/{room}.

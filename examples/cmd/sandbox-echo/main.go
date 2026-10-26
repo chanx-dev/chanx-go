@@ -7,7 +7,7 @@ import (
 
 	"github.com/labstack/echo/v5"
 
-	chanxecho "go.chanx.dev/adapters/echo"
+	chanxecho "go.chanx.dev/adapters/echo/v2"
 	"go.chanx.dev/examples/sandbox"
 )
 

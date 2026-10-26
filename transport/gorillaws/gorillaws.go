@@ -10,7 +10,7 @@ import (
 
 	"github.com/gorilla/websocket"
 
-	"go.chanx.dev/transport"
+	"go.chanx.dev/v2/transport"
 )
 
 // Upgrader is gorilla's upgrader. Its CheckOrigin defaults to same-origin.

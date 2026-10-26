@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/inmemory"
-	"go.chanx.dev/protocol"
-	"go.chanx.dev/transport"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/layers/v2/inmemory"
+	"go.chanx.dev/v2/protocol"
+	"go.chanx.dev/v2/transport"
 )
 
 // Config holds the engine's defaults.

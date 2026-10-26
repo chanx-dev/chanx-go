@@ -10,8 +10,8 @@ import (
 
 	"github.com/coder/websocket"
 
-	chanx "go.chanx.dev"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 type ipConsumer struct{}

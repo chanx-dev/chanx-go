@@ -5,7 +5,7 @@ import (
 
 	"github.com/vmihailenco/msgpack/v5"
 
-	"go.chanx.dev/layers/serializer"
+	"go.chanx.dev/layers/v2/serializer"
 )
 
 // MsgPack is the default format: text as str and bytes as bin, so string and

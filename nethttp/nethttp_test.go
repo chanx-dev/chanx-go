@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/chanxtest/adaptertest"
-	chanxhttp "go.chanx.dev/nethttp"
-	"go.chanx.dev/transport"
-	"go.chanx.dev/transport/gorillaws"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/chanxtest/adaptertest"
+	chanxhttp "go.chanx.dev/v2/nethttp"
+	"go.chanx.dev/v2/transport"
+	"go.chanx.dev/v2/transport/gorillaws"
 )
 
 // middleware is the suite's contract: X-Reject answers 401, X-User sets "user".

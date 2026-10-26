@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/chanxtest"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/chanxtest"
 )
 
 func TestFrames(t *testing.T) {

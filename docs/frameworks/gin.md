@@ -1,7 +1,7 @@
 # gin
 
 ```bash
-go get go.chanx.dev/adapters/gin
+go get go.chanx.dev/adapters/gin/v2
 ```
 
 <<< @/snippets/frameworks/frameworks.go#gin

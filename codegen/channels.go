@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"go.chanx.dev/protocol"
+	"go.chanx.dev/v2/protocol"
 )
 
 func (g *generator) emitChannels(conns []conn) []byte {
@@ -19,7 +19,7 @@ func (g *generator) emitChannels(conns []conn) []byte {
 	}
 	fmt.Fprintf(&b, "// Package %s is a typed client for %s.\n", g.pkg, title)
 	fmt.Fprintf(&b, "package %s\n\n", g.pkg)
-	b.WriteString("import (\n\t\"context\"\n\n\tchanx \"go.chanx.dev\"\n\tchanxclient \"go.chanx.dev/client\"\n)\n\n")
+	b.WriteString("import (\n\t\"context\"\n\n\tchanx \"go.chanx.dev/v2\"\n\tchanxclient \"go.chanx.dev/v2/client\"\n)\n\n")
 	for _, c := range conns {
 		g.emitConn(&b, c)
 	}

@@ -1,4 +1,4 @@
-module go.chanx.dev
+module go.chanx.dev/v2
 
 go 1.25.0
 
@@ -9,10 +9,10 @@ require (
 	github.com/google/jsonschema-go v0.4.3
 	github.com/gorilla/websocket v1.5.3
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
-	go.chanx.dev/layers v0.2.0
+	go.chanx.dev/layers/v2 v2.0.0
 	go.uber.org/goleak v1.3.0
 )
 
 require golang.org/x/text v0.14.0 // indirect
 
-replace go.chanx.dev/layers => ./layers
+replace go.chanx.dev/layers/v2 => ./layers

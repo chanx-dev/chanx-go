@@ -3,9 +3,9 @@ package layertest_test
 import (
 	"testing"
 
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/inmemory"
-	"go.chanx.dev/layers/layertest"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/layers/v2/inmemory"
+	"go.chanx.dev/layers/v2/layertest"
 )
 
 // testLayer is how a backend proves itself: name it TestLayer in your package and

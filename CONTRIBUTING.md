@@ -57,7 +57,7 @@ Before opening a pull request:
 | --- | --- |
 | doc comments and `Example*` functions | the API reference on pkg.go.dev |
 | `README.md` in each published module | its landing page on GitHub and pkg.go.dev |
-| `docs/` | the guide site, VitePress, at go.chanx.dev |
+| `docs/` | the guide site, VitePress, at go.chanx.dev/v2 |
 
 ```bash
 make docs-dev   # the site at http://localhost:5173/chanx-go/, reloading on save
@@ -87,8 +87,14 @@ docs: explain topic group names
 | --- | --- |
 | `fix`, `perf` | patch |
 | `feat` | minor |
-| `!` after the type, or a `BREAKING CHANGE:` footer | major (minor while on 0.x) |
+| `!` after the type, or a `BREAKING CHANGE:` footer | refused: the major is the chanx contract |
 | `docs`, `refactor`, `test`, `build`, `ci`, `chore` | none on their own |
+
+The major version is the chanx contract, the same for chanx, chanx-js and chanx-go, so
+within it the Go API only grows: deprecate and add instead of changing. A new contract
+moves every module to the next major together: `/v3` on each module path and import, then
+`scripts/release.sh .=3.0.0 layers=3.0.0 layers/redis=3.0.0 adapters/gin=3.0.0
+adapters/echo=3.0.0 adapters/fiber=3.0.0`.
 
 Scopes name the package or module: `layers`, `layers/redis`, `protocol`, `transport`,
 `nethttp`, `asyncapi`, `chanxtest`, `adapters/gin`, `examples`...
@@ -96,7 +102,7 @@ Scopes name the package or module: `layers`, `layers/redis`, `protocol`, `transp
 ## Releasing
 
 Maintainers only. Each module has its own version and changelog, as each chanx-js
-package does: `layers/vX.Y.Z` tags `go.chanx.dev/layers`, `vX.Y.Z` tags the root module.
+package does: `layers/vX.Y.Z` tags `go.chanx.dev/layers/v2`, `vX.Y.Z` tags the root module.
 
 ```bash
 make release-dry                 # each module's next version and changelog, nothing changed
@@ -126,7 +132,7 @@ finishes whatever a failed one left. If CI fails on the release commit, push the
 directory outside the repo:
 
 ```bash
-go get go.chanx.dev@vX.Y.Z go.chanx.dev/adapters/gin@vX.Y.Z
+go get go.chanx.dev/v2@vX.Y.Z go.chanx.dev/adapters/gin/v2@vX.Y.Z
 ```
 
 A published version can never be changed. To withdraw a bad one, release the next patch

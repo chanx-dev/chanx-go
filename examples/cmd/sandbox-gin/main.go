@@ -7,7 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	chanxgin "go.chanx.dev/adapters/gin"
+	chanxgin "go.chanx.dev/adapters/gin/v2"
 	"go.chanx.dev/examples/sandbox"
 )
 

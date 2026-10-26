@@ -8,12 +8,12 @@ require (
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/google/jsonschema-go v0.4.3
 	github.com/labstack/echo/v5 v5.4.2
-	go.chanx.dev v0.2.0
-	go.chanx.dev/adapters/echo v0.2.0
-	go.chanx.dev/adapters/fiber v0.2.0
-	go.chanx.dev/adapters/gin v0.2.0
-	go.chanx.dev/layers v0.2.0
-	go.chanx.dev/layers/redis v0.2.0
+	go.chanx.dev/adapters/echo/v2 v2.0.0
+	go.chanx.dev/adapters/fiber/v2 v2.0.0
+	go.chanx.dev/adapters/gin/v2 v2.0.0
+	go.chanx.dev/layers/redis/v2 v2.0.0
+	go.chanx.dev/layers/v2 v2.0.0
+	go.chanx.dev/v2 v2.0.0
 )
 
 require (
@@ -70,10 +70,10 @@ require (
 )
 
 replace (
-	go.chanx.dev => ../
-	go.chanx.dev/adapters/echo => ../adapters/echo
-	go.chanx.dev/adapters/fiber => ../adapters/fiber
-	go.chanx.dev/adapters/gin => ../adapters/gin
-	go.chanx.dev/layers => ../layers
-	go.chanx.dev/layers/redis => ../layers/redis
+	go.chanx.dev/adapters/echo/v2 => ../adapters/echo
+	go.chanx.dev/adapters/fiber/v2 => ../adapters/fiber
+	go.chanx.dev/adapters/gin/v2 => ../adapters/gin
+	go.chanx.dev/layers/redis/v2 => ../layers/redis
+	go.chanx.dev/layers/v2 => ../layers
+	go.chanx.dev/v2 => ../
 )

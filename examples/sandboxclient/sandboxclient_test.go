@@ -9,12 +9,12 @@ import (
 	"testing"
 	"time"
 
-	chanx "go.chanx.dev"
-	chanxclient "go.chanx.dev/client"
-	"go.chanx.dev/codegen"
 	"go.chanx.dev/examples/sandbox"
 	"go.chanx.dev/examples/sandboxclient"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	chanxclient "go.chanx.dev/v2/client"
+	"go.chanx.dev/v2/codegen"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 // The committed client is what chanx-codegen writes from Python's document.

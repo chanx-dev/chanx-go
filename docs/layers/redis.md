@@ -7,7 +7,7 @@ a Go worker can push to sockets a Django server holds, and a FastAPI process can
 broadcast to a room some of whose members are connected to Go.
 
 ```bash
-go get go.chanx.dev/layers/redis
+go get go.chanx.dev/layers/redis/v2
 ```
 
 <<< @/snippets/layering/layering.go#redis

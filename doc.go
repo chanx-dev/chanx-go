@@ -62,8 +62,8 @@
 // # Testing
 //
 // Package chanxtest runs a connection in memory with
-// [go.chanx.dev/chanxtest.Connect] and records what was
-// published with [go.chanx.dev/chanxtest.Spy].
+// [go.chanx.dev/v2/chanxtest.Connect] and records what was
+// published with [go.chanx.dev/v2/chanxtest.Spy].
 //
 // [chanx]: https://github.com/chanx-dev/chanx
 package chanx

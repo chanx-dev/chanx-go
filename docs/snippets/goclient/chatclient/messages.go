@@ -2,7 +2,7 @@
 
 package chatclient
 
-import chanx "go.chanx.dev"
+import chanx "go.chanx.dev/v2"
 
 type ChatMessage struct {
 	chanx.BaseMessage `action:"chat"`

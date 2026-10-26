@@ -7,9 +7,9 @@ import (
 	"strings"
 	"testing"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/asyncapi/internal/otherpkg"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/asyncapi/internal/otherpkg"
 )
 
 type RoomPayload struct {

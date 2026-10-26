@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"go.chanx.dev/asyncapi"
-	"go.chanx.dev/codegen"
+	"go.chanx.dev/v2/asyncapi"
+	"go.chanx.dev/v2/codegen"
 )
 
 // asyncapi.json and chatclient/ are what the server documents and what

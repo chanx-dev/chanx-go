@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	chanx "go.chanx.dev"
-	chanxclient "go.chanx.dev/client"
 	"go.chanx.dev/docs/snippets/goclient"
 	"go.chanx.dev/docs/snippets/goclient/chatclient"
-	chanxhttp "go.chanx.dev/nethttp"
+	chanx "go.chanx.dev/v2"
+	chanxclient "go.chanx.dev/v2/client"
+	chanxhttp "go.chanx.dev/v2/nethttp"
 )
 
 func serve(t *testing.T) string {

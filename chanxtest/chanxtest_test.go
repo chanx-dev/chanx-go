@@ -9,10 +9,10 @@ import (
 	"testing"
 	"time"
 
-	chanx "go.chanx.dev"
-	"go.chanx.dev/chanxtest"
-	"go.chanx.dev/layers"
-	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/layers/v2"
+	"go.chanx.dev/layers/v2/inmemory"
+	chanx "go.chanx.dev/v2"
+	"go.chanx.dev/v2/chanxtest"
 )
 
 // recorder is a testing.TB that records failures instead of failing, so the
