@@ -38,6 +38,14 @@ jobs:
       - run: pnpm install --frozen-lockfile
       # Dead links fail the build. The Go snippets the pages include are tested by CI.
       - run: pnpm build
+      # go get resolves every go.chanx.dev module path through this tag, on the home page
+      # and on the 404 page that answers paths like /v2 and /layers/redis/v2.
+      - name: Check the go-import tag
+        run: |
+          tag='<meta name="go-import" content="go.chanx.dev git https://github.com/chanx-dev/chanx-go">'
+          for page in index.html 404.html; do
+            grep -qF "$tag" ".vitepress/dist/$page" || { echo "$page lacks: $tag"; exit 1; }
+          done
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
