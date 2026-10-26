@@ -37,6 +37,12 @@
 // runs before the upgrade. Adapters exist for net/http (package nethttp, also chi
 // and gorilla/mux), gin, echo and Fiber.
 //
+//	engine := chanx.New(chanx.Config{})
+//	engine.Handle("/ws/chat/{room}", &ChatConsumer{})
+//
+//	mux := http.NewServeMux()
+//	chanxhttp.Mount(mux, engine)
+//
 // # Groups, events and topics
 //
 // [Context.Broadcast] sends to groups through the channel layer, reaching sockets
@@ -45,6 +51,13 @@
 // server messages handled by methods taking an [*EventContext]. Topics, structs
 // embedding [BaseTopic], are streams a client subscribes to by name over one
 // socket.
+//
+// # AsyncAPI and clients
+//
+// Package asyncapi builds an AsyncAPI 3.0 document from the mounted consumers, and
+// each adapter's MountDocs serves it with an interactive page. Typed clients are
+// generated from that document: in Go by cmd/chanx-codegen on package chanxclient,
+// in TypeScript by @chanx-js/codegen, in Python by chanx's generate-client.
 //
 // # Testing
 //

@@ -1,4 +1,5 @@
-// Package stream holds streaming helpers.
+// Package stream helps send streamed output, such as an LLM response, over a
+// WebSocket.
 package stream
 
 import "strings"
