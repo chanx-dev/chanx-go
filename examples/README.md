@@ -72,3 +72,4 @@ instead, and `{"action": "ping", "ref": "1"}` gets a pong carrying the same `ref
 | [`cmd/`](cmd) | one `main.go` per framework |
 | [`sandbox/sandbox_test.go`](sandbox/sandbox_test.go) | the consumers tested with `chanxtest` |
 | [`sandbox/asyncapi_test.go`](sandbox/asyncapi_test.go) | the parity test against Python's document |
+| [`sandboxclient/`](sandboxclient) | the Go client `chanx-codegen` generates from Python's document, driven against the Go sandbox by its test |
