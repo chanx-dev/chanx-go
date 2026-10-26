@@ -8,8 +8,9 @@
 # The version is bumped from conventional commits by git-cliff (see [bump] in
 # cliff.toml). Bumps the intra-repo requires, writes CHANGELOG.md, makes a signed
 # "chore(release): X.Y.Z" commit and tags the root and each nested module
-# (vX.Y.Z, layers/vX.Y.Z, adapters/gin/vX.Y.Z...). Push main and the tags
-# yourself; release.yml publishes the GitHub release.
+# (vX.Y.Z, layers/vX.Y.Z, adapters/gin/vX.Y.Z...). Push main and the nested tags,
+# then the root tag on its own: GitHub starts no workflow for a push of more than
+# three tags, and the root tag is what runs release.yml.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -74,4 +75,6 @@ git tag -s "$TAG" -m "$TAG"
 for dir in "${NESTED[@]}"; do
 	git tag -s "$dir/$TAG" -m "$dir/$TAG"
 done
-echo "tagged $TAG and ${#NESTED[@]} nested modules; now: git push origin main --tags"
+echo "tagged $TAG and ${#NESTED[@]} nested modules; now:"
+echo "  git push origin main ${NESTED[*]/%//$TAG}"
+echo "  git push origin $TAG"

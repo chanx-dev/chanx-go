@@ -100,7 +100,8 @@ Maintainers only. Every module is released together, at the same version.
 ```bash
 make release-dry                 # next version and its changelog, nothing changed
 make release                     # bump, CHANGELOG.md, signed commit, one tag per module
-git push origin main --tags
+git push origin main layers/vX.Y.Z layers/redis/vX.Y.Z adapters/{gin,echo,fiber}/vX.Y.Z
+git push origin vX.Y.Z           # alone: it runs release.yml
 ```
 
 `make release` refuses a dirty tree or a history with nothing to release. It bumps the
@@ -108,8 +109,9 @@ requires between this repo's modules, writes `CHANGELOG.md`, commits
 `chore(release): X.Y.Z` and tags `vX.Y.Z`, `layers/vX.Y.Z`, `layers/redis/vX.Y.Z` and
 `adapters/{gin,echo,fiber}/vX.Y.Z`. `scripts/release.sh X.Y.Z` forces a version.
 
-Pushing the tags runs `release.yml`, which publishes the GitHub release and asks
-proxy.golang.org to fetch the new versions. Check from a directory outside the repo:
+The root tag goes last and on its own because GitHub starts no workflow for a push of
+more than three tags. It runs `release.yml`, which publishes the GitHub release, asks
+proxy.golang.org to fetch the new versions and deploys the docs. Check from a directory outside the repo:
 
 ```bash
 go get github.com/huynguyengl99/chanx-go@vX.Y.Z
