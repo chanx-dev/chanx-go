@@ -65,13 +65,32 @@ export default defineConfig({
   // Pages link to the server the reader runs, at localhost.
   ignoreDeadLinks: 'localhostLinks',
   srcExclude: ['snippets/**'],
-  // Head links are not prefixed with `base`, so they carry it.
+  // Without its own icon, a browser falls back to the domain root's favicon.ico, which
+  // belongs to the github.io site this one lives under. Head links are not prefixed with
+  // `base`, so they carry it.
   head: [
-    ['meta', { name: 'theme-color', content: '#00758d' }],
+    ['meta', { name: 'theme-color', content: '#1e3a8a' }],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content: 'https://huynguyengl99.github.io/chanx-go/brand/social-card.png',
+      },
+    ],
+    ['meta', { property: 'og:image:alt', content: 'chanx-go: structured WebSockets for Go' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/chanx-go/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/chanx-go/favicon-32.png' }],
+    ['link', { rel: 'apple-touch-icon', href: '/chanx-go/apple-touch-icon.png' }],
   ],
   themeConfig: {
-    logo: '/logo.svg',
+    // The wordmark already spells the name, so the text title is hidden.
+    logo: {
+      light: '/brand/chanx-go-wordmark.svg',
+      dark: '/brand/chanx-go-wordmark-dark.svg',
+      alt: 'chanx-go',
+    },
+    siteTitle: false,
     nav: [
       { text: 'Guide', link: '/introduction/', activeMatch: '^/(introduction|tutorial|guide)/' },
       { text: 'Frameworks', link: '/frameworks/', activeMatch: '^/frameworks/' },

@@ -2,7 +2,6 @@
 layout: home
 
 hero:
-  name: chanx-go
   text: Structured WebSockets for Go.
   tagline: Write a struct of handlers. chanx-go routes each frame to the right one, validates it first, broadcasts across processes and documents it all as AsyncAPI, on the same protocol as Python chanx.
   actions:
@@ -24,7 +23,7 @@ features:
   - title: Groups and topics across processes
     details: 'Broadcast to rooms, push from HTTP handlers and workers, let clients subscribe to many streams over one socket. Over Redis, every process is reached.'
   - title: AsyncAPI from the code
-    details: 'The document is built from the handlers that serve traffic, so it cannot drift. Typed clients for TypeScript and Python are generated from it.'
+    details: 'The document is built from the handlers that serve traffic, so it cannot drift. Typed clients for Go, TypeScript and Python are generated from it.'
   - title: Your framework
     details: 'net/http, chi, gorilla/mux, gin, echo and Fiber. Routes live in your router and your middleware runs before the upgrade.'
   - title: One protocol with Python and Node
