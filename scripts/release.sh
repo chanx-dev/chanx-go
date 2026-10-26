@@ -198,8 +198,8 @@ if [ "$(git rev-parse --abbrev-ref HEAD)" != main ]; then
 	exit 1
 fi
 git fetch -q origin main
-if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
-	echo "main is not level with origin/main" >&2
+if ! git merge-base --is-ancestor origin/main HEAD; then
+	echo "main is behind origin/main" >&2
 	exit 1
 fi
 
