@@ -7,13 +7,13 @@ require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/google/jsonschema-go v0.4.3
-	go.chanx.dev v0.1.0
-	go.chanx.dev/adapters/echo v0.1.0
-	go.chanx.dev/adapters/fiber v0.1.0
-	go.chanx.dev/adapters/gin v0.1.0
-	go.chanx.dev/layers v0.1.0
-	go.chanx.dev/layers/redis v0.1.0
 	github.com/labstack/echo/v5 v5.4.2
+	go.chanx.dev v0.2.0
+	go.chanx.dev/adapters/echo v0.2.0
+	go.chanx.dev/adapters/fiber v0.2.0
+	go.chanx.dev/adapters/gin v0.2.0
+	go.chanx.dev/layers v0.2.0
+	go.chanx.dev/layers/redis v0.2.0
 )
 
 require (

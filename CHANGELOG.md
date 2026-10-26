@@ -1,4 +1,19 @@
 # Changelog
+## 0.2.0 (2026-10-26)
+
+### Documentation
+- Add the chanx-go logo, family colours, social card and a demo video
+- Lead the README with the logo and demo, and cover the Go client
+- Rewrite the README around a runnable quick start and typed clients
+- Check errors in the README's Go client example
+- Add Dial and Generate examples, and cover mounting and clients in doc.go
+
+### Features
+- Move the module path to go.chanx.dev
+
+### Maintenance
+- Push the root release tag on its own
+- Run the humanizer and diataxis checks in the docs skill
 ## 0.1.0 (2026-10-26)
 
 ### Documentation

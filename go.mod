@@ -8,8 +8,8 @@ require (
 	github.com/goccy/go-yaml v1.19.2
 	github.com/google/jsonschema-go v0.4.3
 	github.com/gorilla/websocket v1.5.3
-	go.chanx.dev/layers v0.1.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
+	go.chanx.dev/layers v0.2.0
 	go.uber.org/goleak v1.3.0
 )
 

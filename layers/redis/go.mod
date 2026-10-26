@@ -3,9 +3,9 @@ module go.chanx.dev/layers/redis
 go 1.25.0
 
 require (
-	go.chanx.dev/layers v0.1.0
 	github.com/redis/go-redis/v9 v9.22.0
 	github.com/vmihailenco/msgpack/v5 v5.4.1
+	go.chanx.dev/layers v0.2.0
 )
 
 require (
