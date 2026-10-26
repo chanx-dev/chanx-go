@@ -1,0 +1,369 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Chat",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "development": {
+      "host": "localhost:8000",
+      "protocol": "ws"
+    }
+  },
+  "channels": {
+    "chat": {
+      "address": "/ws/chat/{room}",
+      "title": "chat",
+      "parameters": {
+        "room": {
+          "description": "Path parameter for room (str)"
+        }
+      },
+      "messages": {
+        "chat_message": {
+          "$ref": "#/components/messages/chat_message"
+        },
+        "chat_notification": {
+          "$ref": "#/components/messages/chat_notification"
+        },
+        "join_message": {
+          "$ref": "#/components/messages/join_message"
+        },
+        "ping_message": {
+          "$ref": "#/components/messages/ping_message"
+        },
+        "pong_message": {
+          "$ref": "#/components/messages/pong_message"
+        },
+        "welcome_message": {
+          "$ref": "#/components/messages/welcome_message"
+        }
+      }
+    },
+    "chat_news_topic": {
+      "address": "/ws/chat/{room}",
+      "title": "chat_news_topic",
+      "parameters": {
+        "room": {
+          "description": "Path parameter for room (str)"
+        }
+      },
+      "x-topic": {
+        "name": "news_topic",
+        "pattern": "news:{tag}",
+        "parameters": [
+          "tag"
+        ]
+      },
+      "messages": {
+        "headline": {
+          "$ref": "#/components/messages/headline"
+        }
+      }
+    }
+  },
+  "operations": {
+    "handle_chat": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/chat"
+      },
+      "description": "",
+      "summary": "",
+      "messages": [
+        {
+          "$ref": "#/channels/chat/messages/chat_message"
+        }
+      ]
+    },
+    "handle_join": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/chat"
+      },
+      "description": "",
+      "summary": "",
+      "messages": [
+        {
+          "$ref": "#/channels/chat/messages/join_message"
+        }
+      ],
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/chat"
+        },
+        "messages": [
+          {
+            "$ref": "#/channels/chat/messages/welcome_message"
+          }
+        ]
+      }
+    },
+    "handle_ping": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/chat"
+      },
+      "description": "",
+      "summary": "",
+      "messages": [
+        {
+          "$ref": "#/channels/chat/messages/ping_message"
+        }
+      ],
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/chat"
+        },
+        "messages": [
+          {
+            "$ref": "#/channels/chat/messages/pong_message"
+          }
+        ]
+      }
+    },
+    "handle_passthrough_headline": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/chat_news_topic"
+      },
+      "description": "Passthrough handler for Headline",
+      "summary": "",
+      "messages": [
+        {
+          "$ref": "#/channels/chat_news_topic/messages/headline"
+        }
+      ]
+    }
+  },
+  "components": {
+    "messages": {
+      "chat_message": {
+        "payload": {
+          "$ref": "#/components/schemas/ChatMessage"
+        }
+      },
+      "chat_notification": {
+        "payload": {
+          "$ref": "#/components/schemas/ChatNotification"
+        }
+      },
+      "headline": {
+        "payload": {
+          "$ref": "#/components/schemas/Headline"
+        }
+      },
+      "join_message": {
+        "payload": {
+          "$ref": "#/components/schemas/JoinMessage"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
+        }
+      },
+      "ping_message": {
+        "payload": {
+          "$ref": "#/components/schemas/PingMessage"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
+        }
+      },
+      "pong_message": {
+        "payload": {
+          "$ref": "#/components/schemas/PongMessage"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
+        }
+      },
+      "welcome_message": {
+        "payload": {
+          "$ref": "#/components/schemas/WelcomeMessage"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
+        }
+      }
+    },
+    "schemas": {
+      "ChatMessage": {
+        "properties": {
+          "action": {
+            "const": "chat",
+            "default": "chat",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ChatPayload"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "ChatMessage",
+        "type": "object"
+      },
+      "ChatNotification": {
+        "properties": {
+          "action": {
+            "const": "chat_notification",
+            "default": "chat_notification",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ChatPayload"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "ChatNotification",
+        "type": "object"
+      },
+      "ChatPayload": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "title": "ChatPayload",
+        "required": [
+          "message"
+        ]
+      },
+      "Headline": {
+        "properties": {
+          "action": {
+            "const": "headline",
+            "default": "headline",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "type": "string",
+            "title": "Payload"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "Headline",
+        "type": "object"
+      },
+      "JoinMessage": {
+        "properties": {
+          "action": {
+            "const": "join",
+            "default": "join",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/JoinPayload"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "JoinMessage",
+        "type": "object"
+      },
+      "JoinPayload": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "title": "JoinPayload",
+        "required": [
+          "name"
+        ]
+      },
+      "PingMessage": {
+        "description": "Simple ping message to check WebSocket connection status.",
+        "properties": {
+          "action": {
+            "const": "ping",
+            "default": "ping",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "default": null,
+            "title": "Payload",
+            "type": "null"
+          }
+        },
+        "title": "PingMessage",
+        "type": "object"
+      },
+      "PongMessage": {
+        "description": "Simple pong message response to ping requests.",
+        "properties": {
+          "action": {
+            "const": "pong",
+            "default": "pong",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "default": null,
+            "title": "Payload",
+            "type": "null"
+          }
+        },
+        "title": "PongMessage",
+        "type": "object"
+      },
+      "WelcomeMessage": {
+        "properties": {
+          "action": {
+            "const": "welcome",
+            "default": "welcome",
+            "title": "Action",
+            "type": "string"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/WelcomePayload"
+          }
+        },
+        "required": [
+          "payload"
+        ],
+        "title": "WelcomeMessage",
+        "type": "object"
+      },
+      "WelcomePayload": {
+        "type": "object",
+        "properties": {
+          "room": {
+            "type": "string",
+            "title": "Room"
+          },
+          "greeter": {
+            "type": "string",
+            "title": "Greeter",
+            "default": "bot"
+          }
+        },
+        "title": "WelcomePayload",
+        "required": [
+          "room"
+        ]
+      }
+    },
+    "correlationIds": {
+      "ref": {
+        "description": "A reply carries the `ref` of the request it answers.",
+        "location": "$message.payload#/ref"
+      }
+    }
+  }
+}

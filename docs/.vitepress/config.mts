@@ -24,6 +24,7 @@ const sidebar = [
       { text: 'AsyncAPI', link: '/guide/asyncapi' },
       { text: 'Configuration', link: '/guide/configuration' },
       { text: 'Testing', link: '/guide/testing' },
+      { text: 'Go client', link: '/guide/go-client' },
     ],
   },
   {

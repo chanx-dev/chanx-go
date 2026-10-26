@@ -5,7 +5,7 @@ WebSockets with typed messages, topics, groups, events and AsyncAPI, on the same
 protocol as Python chanx. A Go backend serves the same frames, emits the same AsyncAPI
 document and shares a Redis channel layer with Python (and Node) processes, so
 `@chanx-js/client`, `@chanx-js/codegen` and chanx's Python client generator work against
-it unchanged.
+it unchanged. `chanx-codegen` generates typed Go clients for Go and Python servers alike.
 
 **[Documentation](https://huynguyengl99.github.io/chanx-go/)** ·
 [Quick start](https://huynguyengl99.github.io/chanx-go/introduction/quick-start) ·
@@ -71,6 +71,7 @@ func main() {
 | | `chanxtest`, `chanxtest/adaptertest` | In-process test client, layer spy, adapter suite |
 | | `transport/coderws`, `transport/gorillaws` | WebSocket libraries behind a 3-method `transport.Conn` |
 | | `auth`, `stream` | Bearer token helpers, `DeltaTracker` |
+| | `client` (`chanxclient`), `cmd/chanx-codegen` | Go client, and the generator of typed clients from an AsyncAPI document |
 | [`.../layers`](layers) | `layers` | Channel layer interface, in-memory layer, serializers, conformance suite (stdlib only) |
 | [`.../layers/redis`](layers/redis) | `redis` | Redis pub/sub layer, wire-compatible with channels_redis and fast-channels |
 | [`.../adapters/gin`](adapters/gin) | `chanxgin` | gin |

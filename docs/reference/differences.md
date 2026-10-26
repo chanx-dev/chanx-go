@@ -21,6 +21,9 @@ recorded from Python. These are the places it differs, each on purpose.
 | AsyncAPI: channel description | the `description` option, else the class docstring | the `Description` option only: Go has no docstrings at run time |
 | AsyncAPI: path parameter types | from the Django converter (`int`, `slug`...) | always `str`: Go routes have untyped parameters |
 | AsyncAPI: servers and security schemes | in the order given | sorted by name, since they come from Go maps |
+| Generated client layout | a package per channel, plus `shared/` and a copied `base/` | one package, `messages.go` and `channels.go`, on the `chanxclient` module |
+| Generated names that clash | the later schema replaces the earlier | generation stops and names both |
+| A request answered by an error frame | the error frame is the reply | a `*chanxclient.RequestError` |
 
 ## Naming
 

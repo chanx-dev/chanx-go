@@ -1,7 +1,17 @@
 # Clients
 
-chanx-go is a server. Clients come from the chanx ecosystem, and work with a Go server as
-they do with a Python or Node one: same frames, same AsyncAPI document.
+Every chanx client works with a chanx-go server as it does with a Python or Node one:
+same frames, same AsyncAPI document. Each language has a generator that turns the
+document into typed code.
+
+## Go
+
+`chanx-codegen` writes a typed client on top of package `chanxclient`. The
+[Go client](/guide/go-client) guide covers it.
+
+```bash
+go run github.com/huynguyengl99/chanx-go/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
+```
 
 ## TypeScript and JavaScript
 

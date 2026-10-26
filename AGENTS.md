@@ -17,6 +17,7 @@ Python.
 | `nethttp/`, `adapters/*` | Framework adapters; each passes `chanxtest/adaptertest` |
 | `asyncapi/` | AsyncAPI 3.0 generator, same document as Python's |
 | `chanxtest/` | Test client and layer spy |
+| `client/`, `codegen/`, `cmd/chanx-codegen/` | Go client (`chanxclient`), and the generator of typed clients from an AsyncAPI document |
 | `layers/`, `layers/redis/` | Channel layers, own modules, never importing chanx |
 | `examples/` | `sandbox_fastapi` in Go, one entry point per framework |
 | `testdata/` | Golden vectors recorded from Python chanx |
