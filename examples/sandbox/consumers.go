@@ -231,6 +231,14 @@ func (b BackgroundJobConsumer) HandleJob(ctx *chanx.Context, m JobMessage) error
 		return err
 	}
 	jobID := "job-" + time.Now().Format("150405.000")
+	if err := ctx.Send(JobStatusMessage{Payload: map[string]any{
+		"status": "queued", "job_id": jobID,
+		"message": fmt.Sprintf("📋 Job %s queued successfully! Worker will process it shortly...", jobID),
+	}}); err != nil {
+		return err
+	}
+	// Started only once "queued" is sent: Python's ARQ worker is another process, so its
+	// result always follows "queued", while the in-process stand-in can finish first.
 	pub, channel := ctx.Publisher(), ctx.Conn.ChannelName
 	run := b.Queue
 	if run == nil {
@@ -243,10 +251,7 @@ func (b BackgroundJobConsumer) HandleJob(ctx *chanx.Context, m JobMessage) error
 		}
 		_ = pub.SendEvent(context.Background(), channel, JobResult{Payload: result})
 	}()
-	return ctx.Send(JobStatusMessage{Payload: map[string]any{
-		"status": "queued", "job_id": jobID,
-		"message": fmt.Sprintf("📋 Job %s queued successfully! Worker will process it shortly...", jobID),
-	}})
+	return nil
 }
 
 func processJob(_ context.Context, jobType, content string) (any, error) {
