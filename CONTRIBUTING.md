@@ -57,7 +57,7 @@ Before opening a pull request:
 | --- | --- |
 | doc comments and `Example*` functions | the API reference on pkg.go.dev |
 | `README.md` in each published module | its landing page on GitHub and pkg.go.dev |
-| `docs/` | the guide site, VitePress, at go.chanx.dev/v2 |
+| `docs/` | the guide site, VitePress, at go.chanx.dev |
 
 ```bash
 make docs-dev   # the site at http://localhost:5173/chanx-go/, reloading on save
