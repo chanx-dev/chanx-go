@@ -190,9 +190,15 @@ if err != nil {
 }
 defer chat.Close()
 
-chat.Send(ctx, chatclient.ChatMessage{Payload: chatclient.ChatPayload{Text: "hi from Go"}})
+err = chat.Send(ctx, chatclient.ChatMessage{Payload: chatclient.ChatPayload{Text: "hi from Go"}})
+if err != nil {
+	log.Fatal(err)
+}
 
 msg, _, err := chat.Receive(ctx)
+if err != nil {
+	log.Fatal(err)
+}
 if n, ok := msg.(chatclient.ChatNotification); ok {
 	fmt.Println(n.Payload.Text) // hi from Go
 }
