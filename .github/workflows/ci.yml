@@ -70,3 +70,6 @@ jobs:
         with:
           version: latest
           working-directory: ${{ matrix.module }}
+
+  adapters:
+    uses: ./.github/workflows/adapters.yml

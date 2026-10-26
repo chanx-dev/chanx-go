@@ -1,11 +1,10 @@
 # One job per adapter module, so a framework release that breaks one adapter
-# fails only that job.
+# fails only that job. Part of CI on pushes and pull requests; weekly on its own to catch
+# a framework release between pushes.
 name: Adapters
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_call:
   schedule:
     - cron: '0 6 * * 1'
 

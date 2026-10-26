@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Cut a release of every module that changed, each at its own version:
+# Version every module that changed, each on its own; CI tags them once main is green:
 #
 #   scripts/release.sh                 # versions from the commits since each module's last tag
 #   scripts/release.sh --dry-run       # print the versions and changelogs, change nothing
 #   scripts/release.sh layers=1.0.0    # force a module's version (root is ".")
-#   scripts/release.sh --notes TAG     # print the release notes of an existing tag
+#   scripts/release.sh --pending       # each released version not tagged yet
+#   scripts/release.sh --notes TAG     # print the release notes of a tag
 #
 # A module releases when a feat, fix, perf or breaking commit touched its directory
 # since its last tag (vX.Y.Z for the root, layers/vX.Y.Z...). The bump follows
@@ -13,9 +14,8 @@
 #
 # Every go.mod then requires the latest version of this repo's modules, each released
 # module gets <dir>/CHANGELOG.md, and one signed "chore(release): ..." commit carries
-# them all, with one signed tag per released module. Push main, then each tag on its
-# own: GitHub starts no workflow for a push of more than three tags, and every tag
-# runs release.yml.
+# them all. Nothing is tagged here: a pushed Go tag is published for good, so release.yml
+# tags the versions --pending lists once CI passes on that commit.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -76,7 +76,8 @@ section() {
 	local dir="$1" from="$2" to="$3" tag="$4" range
 	range="$(git rev-parse "$to^{commit}")"
 	[ -n "$from" ] && range="$from..$range"
-	git cliff "$range" $(cliff_paths "$dir") --tag "$tag" --strip header 2>/dev/null
+	git cliff "$range" $(cliff_paths "$dir") --tag-pattern "^$(prefix "$dir")[0-9]" \
+		--tag "$tag" --strip header 2>/dev/null
 }
 
 changelog() {
@@ -92,12 +93,34 @@ changelog() {
 	printf '# Changelog\n\n%s\n' "$out"
 }
 
+# The version at the top of each module's CHANGELOG.md, when it has no tag yet.
+pending() {
+	local dir version tag
+	for dir in "${MODULES[@]}"; do
+		[ -f "$dir/CHANGELOG.md" ] || continue
+		version="$(grep -m1 -oE '^## [0-9]+\.[0-9]+\.[0-9]+' "$dir/CHANGELOG.md" | cut -c4-)"
+		tag="$(prefix "$dir")$version"
+		[ -z "$version" ] || git rev-parse -q --verify "refs/tags/$tag" >/dev/null || echo "$tag"
+	done
+	return 0
+}
+
+if [ "${1:-}" = --pending ]; then
+	pending
+	exit 0
+fi
+
 if [ "${1:-}" = --notes ]; then
 	tag="${2:?usage: release.sh --notes TAG}"
 	dir="${tag%v*}"
 	dir="${dir%/}"
 	dir="${dir:-.}"
-	section "$dir" "$(last_tag "$dir" "$tag^")" "$tag" "$tag"
+	# Before CI tags it, the version's notes run up to HEAD.
+	ref="$tag" from_ref="$tag^"
+	if ! git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+		ref=HEAD from_ref=HEAD
+	fi
+	section "$dir" "$(last_tag "$dir" "$from_ref")" "$ref" "$tag"
 	exit 0
 fi
 
@@ -118,6 +141,13 @@ forced() {
 	done
 	return 0
 }
+
+PENDING="$(pending)"
+if [ -n "$PENDING" ]; then
+	echo "not tagged yet, push main and let release.yml tag it first:" >&2
+	echo "$PENDING" >&2
+	exit 1
+fi
 
 # LAST[i], NEXT[i] and TAG[i] belong to MODULES[i]; NEXT is empty when it does not release.
 LAST=() NEXT=() TAG=()
@@ -158,6 +188,15 @@ if [ -n "$(git status --porcelain)" ]; then
 	echo "working tree not clean" >&2
 	exit 1
 fi
+if [ "$(git rev-parse --abbrev-ref HEAD)" != main ]; then
+	echo "not on main" >&2
+	exit 1
+fi
+git fetch -q origin main
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+	echo "main is not level with origin/main" >&2
+	exit 1
+fi
 
 for gomod in "${GOMODS[@]}"; do
 	for i in "${!MODULES[@]}"; do
@@ -169,20 +208,15 @@ for gomod in "${GOMODS[@]}"; do
 	done
 done
 
-SUMMARY="" TAGS=""
+SUMMARY=""
 for i in "${!MODULES[@]}"; do
 	[ -z "${NEXT[i]}" ] && continue
 	dir="${MODULES[$i]}"
 	changelog "$dir" "${TAG[i]}" >"$dir/CHANGELOG.md"
 	SUMMARY="${SUMMARY:+$SUMMARY, }$([ "$dir" = . ] && echo chanx || echo "$dir") ${NEXT[i]}"
-	TAGS="${TAGS:+$TAGS }${TAG[i]}"
 done
 
 git add -A
 git commit -S -m "chore(release): $SUMMARY"
-for tag in $TAGS; do
-	git tag -s "$tag" -m "$tag"
-done
-echo "tagged $TAGS; now:"
-echo "  git push origin main"
-echo "  for t in $TAGS; do git push origin \"\$t\"; done"
+echo "committed chore(release): $SUMMARY"
+echo "push main; release.yml tags it once CI passes"

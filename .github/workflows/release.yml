@@ -1,35 +1,60 @@
 name: Release
 
-# One run per module tag: v1.2.3 for the root module, layers/v1.2.3, adapters/gin/v1.2.3...
+# make release commits the versions as "chore(release): ..."; this tags them once CI
+# passes on that commit. A pushed Go tag is published for good (proxy.golang.org and
+# sum.golang.org keep it), so nothing is tagged before the tests are green.
 on:
-  push:
-    tags: ['v*', '**/v*']
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
 
-permissions:
-  contents: write
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
+    if: >-
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      startsWith(github.event.workflow_run.head_commit.message, 'chore(release):')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
       - uses: taiki-e/install-action@v2
         with:
           tool: git-cliff
-      - name: Release notes
-        run: scripts/release.sh --notes "$GITHUB_REF_NAME" > "$RUNNER_TEMP/notes.md"
-      - uses: softprops/action-gh-release@v2
-        with:
-          body_path: ${{ runner.temp }}/notes.md
-          # The repository's latest release stays the root module's.
-          make_latest: ${{ startsWith(github.ref_name, 'v') }}
+      # Each module whose CHANGELOG.md opens on a version with no tag yet, tagged on the
+      # commit CI tested. The tag and its release come from one call, so a re-run finishes
+      # whatever a failed run left.
+      - name: Pending tags
+        run: scripts/release.sh --pending | tee "$RUNNER_TEMP/pending"
+      - name: Tag and release
+        env:
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          while read -r tag; do
+            scripts/release.sh --notes "$tag" >"$RUNNER_TEMP/notes.md"
+            # The repository's latest release stays the root module's.
+            latest=false
+            [[ "$tag" == v* ]] && latest=true
+            gh release create "$tag" --target "$SHA" --title "$tag" \
+              --notes-file "$RUNNER_TEMP/notes.md" --latest="$latest"
+          done <"$RUNNER_TEMP/pending"
       - name: Warm proxy.golang.org
         run: |
-          tag="${GITHUB_REF_NAME}"
-          dir="${tag%v*}"
-          curl -sf "https://proxy.golang.org/go.chanx.dev${dir:+/${dir%/}}/@v/v${tag##*v}.info" || true
+          while read -r tag; do
+            dir="${tag%v*}"
+            curl -sf "https://proxy.golang.org/go.chanx.dev${dir:+/${dir%/}}/@v/v${tag##*v}.info" || true
+          done <"$RUNNER_TEMP/pending"
 
   docs:
     needs: release
