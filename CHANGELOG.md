@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0 (2026-10-26)
+
+### Features
+- Version every module with the chanx 2 contract
+
+### Maintenance
+- Release each module at its own version
+- Tag releases once CI passes on the release commit
+- Let make release run ahead of origin/main
+
 ## 0.2.0 (2026-10-26)
 
 ### Documentation

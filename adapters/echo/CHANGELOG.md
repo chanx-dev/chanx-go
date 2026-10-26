@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.0 (2026-10-26)
+
+### Features
+- Version every module with the chanx 2 contract
+
+### Maintenance
+- Release each module at its own version
+
 ## 0.2.0 (2026-10-26)
 
 ### Features
