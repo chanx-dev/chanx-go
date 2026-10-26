@@ -5,9 +5,9 @@ and write a handler method per message. chanx-go does the rest of what a real-ti
 needs: routing frames to handlers, validating them, replying, broadcasting to groups
 across processes, topics, authentication, AsyncAPI documentation and testing.
 
-It is the Go implementation of [chanx](https://github.com/huynguyengl99/chanx), the
+It is the Go implementation of [chanx](https://github.com/chanx-dev/chanx), the
 Python framework on Django Channels and FastAPI, and speaks the same protocol as chanx
-and [chanx-js](https://huynguyengl99.github.io/chanx-js/). A client written for one
+and [chanx-js](https://js.chanx.dev/). A client written for one
 works with all three.
 
 ## How a frame travels
@@ -49,7 +49,7 @@ fields:
 | `version`, `seq` | stamped by the server on replies and topic events |
 
 The full protocol is described in the
-[chanx documentation](https://chanx.readthedocs.io/en/latest/protocol.html).
+[chanx documentation](https://python.chanx.dev/en/latest/protocol.html).
 
 ## What it is not
 

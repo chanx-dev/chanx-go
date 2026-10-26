@@ -3,7 +3,7 @@
 For echo v5.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/echo
+go get go.chanx.dev/adapters/echo
 ```
 
 <<< @/snippets/frameworks/frameworks.go#echo

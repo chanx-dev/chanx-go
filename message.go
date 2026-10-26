@@ -6,8 +6,8 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/huynguyengl99/chanx-go/internal/schema"
-	"github.com/huynguyengl99/chanx-go/protocol"
+	"go.chanx.dev/internal/schema"
+	"go.chanx.dev/protocol"
 )
 
 // BaseMessage marks a struct as a chanx message. Embed it with the action in

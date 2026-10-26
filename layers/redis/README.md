@@ -3,11 +3,11 @@
 A Redis pub/sub channel layer for Go, wire-compatible with `RedisPubSubChannelLayer` from
 Python's [channels_redis](https://github.com/django/channels_redis) and
 [fast-channels](https://github.com/huynguyengl99/fast-channels), and with
-[`@chanx-js/layers`](https://huynguyengl99.github.io/chanx-js/server/layers): Go,
+[`@chanx-js/layers`](https://js.chanx.dev/server/layers): Go,
 Python and Node processes can share one Redis and meet in the same groups.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/layers/redis
+go get go.chanx.dev/layers/redis
 ```
 
 ```go

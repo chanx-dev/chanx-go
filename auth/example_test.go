@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"net/url"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/auth"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/auth"
 )
 
 type ChatConsumer struct{}

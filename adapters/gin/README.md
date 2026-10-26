@@ -1,13 +1,13 @@
 # chanx-go for gin
 
-Mounts a [chanx-go](https://github.com/huynguyengl99/chanx-go) engine in a
+Mounts a [chanx-go](https://github.com/chanx-dev/chanx-go) engine in a
 [gin](https://github.com/gin-gonic/gin) router. Routes live in gin's router, so its
 groups, middleware and `NoRoute` apply; params come from `c.Param`, values your
 middleware sets with `c.Set` are read by the consumer, and the client IP is
 `c.ClientIP()` with gin's trusted proxies.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/gin
+go get go.chanx.dev/adapters/gin
 ```
 
 ```go

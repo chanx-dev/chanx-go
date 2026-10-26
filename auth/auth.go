@@ -10,7 +10,7 @@ import (
 	"errors"
 	"strings"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 // BearerToken returns the token of an "Authorization: Bearer <token>" header.

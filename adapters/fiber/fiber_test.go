@@ -15,10 +15,10 @@ import (
 
 	"github.com/gofiber/fiber/v3"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	chanxfiber "github.com/huynguyengl99/chanx-go/adapters/fiber"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	"github.com/huynguyengl99/chanx-go/chanxtest/adaptertest"
+	chanx "go.chanx.dev"
+	chanxfiber "go.chanx.dev/adapters/fiber"
+	"go.chanx.dev/asyncapi"
+	"go.chanx.dev/chanxtest/adaptertest"
 )
 
 func TestAdapter(t *testing.T) {

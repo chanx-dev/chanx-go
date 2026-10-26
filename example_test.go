@@ -3,7 +3,7 @@ package chanx_test
 import (
 	"fmt"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 type GreetPayload struct {

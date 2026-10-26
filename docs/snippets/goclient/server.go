@@ -5,10 +5,10 @@ package goclient
 import (
 	"errors"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
-//go:generate go run github.com/huynguyengl99/chanx-go/cmd/chanx-codegen -o chatclient asyncapi.json
+//go:generate go run go.chanx.dev/cmd/chanx-codegen -o chatclient asyncapi.json
 
 type ChatPayload struct {
 	Message string `json:"message"`

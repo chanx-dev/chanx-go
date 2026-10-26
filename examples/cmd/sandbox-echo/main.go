@@ -7,8 +7,8 @@ import (
 
 	"github.com/labstack/echo/v5"
 
-	chanxecho "github.com/huynguyengl99/chanx-go/adapters/echo"
-	"github.com/huynguyengl99/chanx-go/examples/sandbox"
+	chanxecho "go.chanx.dev/adapters/echo"
+	"go.chanx.dev/examples/sandbox"
 )
 
 func main() {

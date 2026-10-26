@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/huynguyengl99/chanx-go/layers"
+	"go.chanx.dev/layers"
 )
 
 func TestInt(t *testing.T) {

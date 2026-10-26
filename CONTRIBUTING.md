@@ -17,7 +17,7 @@ commit convention releases are built from, and how a release is cut. Code style 
 ## Setup
 
 ```bash
-git clone git@github.com:huynguyengl99/chanx-go.git
+git clone git@github.com:chanx-dev/chanx-go.git
 cd chanx-go
 docker compose up -d   # Redis on 6393 and 6394, project "chanx-go"
 make test
@@ -57,7 +57,7 @@ Before opening a pull request:
 | --- | --- |
 | doc comments and `Example*` functions | the API reference on pkg.go.dev |
 | `README.md` in each published module | its landing page on GitHub and pkg.go.dev |
-| `docs/` | the guide site, VitePress, at huynguyengl99.github.io/chanx-go |
+| `docs/` | the guide site, VitePress, at go.chanx.dev |
 
 ```bash
 make docs-dev   # the site at http://localhost:5173/chanx-go/, reloading on save
@@ -114,7 +114,7 @@ more than three tags. It runs `release.yml`, which publishes the GitHub release,
 proxy.golang.org to fetch the new versions and deploys the docs. Check from a directory outside the repo:
 
 ```bash
-go get github.com/huynguyengl99/chanx-go@vX.Y.Z
+go get go.chanx.dev@vX.Y.Z
 ```
 
 A published version can never be changed. To withdraw a bad one, release the next patch

@@ -14,9 +14,9 @@ import (
 
 	goredis "github.com/redis/go-redis/v9"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/internal/vectors"
-	"github.com/huynguyengl99/chanx-go/layers/layertest"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/internal/vectors"
+	"go.chanx.dev/layers/layertest"
 )
 
 // redisHosts returns the Redis servers to test against (CHANX_GO_REDIS, the

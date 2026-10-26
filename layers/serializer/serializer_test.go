@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/internal/vectors"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/internal/vectors"
 )
 
 func TestJSONVectors(t *testing.T) {

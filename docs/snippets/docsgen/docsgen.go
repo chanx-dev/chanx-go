@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"os"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	chanxhttp "github.com/huynguyengl99/chanx-go/nethttp"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/asyncapi"
+	chanxhttp "go.chanx.dev/nethttp"
 )
 
 // #region info

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
+	"go.chanx.dev/layers/inmemory"
 )
 
 func TestFanOut(t *testing.T) {

@@ -1,8 +1,8 @@
 package chanxhttp
 
 import (
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/asyncapi"
 )
 
 // MountDocs serves the AsyncAPI page at path, the JSON document at path+".json"

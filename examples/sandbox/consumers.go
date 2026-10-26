@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 // ping is shared by every consumer below.

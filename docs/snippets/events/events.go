@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 type NotificationPayload struct {

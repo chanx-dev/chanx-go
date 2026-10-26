@@ -19,8 +19,8 @@ import (
 
 	"github.com/coder/websocket"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/protocol"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/protocol"
 )
 
 // Channel is a route's address and the messages it sends.

@@ -1,10 +1,10 @@
-module github.com/huynguyengl99/chanx-go/adapters/gin
+module go.chanx.dev/adapters/gin
 
 go 1.25.0
 
 require (
 	github.com/gin-gonic/gin v1.12.0
-	github.com/huynguyengl99/chanx-go v0.1.0
+	go.chanx.dev v0.1.0
 )
 
 require (
@@ -23,7 +23,7 @@ require (
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
-	github.com/huynguyengl99/chanx-go/layers v0.1.0 // indirect
+	go.chanx.dev/layers v0.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
@@ -46,6 +46,6 @@ require (
 )
 
 replace (
-	github.com/huynguyengl99/chanx-go => ../../
-	github.com/huynguyengl99/chanx-go/layers => ../../layers
+	go.chanx.dev => ../../
+	go.chanx.dev/layers => ../../layers
 )

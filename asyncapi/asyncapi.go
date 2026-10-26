@@ -18,9 +18,9 @@ import (
 	"github.com/goccy/go-yaml"
 	"github.com/google/jsonschema-go/jsonschema"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/internal/schema"
-	"github.com/huynguyengl99/chanx-go/protocol"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/internal/schema"
+	"go.chanx.dev/protocol"
 )
 
 // Info is the document metadata.

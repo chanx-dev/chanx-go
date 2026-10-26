@@ -3,7 +3,7 @@
 For Fiber v3, on fasthttp.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/fiber
+go get go.chanx.dev/adapters/fiber
 ```
 
 <<< @/snippets/frameworks/frameworks.go#fiber

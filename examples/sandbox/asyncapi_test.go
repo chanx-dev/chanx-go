@@ -8,7 +8,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/huynguyengl99/chanx-go/asyncapi"
+	"go.chanx.dev/asyncapi"
 )
 
 // TestAsyncAPIParity compares the document with the one Python chanx generates

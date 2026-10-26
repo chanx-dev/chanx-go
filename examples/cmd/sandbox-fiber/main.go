@@ -8,8 +8,8 @@ import (
 	"github.com/gofiber/fiber/v3"
 	"github.com/gofiber/fiber/v3/middleware/adaptor"
 
-	chanxfiber "github.com/huynguyengl99/chanx-go/adapters/fiber"
-	"github.com/huynguyengl99/chanx-go/examples/sandbox"
+	chanxfiber "go.chanx.dev/adapters/fiber"
+	"go.chanx.dev/examples/sandbox"
 )
 
 func main() {

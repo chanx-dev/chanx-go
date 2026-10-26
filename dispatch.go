@@ -11,10 +11,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/internal/schema"
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/protocol"
-	"github.com/huynguyengl99/chanx-go/transport"
+	"go.chanx.dev/internal/schema"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/protocol"
+	"go.chanx.dev/transport"
 )
 
 // Issue is one validation problem, as the protocol's error frames list them:

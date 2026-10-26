@@ -8,7 +8,7 @@ client to try it: `npx wscat` is used below.
 ```bash
 mkdir chat && cd chat
 go mod init example.com/chat
-go get github.com/huynguyengl99/chanx-go
+go get go.chanx.dev
 ```
 
 ## 2. Declare the messages

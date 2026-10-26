@@ -7,8 +7,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	chanxgin "github.com/huynguyengl99/chanx-go/adapters/gin"
-	"github.com/huynguyengl99/chanx-go/examples/sandbox"
+	chanxgin "go.chanx.dev/adapters/gin"
+	"go.chanx.dev/examples/sandbox"
 )
 
 func main() {

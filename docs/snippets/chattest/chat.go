@@ -1,7 +1,7 @@
 // Package chattest holds the examples of the Testing guide.
 package chattest
 
-import chanx "github.com/huynguyengl99/chanx-go"
+import chanx "go.chanx.dev"
 
 type ChatPayload struct {
 	Message string `json:"message"`

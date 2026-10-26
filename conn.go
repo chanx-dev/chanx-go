@@ -13,8 +13,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/transport"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/transport"
 )
 
 // ErrClosed is returned when sending on a closed connection.

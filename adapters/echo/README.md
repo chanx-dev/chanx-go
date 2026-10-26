@@ -1,13 +1,13 @@
 # chanx-go for echo
 
-Mounts a [chanx-go](https://github.com/huynguyengl99/chanx-go) engine in an
+Mounts a [chanx-go](https://github.com/chanx-dev/chanx-go) engine in an
 [echo](https://github.com/labstack/echo) v5 router. Routes, groups and middleware are
 echo's; params come from `c.Param`, values your middleware sets with `c.Set` are read by
 the consumer, the client IP is `c.RealIP()`, and failures before the upgrade go through
 echo's `HTTPErrorHandler`.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/echo
+go get go.chanx.dev/adapters/echo
 ```
 
 ```go

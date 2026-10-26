@@ -1,11 +1,11 @@
 # chanx-go for Fiber
 
-Mounts a [chanx-go](https://github.com/huynguyengl99/chanx-go) engine in a
+Mounts a [chanx-go](https://github.com/chanx-dev/chanx-go) engine in a
 [Fiber](https://github.com/gofiber/fiber) v3 router, on fasthttp. Routes, groups and
 middleware are Fiber's, and failures before the upgrade go through its `ErrorHandler`.
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/fiber
+go get go.chanx.dev/adapters/fiber
 ```
 
 ```go

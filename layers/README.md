@@ -4,10 +4,10 @@ Channel layers for Go: named channels and groups, so a message reaches every pro
 subscribed to a group, not only the one that sent it. The operations are Django
 Channels' (`Send`, `GroupAdd`, `GroupSend`...), and the module imports nothing from
 chanx: use it alone for fan-out between replicas, or under
-[chanx-go](https://github.com/huynguyengl99/chanx-go).
+[chanx-go](https://github.com/chanx-dev/chanx-go).
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/layers
+go get go.chanx.dev/layers
 ```
 
 ```go

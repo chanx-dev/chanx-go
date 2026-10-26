@@ -11,10 +11,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
-	"github.com/huynguyengl99/chanx-go/protocol"
-	"github.com/huynguyengl99/chanx-go/transport"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/protocol"
+	"go.chanx.dev/transport"
 )
 
 // Config holds the engine's defaults.

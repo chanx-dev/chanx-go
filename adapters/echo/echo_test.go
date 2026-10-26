@@ -8,10 +8,10 @@ import (
 
 	"github.com/labstack/echo/v5"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	chanxecho "github.com/huynguyengl99/chanx-go/adapters/echo"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	"github.com/huynguyengl99/chanx-go/chanxtest/adaptertest"
+	chanx "go.chanx.dev"
+	chanxecho "go.chanx.dev/adapters/echo"
+	"go.chanx.dev/asyncapi"
+	"go.chanx.dev/chanxtest/adaptertest"
 )
 
 func TestAdapter(t *testing.T) {

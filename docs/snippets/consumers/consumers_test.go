@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/chanxtest"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/chanxtest"
 )
 
 func TestFrames(t *testing.T) {

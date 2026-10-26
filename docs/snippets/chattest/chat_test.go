@@ -4,10 +4,10 @@ import (
 	"testing"
 	"time"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/chanxtest"
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/chanxtest"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
 )
 
 // #region client

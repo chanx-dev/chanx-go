@@ -1,7 +1,7 @@
 # gin
 
 ```bash
-go get github.com/huynguyengl99/chanx-go/adapters/gin
+go get go.chanx.dev/adapters/gin
 ```
 
 <<< @/snippets/frameworks/frameworks.go#gin

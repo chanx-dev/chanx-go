@@ -222,7 +222,7 @@ func (g *generator) isMessage(name string) bool {
 func (g *generator) emitMessages() ([]byte, error) {
 	var b bytes.Buffer
 	header(&b, g.pkg)
-	b.WriteString("import chanx \"github.com/huynguyengl99/chanx-go\"\n\n")
+	b.WriteString("import chanx \"go.chanx.dev\"\n\n")
 	for _, name := range sortedKeys(g.doc.Components.Schemas) {
 		s := g.doc.Components.Schemas[name]
 		var err error

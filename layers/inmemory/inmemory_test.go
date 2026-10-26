@@ -7,9 +7,9 @@ import (
 	"testing/synctest"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
-	"github.com/huynguyengl99/chanx-go/layers/layertest"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/layers/layertest"
 )
 
 func TestSuite(t *testing.T) {

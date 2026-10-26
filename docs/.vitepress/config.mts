@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress';
 
-const repo = 'https://github.com/huynguyengl99/chanx-go';
-const pkg = 'https://pkg.go.dev/github.com/huynguyengl99/chanx-go';
+const repo = 'https://github.com/chanx-dev/chanx-go';
+const pkg = 'https://pkg.go.dev/go.chanx.dev';
 
 const sidebar = [
   {
@@ -60,28 +60,27 @@ export default defineConfig({
   title: 'chanx-go',
   description:
     'Structured WebSockets for Go: typed handlers, validation, groups and topics across processes, and AsyncAPI, on the chanx protocol.',
-  base: '/chanx-go/',
   cleanUrls: true,
   // Pages link to the server the reader runs, at localhost.
   ignoreDeadLinks: 'localhostLinks',
   srcExclude: ['snippets/**'],
-  // Without its own icon, a browser falls back to the domain root's favicon.ico, which
-  // belongs to the github.io site this one lives under. Head links are not prefixed with
-  // `base`, so they carry it.
   head: [
+    // Vanity import path: go fetches <module path>?go-get=1 and reads this tag, also from
+    // the 404 page, so every module under go.chanx.dev resolves to the repository.
+    ['meta', { name: 'go-import', content: `go.chanx.dev git ${repo}` }],
     ['meta', { name: 'theme-color', content: '#1e3a8a' }],
     [
       'meta',
       {
         property: 'og:image',
-        content: 'https://huynguyengl99.github.io/chanx-go/brand/social-card.png',
+        content: 'https://go.chanx.dev/brand/social-card.png',
       },
     ],
     ['meta', { property: 'og:image:alt', content: 'chanx-go: structured WebSockets for Go' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/chanx-go/logo.svg' }],
-    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/chanx-go/favicon-32.png' }],
-    ['link', { rel: 'apple-touch-icon', href: '/chanx-go/apple-touch-icon.png' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32.png' }],
+    ['link', { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }],
   ],
   themeConfig: {
     // The wordmark already spells the name, so the text title is hidden.
@@ -108,9 +107,9 @@ export default defineConfig({
       {
         text: 'Ecosystem',
         items: [
-          { text: 'chanx (Python)', link: 'https://chanx.readthedocs.io' },
-          { text: 'chanx-js (TypeScript)', link: 'https://huynguyengl99.github.io/chanx-js/' },
-          { text: 'chanx-kit', link: 'https://huynguyengl99.github.io/chanx-kit/' },
+          { text: 'chanx (Python)', link: 'https://python.chanx.dev' },
+          { text: 'chanx-js (TypeScript)', link: 'https://js.chanx.dev/' },
+          { text: 'chanx-kit', link: 'https://kit.chanx.dev/' },
         ],
       },
     ],

@@ -10,7 +10,7 @@ import (
 
 	"github.com/coder/websocket"
 
-	"github.com/huynguyengl99/chanx-go/transport"
+	"go.chanx.dev/transport"
 )
 
 // Options configures the upgrade.

@@ -8,9 +8,9 @@ import (
 	"net/http/httptest"
 	"strings"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	chanxclient "github.com/huynguyengl99/chanx-go/client"
-	chanxhttp "github.com/huynguyengl99/chanx-go/nethttp"
+	chanx "go.chanx.dev"
+	chanxclient "go.chanx.dev/client"
+	chanxhttp "go.chanx.dev/nethttp"
 )
 
 type JoinMessage struct {

@@ -3,8 +3,8 @@ package chanxtest_test
 import (
 	"testing"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/chanxtest"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/chanxtest"
 )
 
 type ChatPayload struct {

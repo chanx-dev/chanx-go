@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/huynguyengl99/chanx-go/transport"
+	"go.chanx.dev/transport"
 )
 
 // stuckConn accepts no write until it is closed, like a client that stopped

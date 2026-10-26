@@ -13,7 +13,7 @@ hero:
       link: /introduction/
     - theme: alt
       text: GitHub
-      link: https://github.com/huynguyengl99/chanx-go
+      link: https://github.com/chanx-dev/chanx-go
 
 features:
   - title: Handlers, not a switch

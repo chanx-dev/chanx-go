@@ -1,4 +1,4 @@
-module github.com/huynguyengl99/chanx-go/docs
+module go.chanx.dev/docs
 
 go 1.26.0
 
@@ -7,12 +7,12 @@ require (
 	github.com/gin-gonic/gin v1.12.0
 	github.com/gofiber/fiber/v3 v3.5.0
 	github.com/google/jsonschema-go v0.4.3
-	github.com/huynguyengl99/chanx-go v0.1.0
-	github.com/huynguyengl99/chanx-go/adapters/echo v0.1.0
-	github.com/huynguyengl99/chanx-go/adapters/fiber v0.1.0
-	github.com/huynguyengl99/chanx-go/adapters/gin v0.1.0
-	github.com/huynguyengl99/chanx-go/layers v0.1.0
-	github.com/huynguyengl99/chanx-go/layers/redis v0.1.0
+	go.chanx.dev v0.1.0
+	go.chanx.dev/adapters/echo v0.1.0
+	go.chanx.dev/adapters/fiber v0.1.0
+	go.chanx.dev/adapters/gin v0.1.0
+	go.chanx.dev/layers v0.1.0
+	go.chanx.dev/layers/redis v0.1.0
 	github.com/labstack/echo/v5 v5.4.2
 )
 
@@ -70,10 +70,10 @@ require (
 )
 
 replace (
-	github.com/huynguyengl99/chanx-go => ../
-	github.com/huynguyengl99/chanx-go/adapters/echo => ../adapters/echo
-	github.com/huynguyengl99/chanx-go/adapters/fiber => ../adapters/fiber
-	github.com/huynguyengl99/chanx-go/adapters/gin => ../adapters/gin
-	github.com/huynguyengl99/chanx-go/layers => ../layers
-	github.com/huynguyengl99/chanx-go/layers/redis => ../layers/redis
+	go.chanx.dev => ../
+	go.chanx.dev/adapters/echo => ../adapters/echo
+	go.chanx.dev/adapters/fiber => ../adapters/fiber
+	go.chanx.dev/adapters/gin => ../adapters/gin
+	go.chanx.dev/layers => ../layers
+	go.chanx.dev/layers/redis => ../layers/redis
 )

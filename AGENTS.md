@@ -4,7 +4,7 @@ How to work in chanx-go.
 
 ## The repo
 
-The Go implementation of [chanx](https://github.com/huynguyengl99/chanx), a third
+The Go implementation of [chanx](https://github.com/chanx-dev/chanx), a third
 implementation of its protocol (after Python and chanx-js) held in line by tests against
 Python.
 

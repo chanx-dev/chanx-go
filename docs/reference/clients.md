@@ -10,12 +10,12 @@ document into typed code.
 [Go client](/guide/go-client) guide covers it.
 
 ```bash
-go run github.com/huynguyengl99/chanx-go/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
+go run go.chanx.dev/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
 ```
 
 ## TypeScript and JavaScript
 
-[chanx-js](https://huynguyengl99.github.io/chanx-js/) has a client for the browser and
+[chanx-js](https://js.chanx.dev/) has a client for the browser and
 Node, with React, Vue, Svelte and Solid bindings, and a generator that turns the server's
 AsyncAPI document into typed channels:
 

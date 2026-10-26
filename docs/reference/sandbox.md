@@ -1,12 +1,12 @@
 # The sandbox example
 
-[`examples/`](https://github.com/huynguyengl99/chanx-go/tree/main/examples) holds Python
+[`examples/`](https://github.com/chanx-dev/chanx-go/tree/main/examples) holds Python
 chanx's `sandbox_fastapi` written with chanx-go: the same consumers, messages and routes,
 mounted on net/http, gin, echo or Fiber. A test compares its AsyncAPI document with the one
 Python generates, key for key.
 
 ```bash
-git clone https://github.com/huynguyengl99/chanx-go
+git clone https://github.com/chanx-dev/chanx-go
 cd chanx-go/examples
 go run ./cmd/sandbox            # or sandbox-gin, sandbox-echo, sandbox-fiber
 ```
@@ -24,5 +24,5 @@ go run ./cmd/sandbox -redis redis://localhost:6393
 go run ./cmd/sandbox -redis redis://localhost:6393 -addr :8001
 ```
 
-The [examples README](https://github.com/huynguyengl99/chanx-go/tree/main/examples#readme)
+The [examples README](https://github.com/chanx-dev/chanx-go/tree/main/examples#readme)
 lists every route.

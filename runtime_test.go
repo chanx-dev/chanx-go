@@ -8,11 +8,11 @@ import (
 	"testing"
 	"time"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/chanxtest"
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
-	"github.com/huynguyengl99/chanx-go/transport"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/chanxtest"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/transport"
 )
 
 type pingOnly struct{}

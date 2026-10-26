@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"testing"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 func TestTokens(t *testing.T) {

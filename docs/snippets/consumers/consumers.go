@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	chanx "github.com/huynguyengl99/chanx-go"
+	chanx "go.chanx.dev"
 )
 
 type ChatPayload struct {

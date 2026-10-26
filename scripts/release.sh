@@ -50,7 +50,7 @@ if $DRY; then
 	exit 0
 fi
 
-MODULE=github.com/huynguyengl99/chanx-go
+MODULE=go.chanx.dev
 NESTED=(layers layers/redis adapters/gin adapters/echo adapters/fiber)
 ALL=(. "${NESTED[@]}" examples docs)
 

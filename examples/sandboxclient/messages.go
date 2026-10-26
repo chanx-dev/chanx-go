@@ -2,7 +2,7 @@
 
 package sandboxclient
 
-import chanx "github.com/huynguyengl99/chanx-go"
+import chanx "go.chanx.dev"
 
 // Analytics message.
 type AnalyticsMessage struct {

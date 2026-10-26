@@ -1,12 +1,12 @@
 <h1>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/brand/chanx-go-wordmark-dark.svg">
-    <img alt="chanx-go" src="https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/brand/chanx-go-wordmark.svg" height="72">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/chanx-dev/chanx-go/main/docs/public/brand/chanx-go-wordmark-dark.svg">
+    <img alt="chanx-go" src="https://raw.githubusercontent.com/chanx-dev/chanx-go/main/docs/public/brand/chanx-go-wordmark.svg" height="72">
   </picture>
 </h1>
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/huynguyengl99/chanx-go.svg)](https://pkg.go.dev/github.com/huynguyengl99/chanx-go)
-[![CI](https://github.com/huynguyengl99/chanx-go/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/huynguyengl99/chanx-go/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/go.chanx.dev.svg)](https://pkg.go.dev/go.chanx.dev)
+[![CI](https://github.com/chanx-dev/chanx-go/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/chanx-dev/chanx-go/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 **Structured WebSockets for Go.** You write a struct per message and a method per
@@ -15,13 +15,13 @@ groups across processes, and documents the API as AsyncAPI, from which typed Go,
 TypeScript and Python clients are generated. It runs on net/http, chi, gorilla/mux, gin,
 echo and Fiber.
 
-**[Documentation](https://huynguyengl99.github.io/chanx-go/)** ·
-[Quick start](https://huynguyengl99.github.io/chanx-go/introduction/quick-start) ·
-[Tutorial](https://huynguyengl99.github.io/chanx-go/tutorial/chat-server) ·
-[Why chanx-go?](https://huynguyengl99.github.io/chanx-go/introduction/why) ·
-[API reference](https://pkg.go.dev/github.com/huynguyengl99/chanx-go)
+**[Documentation](https://go.chanx.dev/)** ·
+[Quick start](https://go.chanx.dev/introduction/quick-start) ·
+[Tutorial](https://go.chanx.dev/tutorial/chat-server) ·
+[Why chanx-go?](https://go.chanx.dev/introduction/why) ·
+[API reference](https://pkg.go.dev/go.chanx.dev)
 
-![A typed Go handler, the AsyncAPI docs chanx-go generates from it, generating a Go client, and the compiler catching a typo](https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/chanx-go-demo.gif)
+![A typed Go handler, the AsyncAPI docs chanx-go generates from it, generating a Go client, and the compiler catching a typo](https://raw.githubusercontent.com/chanx-dev/chanx-go/main/docs/public/chanx-go-demo.gif)
 
 ## Why chanx-go
 
@@ -78,7 +78,7 @@ From that, you get:
 ## Install
 
 ```bash
-go get github.com/huynguyengl99/chanx-go
+go get go.chanx.dev
 ```
 
 Go 1.25 or later. The gin, echo and Fiber adapters and the Redis layer are separate
@@ -95,9 +95,9 @@ import (
 	"log"
 	"net/http"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	chanxhttp "github.com/huynguyengl99/chanx-go/nethttp"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/asyncapi"
+	chanxhttp "go.chanx.dev/nethttp"
 )
 
 type ChatPayload struct {
@@ -180,7 +180,7 @@ Clients are generated from the server's AsyncAPI document, so they match the ser
 **Go**, with `chanx-codegen`:
 
 ```bash
-go run github.com/huynguyengl99/chanx-go/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
+go run go.chanx.dev/cmd/chanx-codegen@latest -o ./chatclient http://localhost:8000/asyncapi.json
 ```
 
 ```go
@@ -207,14 +207,14 @@ if n, ok := msg.(chatclient.ChatNotification); ok {
 `Send` only accepts messages the route declares, and `ChatPayload{Txt: "hi"}` is a
 compile error. The generator also reads Python chanx servers' documents.
 
-**TypeScript**, with [chanx-js](https://huynguyengl99.github.io/chanx-js/), for the
+**TypeScript**, with [chanx-js](https://js.chanx.dev/), for the
 browser, React, Vue, Svelte, Solid and Node:
 
 ```bash
 npx @chanx-js/codegen http://localhost:8000/asyncapi.json -o src/generated
 ```
 
-**Python**, with [chanx](https://github.com/huynguyengl99/chanx):
+**Python**, with [chanx](https://github.com/chanx-dev/chanx):
 
 ```bash
 chanx generate-client --schema http://localhost:8000/asyncapi.json --output ./chat_client
@@ -233,12 +233,12 @@ your middleware runs before the upgrade.
 | Fiber v3 | `chanx-go/adapters/fiber` | `chanxfiber.Mount(app.Group("/"), engine)` |
 
 Any router that takes an `http.Handler` (go-zero, Kratos, Huma) works through
-`chanxhttp.Handler`. See [Frameworks](https://huynguyengl99.github.io/chanx-go/frameworks/).
+`chanxhttp.Handler`. See [Frameworks](https://go.chanx.dev/frameworks/).
 
 ## With Python and Node
 
-chanx-go is the third implementation of the [chanx](https://github.com/huynguyengl99/chanx)
-protocol, after Python and [chanx-js](https://huynguyengl99.github.io/chanx-js/). A Go
+chanx-go is the third implementation of the [chanx](https://github.com/chanx-dev/chanx)
+protocol, after Python and [chanx-js](https://js.chanx.dev/). A Go
 server sends the same frames and publishes the same AsyncAPI document, so existing chanx
 clients connect to it unchanged.
 
@@ -250,40 +250,40 @@ Parity is checked by tests against values recorded from Python chanx: validation
 group names, key casing, the Redis encodings and the full AsyncAPI document of
 `sandbox_fastapi`, which [`examples/`](examples) reproduces in Go. The few deliberate
 differences, such as strict type checks on payloads, are listed in
-[Differences from Python](https://huynguyengl99.github.io/chanx-go/reference/differences).
+[Differences from Python](https://go.chanx.dev/reference/differences).
 
 ## Modules
 
 | Module | What |
 | --- | --- |
-| `github.com/huynguyengl99/chanx-go` | The framework: messages, consumers, topics, engine, publisher, `nethttp`, `asyncapi`, `chanxtest`, `auth`, the Go client and `chanx-codegen` |
+| `go.chanx.dev` | The framework: messages, consumers, topics, engine, publisher, `nethttp`, `asyncapi`, `chanxtest`, `auth`, the Go client and `chanx-codegen` |
 | [`.../layers`](layers) | Channel layer interface, in-memory layer and conformance suite. Standard library only, usable without chanx |
 | [`.../layers/redis`](layers/redis) | Redis pub/sub layer, shared with Python and Node |
 | [`.../adapters/gin`](adapters/gin), [`echo`](adapters/echo), [`fiber`](adapters/fiber) | Framework adapters |
 | [`.../examples`](examples) | Python's `sandbox_fastapi` in Go, one entry point per framework |
 
-Every package is listed on [pkg.go.dev](https://pkg.go.dev/github.com/huynguyengl99/chanx-go).
+Every package is listed on [pkg.go.dev](https://pkg.go.dev/go.chanx.dev).
 
 ## Learn more
 
-- [Tutorial: a chat server](https://huynguyengl99.github.io/chanx-go/tutorial/chat-server):
+- [Tutorial: a chat server](https://go.chanx.dev/tutorial/chat-server):
   authentication, presence, tests, Redis and a typed client, step by step
-- Guides: [messages and validation](https://huynguyengl99.github.io/chanx-go/guide/messages),
-  [consumers](https://huynguyengl99.github.io/chanx-go/guide/consumers),
-  [groups and events](https://huynguyengl99.github.io/chanx-go/guide/events),
-  [topics](https://huynguyengl99.github.io/chanx-go/guide/topics),
-  [authentication](https://huynguyengl99.github.io/chanx-go/guide/authentication),
-  [testing](https://huynguyengl99.github.io/chanx-go/guide/testing)
-- [Channel layers and Redis](https://huynguyengl99.github.io/chanx-go/layers/)
+- Guides: [messages and validation](https://go.chanx.dev/guide/messages),
+  [consumers](https://go.chanx.dev/guide/consumers),
+  [groups and events](https://go.chanx.dev/guide/events),
+  [topics](https://go.chanx.dev/guide/topics),
+  [authentication](https://go.chanx.dev/guide/authentication),
+  [testing](https://go.chanx.dev/guide/testing)
+- [Channel layers and Redis](https://go.chanx.dev/layers/)
 - [Changelog](CHANGELOG.md)
 
 ## Ecosystem
 
-- [chanx](https://github.com/huynguyengl99/chanx): the original, for Django Channels and
+- [chanx](https://github.com/chanx-dev/chanx): the original, for Django Channels and
   FastAPI.
-- [chanx-js](https://huynguyengl99.github.io/chanx-js/): TypeScript clients for the
+- [chanx-js](https://js.chanx.dev/): TypeScript clients for the
   browser and Node, and a TypeScript server on the same protocol.
-- [chanx-kit](https://huynguyengl99.github.io/chanx-kit/): WebSocket components such as
+- [chanx-kit](https://kit.chanx.dev/): WebSocket components such as
   notifications, chat and presence, copied into your project in one command.
 
 ## Contributing

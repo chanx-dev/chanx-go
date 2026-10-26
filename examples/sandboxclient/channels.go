@@ -6,8 +6,8 @@ package sandboxclient
 import (
 	"context"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	chanxclient "github.com/huynguyengl99/chanx-go/client"
+	chanx "go.chanx.dev"
+	chanxclient "go.chanx.dev/client"
 )
 
 // AnalyticsChannel is /ws/analytics.

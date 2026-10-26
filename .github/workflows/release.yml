@@ -26,7 +26,7 @@ jobs:
         run: |
           v="${GITHUB_REF_NAME}"
           for m in "" /layers /layers/redis /adapters/gin /adapters/echo /adapters/fiber; do
-            curl -sf "https://proxy.golang.org/github.com/huynguyengl99/chanx-go$m/@v/$v.info" || true
+            curl -sf "https://proxy.golang.org/go.chanx.dev$m/@v/$v.info" || true
           done
 
   docs:

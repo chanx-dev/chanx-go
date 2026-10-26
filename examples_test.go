@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
 )
 
 func ExampleEngine_Handle() {

@@ -14,8 +14,8 @@ import (
 
 	goredis "github.com/redis/go-redis/v9"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/serializer"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/serializer"
 )
 
 // PubSubOptions configures the pub/sub layer.

@@ -20,9 +20,9 @@ import (
 	"testing"
 	"time"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/internal/schema"
-	"github.com/huynguyengl99/chanx-go/transport"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/internal/schema"
+	"go.chanx.dev/transport"
 )
 
 // Timeout bounds every receive.

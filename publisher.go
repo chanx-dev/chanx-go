@@ -6,8 +6,8 @@ import (
 	"log/slog"
 	"reflect"
 
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/protocol"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/protocol"
 )
 
 // Publisher pushes to sockets from outside one: HTTP handlers, workers, cron

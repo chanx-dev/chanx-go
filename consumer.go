@@ -7,7 +7,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/huynguyengl99/chanx-go/protocol"
+	"go.chanx.dev/protocol"
 )
 
 // Operation documents one handler in AsyncAPI. A struct consumer returns them

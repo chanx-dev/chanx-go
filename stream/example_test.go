@@ -3,7 +3,7 @@ package stream_test
 import (
 	"fmt"
 
-	"github.com/huynguyengl99/chanx-go/stream"
+	"go.chanx.dev/stream"
 )
 
 // An LLM API yields the whole text so far on every tick; send only what is new.

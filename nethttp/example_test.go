@@ -7,10 +7,10 @@ import (
 	"os"
 	"os/signal"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	chanxhttp "github.com/huynguyengl99/chanx-go/nethttp"
-	"github.com/huynguyengl99/chanx-go/transport/coderws"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/asyncapi"
+	chanxhttp "go.chanx.dev/nethttp"
+	"go.chanx.dev/transport/coderws"
 )
 
 type ChatConsumer struct{}

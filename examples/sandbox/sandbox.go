@@ -8,11 +8,11 @@ import (
 	"os"
 	"strings"
 
-	chanx "github.com/huynguyengl99/chanx-go"
-	"github.com/huynguyengl99/chanx-go/asyncapi"
-	"github.com/huynguyengl99/chanx-go/layers"
-	"github.com/huynguyengl99/chanx-go/layers/inmemory"
-	"github.com/huynguyengl99/chanx-go/layers/redis"
+	chanx "go.chanx.dev"
+	"go.chanx.dev/asyncapi"
+	"go.chanx.dev/layers"
+	"go.chanx.dev/layers/inmemory"
+	"go.chanx.dev/layers/redis"
 )
 
 // Info is the sandbox's AsyncAPI metadata.

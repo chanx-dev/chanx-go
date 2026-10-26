@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/huynguyengl99/chanx-go/chanxtest"
+	"go.chanx.dev/chanxtest"
 )
 
 // The frames the quick start shows.

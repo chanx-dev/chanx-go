@@ -1,7 +1,7 @@
 # chanx-go examples
 
 The sandbox is Python chanx's
-[`sandbox_fastapi`](https://github.com/huynguyengl99/chanx/tree/main/sandbox_fastapi)
+[`sandbox_fastapi`](https://github.com/chanx-dev/chanx/tree/main/sandbox_fastapi)
 written with chanx-go: the same consumers, messages and routes, and the same AsyncAPI
 document, which a test compares with the one Python generates. It runs on four
 frameworks with one line of difference.
