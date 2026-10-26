@@ -1,9 +1,21 @@
-# chanx-go
+<h1>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/brand/chanx-go-wordmark-dark.svg">
+    <img alt="chanx-go" src="https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/brand/chanx-go-wordmark.svg" height="72">
+  </picture>
+</h1>
 
-The Go implementation of [chanx](https://github.com/huynguyengl99/chanx): structured
-WebSockets with typed messages, topics, groups, events and AsyncAPI, on the same wire
-protocol as Python chanx. A Go backend serves the same frames, emits the same AsyncAPI
-document and shares a Redis channel layer with Python (and Node) processes, so
+[![Go Reference](https://pkg.go.dev/badge/github.com/huynguyengl99/chanx-go.svg)](https://pkg.go.dev/github.com/huynguyengl99/chanx-go)
+[![CI](https://github.com/huynguyengl99/chanx-go/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/huynguyengl99/chanx-go/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
+**Structured WebSockets for Go.** Write a struct of handlers: chanx-go routes each frame
+to the right one, validates it first, broadcasts across processes and documents it all
+as AsyncAPI. Runs on net/http, chi, gorilla/mux, gin, echo and Fiber.
+
+It is the Go implementation of [chanx](https://github.com/huynguyengl99/chanx), on the
+same wire protocol: a Go backend serves the same frames, emits the same AsyncAPI document
+and shares a Redis channel layer with Python (and Node) processes, so
 `@chanx-js/client`, `@chanx-js/codegen` and chanx's Python client generator work against
 it unchanged. `chanx-codegen` generates typed Go clients for Go and Python servers alike.
 
@@ -12,9 +24,11 @@ it unchanged. `chanx-codegen` generates typed Go clients for Go and Python serve
 [Why chanx-go?](https://huynguyengl99.github.io/chanx-go/introduction/why) ·
 [API](https://pkg.go.dev/github.com/huynguyengl99/chanx-go)
 
+![A typed Go handler, the AsyncAPI docs chanx-go generates from it, generating a Go client, and the compiler catching a typo](https://raw.githubusercontent.com/huynguyengl99/chanx-go/main/docs/public/chanx-go-demo.gif)
+
 ```go
 type ChatPayload struct {
-	Message string `json:"message"`
+	Text string `json:"text"`
 }
 
 type ChatMessage struct {
@@ -57,7 +71,7 @@ func main() {
 > {"action":"ping","ref":"1"}
 < {"action":"pong","payload":null,"version":1,"ref":"1"}
 > {"action":"chat","payload":{}}
-< {"action":"error","payload":[{"type":"missing","loc":["chat","payload","message"],"msg":"Field required"}]}
+< {"action":"error","payload":[{"type":"missing","loc":["chat","payload","text"],"msg":"Field required"}]}
 ```
 
 ## Modules

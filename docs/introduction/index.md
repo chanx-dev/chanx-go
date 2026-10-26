@@ -53,8 +53,9 @@ The full protocol is described in the
 
 ## What it is not
 
-- **Not a client library.** For clients, use `@chanx-js/client` in the browser and Node,
-  or the Python client generator. See [Clients](/reference/clients).
+- **Not tied to Go clients.** A chanx-go server serves any chanx client:
+  `@chanx-js/client` in the browser and Node, generated Python clients, and Go clients
+  from `chanx-codegen`. See [Clients](/reference/clients).
 - **Not a pub/sub server.** If you need a standalone message broker with presence and
   history, look at [Centrifugo](https://centrifugal.dev). chanx-go is the application
   server: your handlers, your rules.
