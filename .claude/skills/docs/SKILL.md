@@ -110,6 +110,9 @@ The site is VitePress, laid out like chanx-js's: `introduction/`, `tutorial/`, `
    VitePress renders it as text instead of failing.
 3. Read each new paragraph once more as someone who has never seen chanx. Cut any
    sentence that does not help them do something.
-4. Search your diff for `—`, "simply", "just", "easy" and remove them.
+4. Search your diff for `—`, "simply", "just", "easy" and remove them. For a new page or
+   a rewrite, run the `humanizer` skill's patterns over the prose (not-X-but-Y contrasts,
+   one-line closers, forced triads, bold labels), and the `diataxis` skill's check that
+   a page stays one kind: tutorial, how-to, reference or explanation.
 5. Behaviour you describe matches the code. When unsure, run it: the sandbox
    (`go run ./examples/cmd/sandbox`) and a WebSocket client settle it.
