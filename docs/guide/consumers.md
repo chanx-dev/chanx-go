@@ -2,7 +2,8 @@
 
 A consumer serves one route. It is a struct: its exported methods taking a
 `*chanx.Context` and a message are handlers, and methods with reserved names are hooks.
-You mount it with `engine.Handle`.
+You mount it with `engine.Handle`. The same consumer can be built from functions
+instead: see [Without methods](#without-methods).
 
 ## A complete consumer
 
@@ -143,11 +144,29 @@ The embedding consumer's `Groups` and `Passthrough` are merged with the mixin's.
 
 ## Without methods
 
-`chanx.NewConsumer` builds the same from functions, for closures and dynamic setups.
-Hooks are fields; `chanx.On` registers a handler with a reply, `chanx.Handle` one without,
-`chanx.OnEvent` and `chanx.HandleEvent` the event versions:
+`chanx.NewConsumer` builds a consumer from functions instead of a struct, in the shape of
+chanx-js's `consumer()` builder. Use it when handlers close over values known only at
+startup, when a loop or a config file decides what to register, or for a throwaway
+consumer in a test. Once mounted, it runs like a struct consumer.
 
 <<< @/snippets/consumers/consumers.go#function
+
+Each part of a struct consumer has a function-style counterpart:
+
+| Struct consumer | `*chanx.Consumer` |
+| --- | --- |
+| a method returning `(Reply, error)` | `chanx.On(c, fn)` |
+| a method returning `error` | `chanx.Handle(c, fn)` |
+| an event method returning `(Reply, error)` | `chanx.OnEvent(c, fn)` |
+| an event method returning `error` | `chanx.HandleEvent(c, fn)` |
+| an `Operations()` entry | options after `fn`: `chanx.Summary`, `chanx.OperationDescription`, `chanx.OperationTags`, `chanx.OperationName`, `chanx.Replies` |
+| a hook method: `Authenticate`, `Groups`, `OnConnect`, `OnDisconnect`, the error hooks | the field of the same name: `hub.Groups = func(c *chanx.Conn) []string {...}` |
+| `Credentials()`, `Passthrough()`, `Emits()`, `Topics()` | the slice field of the same name: `hub.Emits = []chanx.Message{...}` |
+| the type name | the name given to `NewConsumer` |
+| the operation name: the method name in snake case, `handle_chat` | the action, `chat` |
+
+Two things stay struct-only. Mixins need embedding. Topics are always structs embedding
+`chanx.BaseTopic`; a function-style consumer hosts them through `hub.Topics`.
 
 ## Catching mistakes early
 

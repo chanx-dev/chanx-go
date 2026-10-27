@@ -38,7 +38,9 @@ each connection's event handler, which decides what the client receives, if anyt
 <<< @/snippets/events/events.go#event
 
 The handler takes a `*chanx.EventContext`; its return value goes to the client. A handler
-returning only an `error` sends nothing, for an event that only updates state.
+returning only an `error` sends nothing, for an event that only updates state. On a
+[consumer built from functions](/guide/consumers#without-methods), register them with
+`chanx.OnEvent` and `chanx.HandleEvent`.
 
 Events forwarded unchanged need no handler, only a declaration:
 
