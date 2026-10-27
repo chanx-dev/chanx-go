@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.1 (2026-10-27)
+
+### Bug fixes
+- Require Replies on a handler returning chanx.Message
+
+### Documentation
+- Point CONTRIBUTING at the docs site, not a module path
+- Declare what a handler sends with Replies, keep Emits for the rest
+- Map every struct consumer part to its function-style form
+
+### Maintenance
+- Wait before asking the Go proxy for a new tag, and retry
+- Check the site keeps the go-import tag before deploying
+
 ## 2.0.0 (2026-10-26)
 
 ### Features
