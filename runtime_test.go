@@ -207,14 +207,42 @@ func TestRenamedPayloadField(t *testing.T) {
 	}
 }
 
-func TestEmitsSetAfterHandlers(t *testing.T) {
-	hub := chanx.NewConsumer("late_emits")
+type anyReply struct{}
+
+func (anyReply) Ping(ctx *chanx.Context, _ chanx.PingMessage) (chanx.Message, error) {
+	return chanx.PongMessage{}, nil
+}
+
+func (anyReply) Emits() []chanx.Message { return []chanx.Message{chanx.PongMessage{}} }
+
+type declaredReply struct{ anyReply }
+
+func (declaredReply) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{"Ping": {Replies: []chanx.Message{chanx.PongMessage{}}}}
+}
+
+func TestMessageReplyNeedsReplies(t *testing.T) {
+	want := "a handler returning chanx.Message must list its replies"
+	if err := chanx.Check(anyReply{}); err == nil || !strings.Contains(err.Error(), want) {
+		t.Fatalf("struct consumer: %v", err)
+	}
+	hub := chanx.NewConsumer("hub")
 	chanx.On(hub, func(ctx *chanx.Context, _ chanx.PingMessage) (chanx.Message, error) { return chanx.PongMessage{}, nil })
-	hub.Emits = []chanx.Message{chanx.PongMessage{}}
-	r := chanx.New(chanx.Config{}).Handle("/ws", hub)
-	outs := r.Info().Consumer.Handlers[0].Outputs
-	if len(outs) != 1 || outs[0].Action != "pong" {
-		t.Fatalf("documented replies: %v", outs)
+	if err := chanx.Check(hub); err == nil || !strings.Contains(err.Error(), want) {
+		t.Fatalf("function consumer: %v", err)
+	}
+}
+
+func TestMessageReplyDocumentsReplies(t *testing.T) {
+	hub := chanx.NewConsumer("hub")
+	chanx.On(hub, func(ctx *chanx.Context, _ chanx.PingMessage) (chanx.Message, error) { return chanx.PongMessage{}, nil },
+		chanx.Replies(chanx.PongMessage{}))
+	for _, c := range []any{declaredReply{}, hub} {
+		r := chanx.New(chanx.Config{}).Handle("/ws", c)
+		outs := r.Info().Consumer.Handlers[0].Outputs
+		if len(outs) != 1 || outs[0].Action != "pong" {
+			t.Fatalf("%T documented replies: %v", c, outs)
+		}
 	}
 }
 

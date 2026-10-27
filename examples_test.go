@@ -230,3 +230,59 @@ func ExampleApplyDefaults() {
 	fmt.Printf("%+v\n", p)
 	// Output: {Name: Language:en}
 }
+
+// GreetRefusedMessage is the other reply of GuardedGreeter.
+type GreetRefusedMessage struct {
+	chanx.BaseMessage `action:"greet_refused"`
+	Payload           string `json:"payload"`
+}
+
+type GuardedGreeter struct{}
+
+// HandleGreet returns one of two replies, so its return type is chanx.Message.
+func (GuardedGreeter) HandleGreet(ctx *chanx.Context, m GreetMessage) (chanx.Message, error) {
+	if m.Payload.Name == "" {
+		return GreetRefusedMessage{Payload: "a name is required"}, nil
+	}
+	return GreetingMessage{Payload: "Hello, " + m.Payload.Name}, nil
+}
+
+// Operations lists both replies: Handle refuses a handler returning
+// chanx.Message without them.
+func (GuardedGreeter) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{
+		"HandleGreet": {Replies: []chanx.Message{GreetingMessage{}, GreetRefusedMessage{}}},
+	}
+}
+
+// A handler with several possible replies returns chanx.Message and lists them in
+// Replies, as Python's output_type=A | B. The AsyncAPI document and generated
+// clients read them from there.
+func ExampleOperation() {
+	route := chanx.New(chanx.Config{}).Handle("/ws/greeter", GuardedGreeter{})
+	for _, out := range route.Info().Consumer.Handlers[0].Outputs {
+		fmt.Println(out.Action)
+	}
+	// Output:
+	// greeting
+	// greet_refused
+}
+
+// With On, Replies is an option.
+func ExampleReplies() {
+	greeter := chanx.NewConsumer("greeter")
+	chanx.On(greeter, func(ctx *chanx.Context, m GreetMessage) (chanx.Message, error) {
+		if m.Payload.Name == "" {
+			return GreetRefusedMessage{Payload: "a name is required"}, nil
+		}
+		return GreetingMessage{Payload: "Hello, " + m.Payload.Name}, nil
+	}, chanx.Replies(GreetingMessage{}, GreetRefusedMessage{}))
+
+	route := chanx.New(chanx.Config{}).Handle("/ws/greeter", greeter)
+	for _, out := range route.Info().Consumer.Handlers[0].Outputs {
+		fmt.Println(out.Action)
+	}
+	// Output:
+	// greeting
+	// greet_refused
+}

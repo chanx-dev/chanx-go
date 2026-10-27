@@ -18,8 +18,8 @@ type Operation struct {
 	Summary     string
 	Description string
 	Tags        []string
-	// Replies lists what the handler sends when its return type does not say,
-	// such as a handler that only broadcasts.
+	// Replies lists what the handler sends when its return type does not say:
+	// a handler returning [Message], or one that broadcasts.
 	Replies []Message
 }
 
@@ -30,8 +30,6 @@ type handler struct {
 	outputs     []*MessageInfo
 	event       bool
 	passthrough bool
-	// emitsReply: returns chanx.Message with no Replies, so it documents Emits.
-	emitsReply bool
 	// ctx is *Context or *EventContext.
 	call func(ctx any, msg reflect.Value) (Message, error)
 }
@@ -138,17 +136,15 @@ func buildStruct(consumer any) (*consumerDef, error) {
 	if o, ok := consumer.(interface{ Operations() map[string]Operation }); ok {
 		ops = o.Operations()
 	}
-	var emits []*MessageInfo
 	if e, ok := consumer.(interface{ Emits() []Message }); ok {
 		for _, m := range e.Emits() {
 			info, err := Info(m)
 			if err != nil {
 				return nil, fmt.Errorf("chanx: %s.Emits: %w", t, err)
 			}
-			emits = append(emits, info)
+			def.emits = append(def.emits, info)
 		}
 	}
-	def.emits = emits
 
 	// Methods come sorted by name: the documented operation order.
 	var msgHandlers, evtHandlers []*handler
@@ -165,7 +161,7 @@ func buildStruct(consumer any) (*consumerDef, error) {
 		if first != contextType && first != eventContextType {
 			continue
 		}
-		h, err := methodHandler(t, m.Name, mt, v.Method(i), ops[m.Name], emits)
+		h, err := methodHandler(t, m.Name, mt, v.Method(i), ops[m.Name])
 		if err != nil {
 			return nil, err
 		}
@@ -392,11 +388,11 @@ func (def *consumerDef) bindHooks(v reflect.Value) error {
 
 const handlerForm = "want func(*chanx.Context | *chanx.EventContext, SomeMessage) error or (Reply, error), where Reply is a message type or chanx.Message"
 
-func methodHandler(t reflect.Type, name string, mt reflect.Type, fn reflect.Value, op Operation, emits []*MessageInfo) (*handler, error) {
+func methodHandler(t reflect.Type, name string, mt reflect.Type, fn reflect.Value, op Operation) (*handler, error) {
 	if mt.NumIn() != 3 {
 		return nil, fmt.Errorf("chanx: %s.%s: %s", t, name, handlerForm)
 	}
-	h, err := newHandler(mt.In(1), mt.In(2), outTypes(mt), op, emits)
+	h, err := newHandler(mt.In(1), mt.In(2), outTypes(mt), op)
 	if err != nil {
 		return nil, fmt.Errorf("chanx: %s.%s: %w", t, name, err)
 	}
@@ -417,7 +413,7 @@ func outTypes(ft reflect.Type) []reflect.Type {
 }
 
 // newHandler checks a handler's types and works out what it documents.
-func newHandler(ctxT, in reflect.Type, outs []reflect.Type, op Operation, emits []*MessageInfo) (*handler, error) {
+func newHandler(ctxT, in reflect.Type, outs []reflect.Type, op Operation) (*handler, error) {
 	if ctxT != contextType && ctxT != eventContextType {
 		return nil, fmt.Errorf("first parameter must be *chanx.Context or *chanx.EventContext; %s", handlerForm)
 	}
@@ -437,6 +433,9 @@ func newHandler(ctxT, in reflect.Type, outs []reflect.Type, op Operation, emits 
 	case 2:
 		if outs[1] != errorType || !outs[0].Implements(messageType) {
 			return nil, fmt.Errorf("%s", handlerForm)
+		}
+		if outs[0] == messageType && len(op.Replies) == 0 {
+			return nil, fmt.Errorf("a handler returning chanx.Message must list its replies in Operations Replies or with chanx.Replies")
 		}
 		if outs[0] != messageType {
 			if outs[0].Kind() == reflect.Pointer {
@@ -460,9 +459,6 @@ func newHandler(ctxT, in reflect.Type, outs []reflect.Type, op Operation, emits 
 			}
 			h.outputs = append(h.outputs, info)
 		}
-	} else if len(outs) == 2 && outs[0] == messageType {
-		h.emitsReply = true
-		h.outputs = slices.Clone(emits)
 	}
 	return h, nil
 }
@@ -487,7 +483,8 @@ func reflectCall(fn reflect.Value, hasReply bool) func(any, reflect.Value) (Mess
 
 // Consumer is a consumer built from functions instead of methods: for closures,
 // dynamic setups and tests. Register handlers with On, Handle and OnEvent; set
-// hooks through the fields.
+// hooks through the fields. Emits lists what the consumer sends outside any
+// handler, such as from OnConnect: a handler declares its own with [Replies].
 //
 //	hub := chanx.NewConsumer("topic_hub")
 //	chanx.On(hub, func(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {
@@ -541,8 +538,7 @@ func (c *Consumer) add(ctxT, in reflect.Type, outs []reflect.Type, opts []Handle
 	for _, o := range opts {
 		o(&op)
 	}
-	// Emits is read in build: it may be set after the handlers.
-	h, err := newHandler(ctxT, in, outs, op, nil)
+	h, err := newHandler(ctxT, in, outs, op)
 	if err != nil {
 		if c.err == nil {
 			c.err = fmt.Errorf("chanx: %s: %w", c.Name, err)
@@ -639,11 +635,6 @@ func (c *Consumer) build() (*consumerDef, error) {
 	}
 	var msgs, evts []*handler
 	for _, h := range c.handlers {
-		if h.emitsReply {
-			cp := *h
-			cp.outputs = slices.Clone(def.emits)
-			h = &cp
-		}
 		target, kind := def.handlers, "message"
 		if h.event {
 			target, kind = def.events, "event"
