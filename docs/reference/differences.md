@@ -24,6 +24,7 @@ recorded from Python. These are the places it differs, each on purpose.
 | Generated client layout | a package per channel, plus `shared/` and a copied `base/` | one package, `messages.go` and `channels.go`, on the `chanxclient` module |
 | Generated names that clash | the later schema replaces the earlier | generation stops and names both |
 | A request answered by an error frame | the error frame is the reply | a `*chanxclient.RequestError` |
+| AsyncAPI: a message no handler sends, such as a broadcast from a connect hook | cannot be declared | declared with `Emits` |
 
 ## Naming
 
@@ -35,6 +36,7 @@ recorded from Python. These are the places it differs, each on purpose.
 | `@channel(name=..., tags=...)` | `chanx.Name`, `chanx.Tags` route options |
 | `authenticator_class` | an `Authenticate` method |
 | `groups = [...]` | a `Groups(*Conn) []string` method |
+| `@ws_handler(output_type=A \| B)` | return `chanx.Message`, with `Replies` in `Operations` |
 | `self.broadcast_message(m)` | `ctx.Broadcast(m)` |
 | `ChatConsumer.broadcast_event(e, groups)` | `publisher.BroadcastEvent(ctx, e, groups...)` |
 | `WebsocketCommunicator` | `chanxtest.Connect` |

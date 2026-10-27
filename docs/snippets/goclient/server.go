@@ -58,8 +58,6 @@ type ChatConsumer struct{}
 
 func (ChatConsumer) Groups(c *chanx.Conn) []string { return []string{"room." + c.Param("room")} }
 
-func (ChatConsumer) Emits() []chanx.Message { return []chanx.Message{ChatNotification{}} }
-
 func (ChatConsumer) Topics() []chanx.TopicHandler { return []chanx.TopicHandler{&NewsTopic{}} }
 
 func (ChatConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {
@@ -75,6 +73,10 @@ func (ChatConsumer) HandleJoin(ctx *chanx.Context, m JoinMessage) (WelcomeMessag
 
 func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
 	return ctx.Broadcast(ChatNotification{Payload: m.Payload})
+}
+
+func (ChatConsumer) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{"HandleChat": {Replies: []chanx.Message{ChatNotification{}}}}
 }
 
 func NewEngine() *chanx.Engine {

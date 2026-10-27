@@ -63,8 +63,9 @@ default. Two generated names that would clash stop the generator, which names bo
 ## Requests
 
 A request returns the first frame that echoes its `ref`. Handlers that return a reply
-echo it. Handlers that broadcast do not, so for those use `Send` and read the result
-with `Receive`, as `chat` does above.
+echo it. Handlers that broadcast do not, even when their `Replies` give the client a
+`RequestChat`: that request waits until its context ends. For those, use `Send` and read
+the result with `Receive`, as `chat` does above.
 
 An error frame answering a request comes back as a `*chanxclient.RequestError`:
 

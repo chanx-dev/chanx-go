@@ -25,12 +25,14 @@ type ChatConsumer struct{}
 
 func (ChatConsumer) Groups(*chanx.Conn) []string { return []string{"chat"} }
 
-// Emits declares what HandleChat broadcasts, for the AsyncAPI document and for
-// strict mode, which fails a test when the server sends an undeclared action.
-func (ChatConsumer) Emits() []chanx.Message { return []chanx.Message{ChatNotification{}} }
-
 func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
 	return ctx.Broadcast(ChatNotification{Payload: m.Payload})
+}
+
+// Operations declares what HandleChat broadcasts, for the AsyncAPI document and for
+// strict mode, which fails a test when the server sends an undeclared action.
+func (ChatConsumer) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{"HandleChat": {Replies: []chanx.Message{ChatNotification{}}}}
 }
 
 func (ChatConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {

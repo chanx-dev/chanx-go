@@ -92,14 +92,15 @@ func (RoomConsumer) OnDisconnect(ctx *chanx.Context) {
 	_ = ctx.Broadcast(PresenceMessage{Payload: PresencePayload{User: ctx.Conn.User.(string), Online: false}}, chanx.ExcludeSelf())
 }
 
-// Operations and Emits document what the handlers broadcast, for the AsyncAPI
-// document and the typed clients generated from it.
+// Operations documents what HandleSend broadcasts, for the AsyncAPI document and
+// the typed clients generated from it.
 func (RoomConsumer) Operations() map[string]chanx.Operation {
 	return map[string]chanx.Operation{
 		"HandleSend": {Summary: "Post a message", Replies: []chanx.Message{PostedMessage{}}},
 	}
 }
 
+// Emits declares what no handler sends: the presence messages from the hooks above.
 func (RoomConsumer) Emits() []chanx.Message { return []chanx.Message{PresenceMessage{}} }
 
 // #endregion hooks

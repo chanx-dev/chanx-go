@@ -33,7 +33,8 @@ What each part does:
   broadcasts to the room: the sender included, everyone connected to the same room.
 - **`HandlePing`** returns a reply. A reply goes back to the sender and carries the `ref`
   of the frame it answers.
-- **`Emits`** declares what the consumer broadcasts, so the AsyncAPI document lists it.
+- **`Operations`** declares what `HandleChat` broadcasts in its `Replies`, so the AsyncAPI
+  document lists it. It is Python's `output_type`.
 
 ## 4. Mount and run
 

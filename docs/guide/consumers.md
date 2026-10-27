@@ -71,7 +71,7 @@ Matched by name and signature; a wrong signature panics at `Handle`.
 | `Groups(*Conn) []string` | `groups` | on connect: the groups to join |
 | `OnConnect(*Context) error` | `post_authentication` | once set up; an error closes with 1011 |
 | `OnDisconnect(*Context)` | `websocket_disconnect` | on close, groups still joined |
-| `Emits() []Message` | outputs of handlers | declares what the consumer sends besides replies |
+| `Emits() []Message` | none | declares what the consumer sends outside any handler; see below |
 | `Operations() map[string]Operation` | `@ws_handler(summary=..., output_type=...)` | documents handlers, by method name |
 | `Passthrough() []Message` | `passthrough_events` | events forwarded to the client unchanged |
 | `Topics() []TopicHandler` | `topics` | the [topics](/guide/topics) it hosts |
@@ -80,8 +80,44 @@ Matched by name and signature; a wrong signature panics at `Handle`.
 | `OnEventError(*EventContext, string, error)` | event error handling | an event handler failed |
 
 `Operations` sets `Summary`, `Description`, `Tags`, `Name` and `Replies` per handler.
-`Replies` matters for a handler that broadcasts instead of returning: without it, the
-AsyncAPI document and generated clients do not know what it sends.
+
+## Declaring what a handler sends
+
+The AsyncAPI document and the clients generated from it know what a handler sends from
+its return type. When the return type does not say, list the messages in `Replies`, like
+Python's `output_type`:
+
+| The handler | Declare it with |
+| --- | --- |
+| returns one message type | nothing: the return type says it |
+| returns one of several, as `chanx.Message` (Python's `-> A \| B`) | `Replies`, required: `Handle` panics without it |
+| broadcasts, returning only `error` | `Replies` |
+
+A lobby that answers `join` with `joined`, or with `room_full` when the room has no seat
+left:
+
+<<< @/snippets/consumers/consumers.go#replies
+
+Either reply echoes the request's `ref`:
+
+```json
+{"action": "join", "payload": {"room": "general"}, "ref": "1"}
+{"action": "joined", "payload": {"room": "general"}, "version": 1, "ref": "1"}
+
+{"action": "join", "payload": {"room": "vip"}, "ref": "2"}
+{"action": "room_full", "payload": {"room": "vip"}, "version": 1, "ref": "2"}
+```
+
+With `chanx.On`, `Replies` is an option:
+
+<<< @/snippets/consumers/consumers.go#replies_function
+
+The AsyncAPI document lists `join` with both replies, and a generated Go client gets
+`RequestJoin(ctx, JoinMessage) (chanx.Message, error)`, whose result you switch on.
+
+`Emits` is for the rare message no handler sends: a presence broadcast from `OnConnect`,
+a push from a worker through a `Publisher`. Python has no counterpart. Reach for
+`Replies` first.
 
 ## One value, every connection
 

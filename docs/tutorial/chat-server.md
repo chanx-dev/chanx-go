@@ -44,8 +44,9 @@ per-connection state.
   newcomer out of their own announcement.
 - **`OnDisconnect`** runs before the connection leaves its groups, so the room still
   hears the goodbye.
-- **`Operations`** and **`Emits`** declare what the handlers broadcast. The AsyncAPI
-  document lists them, and so do the clients generated from it.
+- **`Operations`** declares what `HandleSend` broadcasts, in its `Replies`. **`Emits`**
+  declares the presence messages, which no handler sends. The AsyncAPI document lists
+  both, and so do the clients generated from it.
 
 ## 5. Authentication
 
@@ -93,7 +94,7 @@ go test ./...
 
 `Connect` returns once the connection has joined its groups, so a broadcast sent right
 after reaches it. By default the client is strict: a test fails if the server sends an
-action nobody declared, which is how a missing `Emits` shows up. More in
+action nobody declared, which is how a missing `Replies` shows up. More in
 [Testing](/guide/testing).
 
 ## 8. More than one process

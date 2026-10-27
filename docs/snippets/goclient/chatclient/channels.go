@@ -14,7 +14,7 @@ import (
 var ChatChannel = chanxclient.Channel{
 	Name:     "chat",
 	Address:  "/ws/chat/{room}",
-	Incoming: []chanx.Message{WelcomeMessage{}, PongMessage{}, ChatNotification{}},
+	Incoming: []chanx.Message{ChatNotification{}, WelcomeMessage{}, PongMessage{}},
 }
 
 // ChatToServer is a message Chat accepts.
@@ -48,6 +48,10 @@ func (c *ChatClient) Send(ctx context.Context, m ChatToServer) error { return c.
 
 func (c *ChatClient) Receive(ctx context.Context) (chanx.Message, chanxclient.Envelope, error) {
 	return c.conn.Receive(ctx)
+}
+
+func (c *ChatClient) RequestChat(ctx context.Context, m ChatMessage) (ChatNotification, error) {
+	return chanxclient.Reply[ChatNotification](c.conn.Request(ctx, m))
 }
 
 func (c *ChatClient) RequestJoin(ctx context.Context, m JoinMessage) (WelcomeMessage, error) {

@@ -121,11 +121,13 @@ type ChatConsumer struct{}
 // Groups puts each connection in its room, from the {room} path parameter.
 func (ChatConsumer) Groups(c *chanx.Conn) []string { return []string{"room." + c.Param("room")} }
 
-// Emits declares what the consumer sends besides replies.
-func (ChatConsumer) Emits() []chanx.Message { return []chanx.Message{ChatNotification{}} }
-
 func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
 	return ctx.Broadcast(ChatNotification{Payload: m.Payload})
+}
+
+// Operations documents what HandleChat broadcasts, for the AsyncAPI document.
+func (ChatConsumer) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{"HandleChat": {Replies: []chanx.Message{ChatNotification{}}}}
 }
 
 func (ChatConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {

@@ -74,7 +74,17 @@
         {
           "$ref": "#/channels/chat/messages/chat_message"
         }
-      ]
+      ],
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/chat"
+        },
+        "messages": [
+          {
+            "$ref": "#/channels/chat/messages/chat_notification"
+          }
+        ]
+      }
     },
     "handle_join": {
       "action": "receive",
@@ -141,11 +151,17 @@
       "chat_message": {
         "payload": {
           "$ref": "#/components/schemas/ChatMessage"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
         }
       },
       "chat_notification": {
         "payload": {
           "$ref": "#/components/schemas/ChatNotification"
+        },
+        "correlationId": {
+          "$ref": "#/components/correlationIds/ref"
         }
       },
       "headline": {

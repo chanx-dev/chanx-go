@@ -20,7 +20,7 @@
 // A consumer serves one route. Its exported methods taking a [*Context] and a
 // message are handlers; the return type is the reply, echoing the frame's ref.
 // Optional hooks are matched by name: Authenticate, Groups, OnConnect,
-// OnDisconnect, Emits, Topics and others. One consumer value serves every
+// OnDisconnect, Operations, Topics and others. One consumer value serves every
 // connection; per-connection state lives on [Conn].
 //
 //	func (c *ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {

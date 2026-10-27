@@ -108,11 +108,11 @@ func NewChatHub(banner string) *chanx.Consumer {
 	hub := chanx.NewConsumer("chat_hub")
 	hub.Groups = func(conn *chanx.Conn) []string { return []string{"room." + conn.Param("room")} }
 	hub.OnConnect = func(ctx *chanx.Context) error { return ctx.Push(WelcomeMessage{Payload: banner}) }
-	hub.Emits = []chanx.Message{WelcomeMessage{}, ChatNotification{}}
+	hub.Emits = []chanx.Message{WelcomeMessage{}} // sent by OnConnect, outside any handler
 
 	chanx.Handle(hub, func(ctx *chanx.Context, m ChatMessage) error {
 		return ctx.Broadcast(ChatNotification{Payload: m.Payload}, chanx.ExcludeSelf())
-	}, chanx.Summary("Send a chat message"))
+	}, chanx.Summary("Send a chat message"), chanx.Replies(ChatNotification{}))
 	chanx.On(hub, func(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {
 		return chanx.PongMessage{}, nil
 	})
@@ -120,3 +120,64 @@ func NewChatHub(banner string) *chanx.Consumer {
 }
 
 // #endregion function
+
+type JoinPayload struct {
+	Room string `json:"room"`
+}
+
+type JoinMessage struct {
+	chanx.BaseMessage `action:"join"`
+	Payload           JoinPayload `json:"payload"`
+}
+
+type JoinedMessage struct {
+	chanx.BaseMessage `action:"joined"`
+	Payload           JoinPayload `json:"payload"`
+}
+
+type RoomFullMessage struct {
+	chanx.BaseMessage `action:"room_full"`
+	Payload           JoinPayload `json:"payload"`
+}
+
+// #region replies
+type LobbyConsumer struct {
+	Full map[string]bool // rooms with no seat left
+}
+
+// HandleJoin has two possible replies, so it returns chanx.Message.
+func (c *LobbyConsumer) HandleJoin(ctx *chanx.Context, m JoinMessage) (chanx.Message, error) {
+	if c.Full[m.Payload.Room] {
+		return RoomFullMessage{Payload: m.Payload}, nil
+	}
+	if err := ctx.Conn.Join(ctx, "room."+m.Payload.Room); err != nil {
+		return nil, err
+	}
+	return JoinedMessage{Payload: m.Payload}, nil
+}
+
+// Operations lists both replies: Handle panics on a chanx.Message reply without them.
+func (c *LobbyConsumer) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{
+		"HandleJoin": {Replies: []chanx.Message{JoinedMessage{}, RoomFullMessage{}}},
+	}
+}
+
+// #endregion replies
+
+// #region replies_function
+func NewLobbyHub(full map[string]bool) *chanx.Consumer {
+	hub := chanx.NewConsumer("lobby_hub")
+	chanx.On(hub, func(ctx *chanx.Context, m JoinMessage) (chanx.Message, error) {
+		if full[m.Payload.Room] {
+			return RoomFullMessage{Payload: m.Payload}, nil
+		}
+		if err := ctx.Conn.Join(ctx, "room."+m.Payload.Room); err != nil {
+			return nil, err
+		}
+		return JoinedMessage{Payload: m.Payload}, nil
+	}, chanx.Replies(JoinedMessage{}, RoomFullMessage{}))
+	return hub
+}
+
+// #endregion replies_function

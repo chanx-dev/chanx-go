@@ -26,14 +26,16 @@ type ChatConsumer struct{}
 
 func (ChatConsumer) Groups(c *chanx.Conn) []string { return []string{"room." + c.Param("room")} }
 
-func (ChatConsumer) Emits() []chanx.Message { return []chanx.Message{ChatNotification{}} }
-
 // HandleChat broadcasts to the room and tells other services through an event.
 func (ChatConsumer) HandleChat(ctx *chanx.Context, m ChatMessage) error {
 	if err := ctx.Broadcast(ChatNotification{Payload: m.Payload}); err != nil {
 		return err
 	}
 	return ctx.Publisher().BroadcastEvent(ctx, MessagePosted{Payload: m.Payload}, "audit")
+}
+
+func (ChatConsumer) Operations() map[string]chanx.Operation {
+	return map[string]chanx.Operation{"HandleChat": {Replies: []chanx.Message{ChatNotification{}}}}
 }
 
 func (ChatConsumer) HandlePing(ctx *chanx.Context, _ chanx.PingMessage) (chanx.PongMessage, error) {

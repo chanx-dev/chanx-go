@@ -34,3 +34,21 @@ func TestFrames(t *testing.T) {
 		})
 	}
 }
+
+func TestReplies(t *testing.T) {
+	full := map[string]bool{"vip": true}
+	for name, consumer := range map[string]any{
+		"struct":   &LobbyConsumer{Full: full},
+		"function": NewLobbyHub(full),
+	} {
+		t.Run(name, func(t *testing.T) {
+			e := chanx.New(chanx.Config{})
+			e.Handle("/ws/lobby", consumer)
+			c := chanxtest.Connect(t, e, "/ws/lobby")
+			c.SendText(`{"action": "join", "payload": {"room": "general"}, "ref": "1"}`)
+			c.Expect(`{"action": "joined", "payload": {"room": "general"}, "version": 1, "ref": "1"}`)
+			c.SendText(`{"action": "join", "payload": {"room": "vip"}, "ref": "2"}`)
+			c.Expect(`{"action": "room_full", "payload": {"room": "vip"}, "version": 1, "ref": "2"}`)
+		})
+	}
+}
