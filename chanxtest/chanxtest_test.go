@@ -278,7 +278,10 @@ func TestFailures(t *testing.T) {
 }
 
 func TestReceiveHelpers(t *testing.T) {
-	e := engine(t, nil)
+	// Sequential: by default each frame runs in its own goroutine, so the shout's
+	// echo could overtake the info reply.
+	e := chanx.New(chanx.Config{})
+	e.Handle("/ws/info/{room}", infoConsumer{}, chanx.Sequential())
 	c := chanxtest.Connect(t, e, "/ws/info/x")
 	c.Send(InfoMessage{})
 	c.Send(ShoutMessage{})
