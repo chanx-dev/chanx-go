@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -57,6 +58,75 @@ func TestDocument(t *testing.T) {
 	// Top-level key order: asyncapi, info, servers, channels, operations, components.
 	if strings.Index(s, `"info"`) > strings.Index(s, `"channels"`) || strings.Index(s, `"operations"`) > strings.Index(s, `"components"`) {
 		t.Error("top-level keys out of order")
+	}
+}
+
+func TestErrorPayloadSchemasFollowTheErrorFormat(t *testing.T) {
+	data, err := asyncapi.JSON(engine(), asyncapi.Info{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(string(data), `"ProblemDetails": {`) || !strings.Contains(string(data), `"ValidationFailure": {`) {
+		t.Error("the standard format lists its payload schemas")
+	}
+	e := chanx.New(chanx.Config{ErrorFormat: chanx.PydanticErrors})
+	e.Handle("/ws/lobby/{floor}", LobbyConsumer{})
+	if data, err = asyncapi.JSON(e, asyncapi.Info{}); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(data), "ProblemDetails") {
+		t.Error("the Pydantic format has no ProblemDetails")
+	}
+}
+
+type ProblemDetails struct {
+	Note string `json:"note"`
+}
+
+type Noted struct {
+	chanx.BaseMessage `action:"noted"`
+	Payload           ProblemDetails `json:"payload"`
+}
+
+type NoteConsumer struct{}
+
+func (NoteConsumer) HandleNote(ctx *chanx.Context, m Noted) error { return nil }
+
+func TestTypeNamedLikeAnErrorSchemaIsRefused(t *testing.T) {
+	e := chanx.New(chanx.Config{})
+	e.Handle("/ws/notes", NoteConsumer{})
+	if _, err := asyncapi.JSON(e, asyncapi.Info{}); err == nil || !strings.Contains(err.Error(), `"ProblemDetails"`) {
+		t.Fatalf("want a clash error, got %v", err)
+	}
+}
+
+type Welcome struct {
+	chanx.BaseMessage `action:"welcome"`
+}
+
+type GreeterConsumer struct{ LobbyConsumer }
+
+func (GreeterConsumer) Emits() []chanx.Message { return []chanx.Message{Welcome{}} }
+
+func TestEmitsOperation(t *testing.T) {
+	e := chanx.New(chanx.Config{})
+	e.Handle("/ws/greeter", GreeterConsumer{})
+	doc, err := asyncapi.JSON(e, asyncapi.Info{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got struct {
+		Operations map[string]json.RawMessage `json:"operations"`
+	}
+	if err := json.Unmarshal(doc, &got); err != nil {
+		t.Fatal(err)
+	}
+	want := `{"action":"send","channel":{"$ref":"#/channels/greeter"},"description":"","summary":"Messages the server pushes","messages":[{"$ref":"#/channels/greeter/messages/welcome"}]}`
+	var have, expected any
+	_ = json.Unmarshal(got.Operations["greeter_emits"], &have)
+	_ = json.Unmarshal([]byte(want), &expected)
+	if !reflect.DeepEqual(have, expected) {
+		t.Errorf("greeter_emits: %s", got.Operations["greeter_emits"])
 	}
 }
 

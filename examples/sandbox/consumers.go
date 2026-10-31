@@ -44,6 +44,9 @@ func (SystemMessageConsumer) HandleSystem(ctx *chanx.Context, m UserMessage) (Sy
 	return SystemEchoMessage{Payload: MessagePayload{Message: "🔧 System Echo: " + m.Payload.Message}}, nil
 }
 
+// Emits declares the welcome OnConnect pushes, as Python's emits.
+func (SystemMessageConsumer) Emits() []chanx.Message { return []chanx.Message{SystemEchoMessage{}} }
+
 func (SystemMessageConsumer) OnConnect(ctx *chanx.Context) error {
 	return ctx.Push(SystemEchoMessage{Payload: MessagePayload{Message: "🔧 System: Connection established!"}})
 }

@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"regexp"
 	"slices"
 	"strconv"
 	"strings"
@@ -320,8 +321,12 @@ func decodePayload(info *MessageInfo, content map[string]any, prefix []any) (ref
 	return msg, nil
 }
 
-// laxInt validates an envelope integer leniently: "12" and true are accepted,
-// 1.5 is not.
+// integerString is what Pydantic's lax int reads from a string: a sign, digits
+// with single underscores between them, and an optional zero fraction.
+var integerString = regexp.MustCompile(`^[+-]?\d+(?:_\d+)*(?:\.0+)?$`)
+
+// laxInt validates an envelope integer leniently: "12", "1_000", "12.0" and
+// true are accepted, 1.5 is not.
 func laxInt(raw any, name string) (int64, *Issue) {
 	switch x := raw.(type) {
 	case json.Number:
@@ -333,8 +338,11 @@ func laxInt(raw any, name string) (int64, *Issue) {
 		}
 		return 0, &Issue{Type: "int_from_float", Loc: []any{name}, Msg: "Input should be a valid integer, got a number with a fractional part"}
 	case string:
-		if i, err := strconv.ParseInt(strings.TrimSpace(x), 10, 64); err == nil {
-			return i, nil
+		if s := strings.TrimSpace(x); integerString.MatchString(s) {
+			digits, _, _ := strings.Cut(strings.ReplaceAll(s, "_", ""), ".")
+			if i, err := strconv.ParseInt(digits, 10, 64); err == nil {
+				return i, nil
+			}
 		}
 		return 0, &Issue{Type: "int_parsing", Loc: []any{name}, Msg: "Input should be a valid integer, unable to parse string as an integer"}
 	case bool:

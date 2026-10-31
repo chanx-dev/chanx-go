@@ -103,6 +103,14 @@ func New(cfg Config) *Engine {
 	return e
 }
 
+// ErrorFormat returns the engine's error payload format.
+func (e *Engine) ErrorFormat() ErrorFormat {
+	if e.cfg.ErrorFormat == PydanticErrors {
+		return PydanticErrors
+	}
+	return StandardErrors
+}
+
 // Logger returns the engine's logger.
 func (e *Engine) Logger() *slog.Logger { return e.log }
 
