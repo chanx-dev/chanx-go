@@ -1,6 +1,7 @@
 package chanx
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -91,6 +92,16 @@ type UnsubscribeMessage struct {
 // UnsubscribedMessage confirms an unsubscription.
 type UnsubscribedMessage struct {
 	BaseMessage `action:"unsubscribed" description:"Confirm an unsubscription."`
+}
+
+// Problem reads the payload as a protocol.ProblemDetails; false when it has another
+// shape, such as PydanticErrors or a custom hook's.
+func (m ErrorMessage) Problem() (protocol.ProblemDetails, bool) {
+	data, err := json.Marshal(m.Payload)
+	if err != nil {
+		return protocol.ProblemDetails{}, false
+	}
+	return protocol.ParseProblem(data)
 }
 
 // errorDetail and topicError fix the key order of error payloads.

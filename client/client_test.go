@@ -16,6 +16,7 @@ import (
 	chanx "go.chanx.dev/v2"
 	chanxclient "go.chanx.dev/v2/client"
 	chanxhttp "go.chanx.dev/v2/nethttp"
+	"go.chanx.dev/v2/protocol"
 )
 
 func TestMain(m *testing.M) { goleak.VerifyTestMain(m) }
@@ -167,6 +168,10 @@ func TestRequestError(t *testing.T) {
 	if !errors.As(err, &re) || len(re.Payload) == 0 {
 		t.Fatalf("%v", err)
 	}
+	problem, ok := re.Problem()
+	if !ok || problem.Type != protocol.ErrorValidationFailed || len(problem.Errors) != 1 || problem.Errors[0].Pointer != "/action" {
+		t.Fatalf("%+v %v", problem, ok)
+	}
 }
 
 func TestMissingParam(t *testing.T) {
@@ -196,6 +201,9 @@ func TestTopics(t *testing.T) {
 	var re *chanxclient.RequestError
 	if err := c.Topic("nope:x").Subscribe(ctx(t)); !errors.As(err, &re) {
 		t.Fatalf("unknown topic: %v", err)
+	}
+	if problem, ok := re.Problem(); !ok || problem.Type != protocol.ErrorUnknownTopic {
+		t.Fatalf("unknown topic: %+v", problem)
 	}
 	if _, _, err := c.Request(ctx(t), chanx.PingMessage{}); err != nil {
 		t.Fatal(err)

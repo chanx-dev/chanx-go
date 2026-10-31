@@ -37,3 +37,15 @@ func TestInstancePathDropsValidatorLabels(t *testing.T) {
 		}
 	}
 }
+
+func TestParseProblem(t *testing.T) {
+	p, ok := ParseProblem([]byte(`{"type":"https://chanx.dev/errors/unauthorized","title":"Subscription not allowed","detail":"no","data":1}`))
+	if !ok || p.Type != ErrorUnauthorized || p.Detail != "no" {
+		t.Errorf("problem: %+v %v", p, ok)
+	}
+	for _, other := range []string{`[{"type":"missing","loc":[],"msg":"x"}]`, `{"detail":"Failed"}`, `{"reason":"unauthorized","detail":"x"}`, `nope`} {
+		if _, ok := ParseProblem([]byte(other)); ok {
+			t.Errorf("%s read as a problem", other)
+		}
+	}
+}

@@ -67,7 +67,9 @@ echo it. Handlers that broadcast do not, even when their `Replies` give the clie
 `RequestChat`: that request waits until its context ends. For those, use `Send` and read
 the result with `Receive`, as `chat` does above.
 
-An error frame answering a request comes back as a `*chanxclient.RequestError`:
+An error frame answering a request comes back as a `*chanxclient.RequestError`. Its
+`Problem()` reads the payload as a `protocol.ProblemDetails`, to branch on its `Type`;
+`chanx.ErrorMessage` has the same method for error frames that arrive outside a request:
 
 <<< @/snippets/goclient/client_test.go#errors
 

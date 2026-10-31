@@ -53,6 +53,11 @@ type RequestError struct {
 
 func (e *RequestError) Error() string { return "chanx: request failed: " + string(e.Payload) }
 
+// Problem reads the error's payload; false when the server sent another shape.
+func (e *RequestError) Problem() (protocol.ProblemDetails, bool) {
+	return protocol.ParseProblem(e.Payload)
+}
+
 // DecodeError is a frame that does not fit its message type.
 type DecodeError struct {
 	Action string

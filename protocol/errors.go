@@ -1,6 +1,7 @@
 package protocol
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 )
@@ -66,6 +67,16 @@ func ValidationProblem(errs []ValidationFailure) ProblemDetails {
 		detail = "1 validation error"
 	}
 	return NewProblem(ErrorValidationFailed, detail, errs...)
+}
+
+// ParseProblem reads an error frame's payload; false when it is not a problem,
+// such as a server using the Pydantic format.
+func ParseProblem(payload []byte) (ProblemDetails, bool) {
+	var p ProblemDetails
+	if err := json.Unmarshal(payload, &p); err != nil || p.Type == "" || p.Title == "" {
+		return ProblemDetails{}, false
+	}
+	return p, true
 }
 
 // JSONPointer encodes path segments as an RFC 6901 JSON Pointer.

@@ -12,6 +12,7 @@ import (
 	"go.chanx.dev/layers/v2/inmemory"
 	chanx "go.chanx.dev/v2"
 	"go.chanx.dev/v2/chanxtest"
+	"go.chanx.dev/v2/protocol"
 )
 
 // A chat consumer with a mixin, a topic hub and a dedicated topic route.
@@ -681,5 +682,20 @@ func TestShutdown(t *testing.T) {
 	}
 	if code := c.WaitClosed(); code != 1001 {
 		t.Fatalf("close code %d", code)
+	}
+}
+
+func TestErrorMessageProblem(t *testing.T) {
+	standard := chanx.ErrorMessage{Payload: protocol.NewProblem(protocol.ErrorUnknownTopic, "Unknown topic 'x'")}
+	if p, ok := standard.Problem(); !ok || p.Type != protocol.ErrorUnknownTopic || p.Title != "Unknown topic" {
+		t.Errorf("standard: %+v %v", p, ok)
+	}
+	// As a client decodes it: a map, not the struct.
+	decoded := chanx.ErrorMessage{Payload: map[string]any{"type": protocol.ErrorInternal, "title": "Message could not be processed", "detail": "x"}}
+	if _, ok := decoded.Problem(); !ok {
+		t.Error("decoded map not read as a problem")
+	}
+	if _, ok := (chanx.ErrorMessage{Payload: []any{map[string]any{"type": "missing"}}}).Problem(); ok {
+		t.Error("a Pydantic error list read as a problem")
 	}
 }

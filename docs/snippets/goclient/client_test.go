@@ -13,6 +13,7 @@ import (
 	chanx "go.chanx.dev/v2"
 	chanxclient "go.chanx.dev/v2/client"
 	chanxhttp "go.chanx.dev/v2/nethttp"
+	"go.chanx.dev/v2/protocol"
 )
 
 func serve(t *testing.T) string {
@@ -89,7 +90,9 @@ func TestErrors(t *testing.T) {
 	_, err = chat.RequestJoin(ctx, chatclient.JoinMessage{}) // the handler refuses an empty name
 	var refused *chanxclient.RequestError
 	if errors.As(err, &refused) {
-		t.Log(string(refused.Payload)) // {"type":"https://chanx.dev/errors/handler-failed",...}
+		if problem, ok := refused.Problem(); ok && problem.Type == protocol.ErrorHandlerFailed {
+			t.Log(problem.Detail) // Failed to process message for join
+		}
 	}
 	// #endregion errors
 	if refused == nil || string(refused.Payload) != `{"type":"https://chanx.dev/errors/handler-failed","title":"Message handler failed","detail":"Failed to process message for join"}` {
