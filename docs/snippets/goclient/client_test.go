@@ -89,10 +89,10 @@ func TestErrors(t *testing.T) {
 	_, err = chat.RequestJoin(ctx, chatclient.JoinMessage{}) // the handler refuses an empty name
 	var refused *chanxclient.RequestError
 	if errors.As(err, &refused) {
-		t.Log(string(refused.Payload)) // {"detail":"Failed to process message for join"}
+		t.Log(string(refused.Payload)) // {"type":"https://chanx.dev/errors/handler-failed",...}
 	}
 	// #endregion errors
-	if refused == nil || string(refused.Payload) != `{"detail":"Failed to process message for join"}` {
+	if refused == nil || string(refused.Payload) != `{"type":"https://chanx.dev/errors/handler-failed","title":"Message handler failed","detail":"Failed to process message for join"}` {
 		t.Fatalf("%v", err)
 	}
 

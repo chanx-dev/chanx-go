@@ -41,26 +41,29 @@ filled before your handler runs:
 ## What a client gets for a bad frame
 
 The frame never reaches the handler. The client receives an `error` frame listing every
-problem, in Pydantic's format, with `loc` starting at the action:
+problem: an [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) problem details object
+whose `errors` give the JSON Schema `keyword` that failed and a JSON Pointer into the
+frame. This is the error format every chanx implementation shares; see
+[Error format](#error-format).
 
 ```json
 > {"action": "post", "payload": {"body": 42}}
-< {"action": "error", "payload": [{"type": "string_type", "loc": ["post", "payload", "body"], "msg": "Input should be a valid string"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "type", "pointer": "/payload/body", "detail": "Input should be a valid string"}]}}
 ```
 
 An action nobody handles:
 
 ```json
 > {"action": "dance"}
-< {"action": "error", "payload": [{"type": "union_tag_invalid", "loc": [], "msg": "Input tag 'dance' found using 'action' does not match any of the expected tags: 'mood', 'post', 'signup', 'typing'"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "enum", "pointer": "/action", "detail": "Input tag 'dance' found using 'action' does not match any of the expected tags: 'mood', 'post', 'signup', 'typing'"}]}}
 ```
 
-A text frame that is not JSON gets a `json_invalid` error, and a binary frame too; the
+A text frame that is not JSON gets an `invalid-json` error, and a binary frame too; the
 connection stays open.
 
 ::: tip Strict types
 Payloads are validated strictly: `"3"` is not an int and `1` is not a bool. Pydantic's
-lax mode would coerce them; chanx-go answers `int_type` or `bool_type`. Envelope fields
+lax mode would coerce them; chanx-go answers with a `type` error. Envelope fields
 (`version`, `seq`) stay lax on both. See [Differences from Python](/reference/differences).
 :::
 
@@ -72,7 +75,7 @@ A named string type with a `JSONSchema` method that sets `Enum`, Pydantic's `Str
 
 ```json
 > {"action": "mood", "payload": {"mood": "angry"}}
-< {"action": "error", "payload": [{"type": "enum", "loc": ["mood", "payload", "mood"], "msg": "Input should be 'happy' or 'sad'"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "enum", "pointer": "/payload/mood", "detail": "Input should be 'happy' or 'sad'"}]}}
 ```
 
 ## Constraints and custom checks
@@ -85,15 +88,38 @@ Two methods on the payload type cover what tags cannot say:
   patterns, formats. It is Pydantic's `Field(min_length=3)`, and it shows in AsyncAPI.
   The schema type is [google/jsonschema-go](https://pkg.go.dev/github.com/google/jsonschema-go/jsonschema)'s.
 - **`Validate() error`** runs after the schema passed, with the decoded value: Pydantic's
-  `@field_validator`. Its error becomes a `value_error`.
+  `@field_validator`. Its error is reported with the keyword `custom`.
 
 ```json
 > {"action": "signup", "payload": {"username": "al", "password": "x"}}
-< {"action": "error", "payload": [{"type": "string_too_short", "loc": ["signup", "payload", "username"], "msg": "String should have at least 3 characters"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "minLength", "pointer": "/payload/username", "detail": "String should have at least 3 characters"}]}}
 
 > {"action": "signup", "payload": {"username": "ann", "password": "ann123"}}
-< {"action": "error", "payload": [{"type": "value_error", "loc": ["signup", "payload"], "msg": "Value error, password must not contain the username"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "custom", "pointer": "/payload", "detail": "Value error, password must not contain the username"}]}}
 ```
+
+## Error format
+
+Every error frame carries a problem details object with a `type` URI, a fixed `title`
+and a `detail` for this occurrence. Clients branch on `type`; the texts are for people
+and their wording differs between implementations. Validation failures add `errors`,
+one per failure:
+
+| Field | Meaning |
+| --- | --- |
+| `keyword` | the JSON Schema keyword that failed: `required`, `type`, `enum`, `minLength`..., or `custom` for `Validate()` |
+| `pointer` | a JSON Pointer to the failing value in the frame; for `required`, the object lacking the member |
+| `property` | for `required` only: the missing member |
+| `detail` | a human-readable message |
+
+The full list of types is in the
+[protocol reference](https://python.chanx.dev/en/latest/protocol.html#protocol-errors).
+The Go types are `protocol.ProblemDetails` and `protocol.ValidationFailure`, with the type URIs as
+`protocol.Error*` constants.
+
+`Config.ErrorFormat` (or `chanx.Errors(...)` on one route) set to `chanx.PydanticErrors`
+sends chanx's earlier payloads instead: Pydantic's error list, `{"detail": ...}` for
+handler failures and `{"reason": ..., "detail": ...}` for topic refusals.
 
 ## Built-in messages
 

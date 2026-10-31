@@ -81,7 +81,7 @@ Misspell the field:
 
 ```json
 > {"action": "chat", "payload": {"txt": "hi"}}
-< {"action": "error", "payload": [{"type": "missing", "loc": ["chat", "payload", "text"], "msg": "Field required"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "required", "pointer": "/payload", "detail": "Field required", "property": "text"}]}}
 ```
 
 `HandleChat` never ran. The error lists every problem with its location, in the same

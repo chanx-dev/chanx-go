@@ -362,9 +362,9 @@ func TestLaxEnvelopeIntegers(t *testing.T) {
 	c.SendText(`{"action":"ping","ref":"a","version":true,"seq":" 7 "}`)
 	c.Expect(`{"action":"pong","payload":null,"version":1,"ref":"a"}`)
 	c.SendText(`{"action":"ping","seq":[1]}`)
-	c.Expect(`{"action":"error","payload":[{"type":"int_type","loc":["seq"],"msg":"Input should be a valid integer"}]}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/seq","detail":"Input should be a valid integer"}]}}`)
 	c.SendText(`{"action":"ping","topic":5}`)
-	c.Expect(`{"action":"error","payload":[{"type":"string_type","loc":["topic"],"msg":"Input should be a valid string"}]}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/topic","detail":"Input should be a valid string"}]}}`)
 }
 
 func TestFunctionConsumer(t *testing.T) {

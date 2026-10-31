@@ -27,7 +27,7 @@ func TestFrames(t *testing.T) {
 			a.Expect(`{"action": "pong", "payload": null, "version": 1, "ref": "42"}`)
 			if name == "struct" {
 				a.SendText(`{"action": "report", "payload": {"reason": " "}, "ref": "r1"}`)
-				a.Expect(`{"action": "error", "payload": {"detail": "Failed to process message for report"}, "version": 1, "ref": "r1"}`)
+				a.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/handler-failed", "title": "Message handler failed", "detail": "Failed to process message for report"}, "version": 1, "ref": "r1"}`)
 				b.Close()
 				a.Expect(`{"action": "chat_notification", "payload": {"message": "someone left"}}`)
 			}

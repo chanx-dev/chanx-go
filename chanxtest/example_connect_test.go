@@ -57,7 +57,7 @@ func testChat(t *testing.T) {
 
 	// A bad payload never reaches the handler: the sender gets the validation error.
 	alice.SendText(`{"action":"chat","payload":{}}`)
-	alice.Expect(`{"action":"error","payload":[{"type":"missing","loc":["chat","payload","message"],"msg":"Field required"}]}`)
+	alice.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"required","pointer":"/payload","detail":"Field required","property":"message"}]}}`)
 
 	// Request sends with a fresh ref and collects the frames answering it.
 	if replies := alice.Request(chanx.PingMessage{}); replies[0].Action() != "pong" {

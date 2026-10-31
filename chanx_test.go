@@ -236,33 +236,33 @@ func TestChat(t *testing.T) {
 	bob.SendText(`{"action":"report","ref":"r1","payload":{"reason":"spam"}}`)
 	bob.Expect(`{"version":1,"ref":"r1","action":"reported","payload":null}`)
 	bob.SendText(`{"action":"report","ref":"r2","payload":{"reason":" "}}`)
-	bob.Expect(`{"version":1,"ref":"r2","action":"error","payload":{"detail":"Failed to process message for report"}}`)
+	bob.Expect(`{"version":1,"ref":"r2","action":"error","payload":{"type":"https://chanx.dev/errors/handler-failed","title":"Message handler failed","detail":"Failed to process message for report"}}`)
 
 	bob.SendText(`{"action":"nope"}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_invalid","loc":[],"msg":"Input tag 'nope' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"enum","pointer":"/action","detail":"Input tag 'nope' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}}`)
 	bob.SendText(`{"action":"ping","ref":3}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"string_type","loc":["ref"],"msg":"Input should be a valid string"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/ref","detail":"Input should be a valid string"}]}}`)
 	bob.SendText(`{"payload":1}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_not_found","loc":[],"msg":"Unable to extract tag using discriminator 'action'"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"required","pointer":"","detail":"Unable to extract tag using discriminator 'action'","property":"action"}]}}`)
 	bob.SendText(`{"action":"chat","ref":"v"}`)
-	bob.Expect(`{"version":1,"ref":"v","action":"error","payload":[{"type":"missing","loc":["chat","payload"],"msg":"Field required"}]}`)
+	bob.Expect(`{"version":1,"ref":"v","action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"required","pointer":"","detail":"Field required","property":"payload"}]}}`)
 	bob.SendText(`{"action":"ping","payload":1}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"none_required","loc":["ping","payload"],"msg":"Input should be None"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/payload","detail":"Input should be None"}]}}`)
 	bob.SendText(`{"action":true}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_invalid","loc":[],"msg":"Input tag 'True' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"enum","pointer":"/action","detail":"Input tag 'True' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}}`)
 	bob.SendText(`{"action":"ping","version":"x","seq":1.5}`)
-	bob.Expect(`{"action":"error","payload":[{"type":"int_parsing","loc":["version"],"msg":"Input should be a valid integer, unable to parse string as an integer"},{"type":"int_from_float","loc":["seq"],"msg":"Input should be a valid integer, got a number with a fractional part"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"2 validation errors","errors":[{"keyword":"type","pointer":"/version","detail":"Input should be a valid integer, unable to parse string as an integer"},{"keyword":"type","pointer":"/seq","detail":"Input should be a valid integer, got a number with a fractional part"}]}}`)
 	bob.SendText(`{"action":"ping","version":"12","ref":"lax"}`)
 	bob.Expect(`{"version":1,"ref":"lax","action":"pong","payload":null}`)
 	bob.SendText(`[1]`)
-	bob.Expect(`{"action":"error","payload":[{"type":"model_type","loc":[],"msg":"Input should be a valid dictionary or instance of Envelope"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"","detail":"Input should be a valid dictionary or instance of Envelope"}]}}`)
 	bob.SendText(`not json`)
 	f := bob.Receive()
-	if !strings.HasPrefix(fmt.Sprint(f.Payload()), "[map[loc:[] msg:Invalid JSON: ") {
+	if p, _ := f.Payload().(map[string]any); p["type"] != "https://chanx.dev/errors/invalid-json" || !strings.HasPrefix(fmt.Sprint(p["detail"]), "Invalid JSON: ") {
 		t.Fatalf("non-JSON frame: %s", f)
 	}
 	bob.SendBinary([]byte{1, 2})
-	bob.Expect(`{"action":"error","payload":[{"type":"json_invalid","loc":[],"msg":"Invalid JSON: binary frames are not supported"}]}`)
+	bob.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/invalid-json","title":"Frame is not valid JSON","detail":"Invalid JSON: binary frames are not supported"}}`)
 
 	// An event through the layer; the event handler maps it.
 	pub := e.Publisher()
@@ -321,16 +321,16 @@ func TestTopics(t *testing.T) {
 	a.ExpectNothing(100 * time.Millisecond) // no second roster
 
 	a.SendText(`{"action":"subscribe","topic":"room:secret"}`)
-	a.Expect(`{"action":"error","payload":{"reason":"unauthorized","detail":"Not allowed to subscribe to 'room:secret'"},"version":1,"topic":"room:secret"}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/unauthorized","title":"Subscription not allowed","detail":"Not allowed to subscribe to 'room:secret'"},"version":1,"topic":"room:secret"}`)
 	a.SendText(`{"action":"subscribe","topic":"nope:x"}`)
-	a.Expect(`{"action":"error","payload":{"reason":"unknown_topic","detail":"Unknown topic 'nope:x'"},"version":1,"topic":"nope:x"}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/unknown-topic","title":"Unknown topic","detail":"Unknown topic 'nope:x'"},"version":1,"topic":"nope:x"}`)
 	a.SendText(`{"action":"post","topic":"room:other","payload":{"body":"x"}}`)
-	a.Expect(`{"action":"error","payload":{"reason":"not_subscribed","detail":"Not subscribed to 'room:other'"},"version":1,"topic":"room:other"}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/not-subscribed","title":"Not subscribed to topic","detail":"Not subscribed to 'room:other'"},"version":1,"topic":"room:other"}`)
 	// "" is a topic, as Python's Envelope (str | None) reads it.
 	a.SendText(`{"action":"subscribe","topic":""}`)
-	a.Expect(`{"action":"error","payload":{"reason":"unknown_topic","detail":"Unknown topic ''"},"version":1,"topic":""}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/unknown-topic","title":"Unknown topic","detail":"Unknown topic ''"},"version":1,"topic":""}`)
 	a.SendText(`{"action":"post","topic":"","payload":{"body":"x"}}`)
-	a.Expect(`{"action":"error","payload":{"reason":"not_subscribed","detail":"Not subscribed to ''"},"version":1,"topic":""}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/not-subscribed","title":"Not subscribed to topic","detail":"Not subscribed to ''"},"version":1,"topic":""}`)
 
 	b.Subscribe("room:lobby")
 	b.ReceiveTopic("room:lobby") // roster
@@ -343,7 +343,7 @@ func TestTopics(t *testing.T) {
 	a.SendText(`{"action":"echo","topic":"room:lobby","ref":"e","payload":{"body":"b","likes":2}}`)
 	a.Expect(`{"action":"posted","payload":{"body":"b","author":"anonymous","likes":2},"version":1,"topic":"room:lobby","ref":"e"}`)
 	a.SendText(`{"action":"echo","topic":"room:lobby","payload":{}}`)
-	a.Expect(`{"action":"error","payload":[{"type":"missing","loc":["echo","payload","body"],"msg":"Field required"}],"version":1,"topic":"room:lobby"}`)
+	a.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"required","pointer":"/payload","detail":"Field required","property":"body"}]},"version":1,"topic":"room:lobby"}`)
 
 	// From outside, with seq.
 	if err := chanx.BroadcastTopic[RoomTopic](context.Background(), e.Publisher(), "room:lobby", RoomEvent{Payload: PostPayload{Body: "ext"}}, chanx.Seq(7)); err != nil {
@@ -422,6 +422,23 @@ func TestCamelize(t *testing.T) {
 	c := chanxtest.Connect(t, e, "/ws")
 	c.SendText(`{"action":"camel","payload":{"roomName":"x"}}`)
 	c.Expect(`{"action":"camel","payload":{"roomName":"x"}}`)
+	// Pointers and missing members name keys as the client sent them.
+	c.SendText(`{"action":"camel","payload":{"roomName":1}}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/payload/roomName","detail":"Input should be a valid string"}]}}`)
+	c.SendText(`{"action":"camel","payload":{}}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"required","pointer":"/payload","detail":"Field required","property":"roomName"}]}}`)
+}
+
+func TestErrorFormatPerRoute(t *testing.T) {
+	e := chanx.New(chanx.Config{ErrorFormat: chanx.PydanticErrors})
+	e.Handle("/ws/old", pingOnly{})
+	e.Handle("/ws/new", pingOnly{}, chanx.Errors(chanx.StandardErrors))
+	old := chanxtest.Connect(t, e, "/ws/old")
+	old.SendText(`{"action":"ping","payload":1}`)
+	old.Expect(`{"action":"error","payload":[{"type":"none_required","loc":["payload"],"msg":"Input should be None"}]}`)
+	cur := chanxtest.Connect(t, e, "/ws/new")
+	cur.SendText(`{"action":"ping","payload":1}`)
+	cur.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"1 validation error","errors":[{"keyword":"type","pointer":"/payload","detail":"Input should be None"}]}}`)
 }
 
 func TestGenericConsumer(t *testing.T) {
@@ -440,7 +457,7 @@ func TestGenericConsumer(t *testing.T) {
 	c.SendText(`{"action":"ping","ref":"x"}`)
 	c.Expect(`{"action":"pong","payload":null,"version":1,"ref":"x"}`)
 	c.SendText(`{"action":"chat","payload":{"message":"m"}}`)
-	c.Expect(`{"action":"error","payload":{"detail":"Failed to process message for chat"}}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/handler-failed","title":"Message handler failed","detail":"Failed to process message for chat"}}`)
 	_ = e.Publisher().BroadcastEvent(context.Background(), AnnouncementEvent{Payload: AnnouncementPayload{Text: "t"}}, "g")
 	c.Expect(`{"action":"announcement","payload":{"text":"t"}}`)
 }
@@ -457,12 +474,47 @@ func TestSingleHandlerAndPanics(t *testing.T) {
 	e.Handle("/ws/empty", empty{})
 	c := chanxtest.Connect(t, e, "/ws/single")
 	c.SendText(`{"action":"nope","payload":{}}`)
-	c.Expect(`{"action":"error","payload":[{"type":"literal_error","loc":["action"],"msg":"Input should be 'chat'"},{"type":"missing","loc":["payload","message"],"msg":"Field required"}]}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/validation-failed","title":"Message failed validation","detail":"2 validation errors","errors":[{"keyword":"enum","pointer":"/action","detail":"Input should be 'chat'"},{"keyword":"required","pointer":"/payload","detail":"Field required","property":"message"}]}}`)
 	c.SendText(`{"payload":{"message":"a"}}`) // with one handler, the action may be left out
-	c.Expect(`{"action":"error","payload":{"detail":"Failed to process message for chat"}}`)
+	c.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/handler-failed","title":"Message handler failed","detail":"Failed to process message for chat"}}`)
 	d := chanxtest.Connect(t, e, "/ws/empty")
 	d.SendText(`{"action":"x"}`)
-	d.Expect(`{"action":"error","payload":{"detail":"Failed to process message"}}`)
+	d.Expect(`{"action":"error","payload":{"type":"https://chanx.dev/errors/internal-error","title":"Message could not be processed","detail":"Failed to process message"}}`)
+}
+
+// The Pydantic format keeps chanx's earlier payloads, byte for byte.
+func TestPydanticErrorFormat(t *testing.T) {
+	e, _ := newEngine(t, chanx.Config{ErrorFormat: chanx.PydanticErrors})
+	bob := dialChat(t, e, "lobby")
+	bob.SendText(`{"action":"report","ref":"r2","payload":{"reason":" "}}`)
+	bob.Expect(`{"version":1,"ref":"r2","action":"error","payload":{"detail":"Failed to process message for report"}}`)
+	bob.SendText(`{"action":"subscribe","topic":"nope:x"}`)
+	bob.Expect(`{"action":"error","payload":{"reason":"unknown_topic","detail":"Unknown topic 'nope:x'"},"version":1,"topic":"nope:x"}`)
+	bob.SendText(`{"action":"nope"}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_invalid","loc":[],"msg":"Input tag 'nope' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}`)
+	bob.SendText(`{"action":"ping","ref":3}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"string_type","loc":["ref"],"msg":"Input should be a valid string"}]}`)
+	bob.SendText(`{"payload":1}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_not_found","loc":[],"msg":"Unable to extract tag using discriminator 'action'"}]}`)
+	bob.SendText(`{"action":"chat","ref":"v"}`)
+	bob.Expect(`{"version":1,"ref":"v","action":"error","payload":[{"type":"missing","loc":["chat","payload"],"msg":"Field required"}]}`)
+	bob.SendText(`{"action":"ping","payload":1}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"none_required","loc":["ping","payload"],"msg":"Input should be None"}]}`)
+	bob.SendText(`{"action":true}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"union_tag_invalid","loc":[],"msg":"Input tag 'True' found using 'action' does not match any of the expected tags: 'chat', 'ping', 'report'"}]}`)
+	bob.SendText(`{"action":"ping","version":"x","seq":1.5}`)
+	bob.Expect(`{"action":"error","payload":[{"type":"int_parsing","loc":["version"],"msg":"Input should be a valid integer, unable to parse string as an integer"},{"type":"int_from_float","loc":["seq"],"msg":"Input should be a valid integer, got a number with a fractional part"}]}`)
+	bob.SendText(`{"action":"ping","version":"12","ref":"lax"}`)
+	bob.Expect(`{"version":1,"ref":"lax","action":"pong","payload":null}`)
+	bob.SendText(`[1]`)
+	bob.Expect(`{"action":"error","payload":[{"type":"model_type","loc":[],"msg":"Input should be a valid dictionary or instance of Envelope"}]}`)
+	bob.SendText(`not json`)
+	f := bob.Receive()
+	if !strings.HasPrefix(fmt.Sprint(f.Payload()), "[map[loc:[] msg:Invalid JSON: ") {
+		t.Fatalf("non-JSON frame: %s", f)
+	}
+	bob.SendBinary([]byte{1, 2})
+	bob.Expect(`{"action":"error","payload":[{"type":"json_invalid","loc":[],"msg":"Invalid JSON: binary frames are not supported"}]}`)
 }
 
 type badConsumer struct{}

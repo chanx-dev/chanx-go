@@ -19,11 +19,11 @@ func TestFrames(t *testing.T) {
 	c.SendText(`{"action": "quote", "topic": "ticker:ACME", "ref": "q1", "payload": {"price": 101.5}}`)
 	c.Expect(`{"action": "price_update", "payload": {"symbol": "ACME", "price": 101.5}, "version": 1, "topic": "ticker:ACME", "ref": "q1"}`)
 	c.SendText(`{"action": "subscribe", "topic": "ticker:SECRET"}`)
-	c.Expect(`{"action": "error", "payload": {"reason": "unauthorized", "detail": "Not allowed to subscribe to 'ticker:SECRET'"}, "version": 1, "topic": "ticker:SECRET"}`)
+	c.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/unauthorized", "title": "Subscription not allowed", "detail": "Not allowed to subscribe to 'ticker:SECRET'"}, "version": 1, "topic": "ticker:SECRET"}`)
 	c.SendText(`{"action": "quote", "topic": "ticker:OTHER", "payload": {"price": 1}}`)
-	c.Expect(`{"action": "error", "payload": {"reason": "not_subscribed", "detail": "Not subscribed to 'ticker:OTHER'"}, "version": 1, "topic": "ticker:OTHER"}`)
+	c.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/not-subscribed", "title": "Not subscribed to topic", "detail": "Not subscribed to 'ticker:OTHER'"}, "version": 1, "topic": "ticker:OTHER"}`)
 	c.SendText(`{"action": "subscribe", "topic": "weather:paris"}`)
-	c.Expect(`{"action": "error", "payload": {"reason": "unknown_topic", "detail": "Unknown topic 'weather:paris'"}, "version": 1, "topic": "weather:paris"}`)
+	c.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/unknown-topic", "title": "Unknown topic", "detail": "Unknown topic 'weather:paris'"}, "version": 1, "topic": "weather:paris"}`)
 	if err := PublishPrice(context.Background(), e.Publisher(), "ACME", 102.25, 7); err != nil {
 		t.Fatal(err)
 	}

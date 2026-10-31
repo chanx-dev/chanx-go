@@ -5,7 +5,7 @@ recorded from Python. These are the places it differs, each on purpose.
 
 | Case | Python chanx | chanx-go |
 | --- | --- | --- |
-| A payload value of the wrong type that Pydantic's lax mode coerces (`"3"` for an int, `1` or `"true"` for a bool) | accepted, coerced | an `error` frame (`int_type`, `bool_type`...). Envelope ints (`version`, `seq`) stay lax on both |
+| A payload value of the wrong type that Pydantic's lax mode coerces (`"3"` for an int, `1` or `"true"` for a bool) | accepted, coerced | an `error` frame (keyword `type`). Envelope ints (`version`, `seq`) stay lax on both |
 | A text frame that is not JSON | `Invalid JSON: ` and Python's decoder message | `Invalid JSON: ` and Go's decoder message |
 | `send_message_immediately` | yields after each send | not needed: each connection has a writer goroutine |
 | A client that stops reading | left to the ASGI server | a bounded outbox; closed with 1013 after `WriteTimeout` |

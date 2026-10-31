@@ -38,8 +38,8 @@ type PongMessage struct {
 	BaseMessage `action:"pong" description:"Simple pong message response to ping requests."`
 }
 
-// ErrorMessage communicates issues to the client: validation issues, or a
-// detail (and for topics a reason).
+// ErrorMessage communicates issues to the client: a protocol.ProblemDetails, or with
+// PydanticErrors the earlier payloads.
 type ErrorMessage struct {
 	BaseMessage `action:"error" description:"Error message for communicating issues to the client."`
 	Payload     any `json:"payload,omitempty"`

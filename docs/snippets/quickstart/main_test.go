@@ -17,7 +17,7 @@ func TestQuickStart(t *testing.T) {
 	b.Expect(`{"action": "chat_notification", "payload": {"text": "hi"}}`)
 
 	a.SendText(`{"action": "chat", "payload": {"txt": "hi"}}`)
-	a.Expect(`{"action": "error", "payload": [{"type": "missing", "loc": ["chat", "payload", "text"], "msg": "Field required"}]}`)
+	a.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "required", "pointer": "/payload", "detail": "Field required", "property": "text"}]}}`)
 
 	a.SendText(`{"action": "ping", "ref": "1"}`)
 	a.Expect(`{"action": "pong", "payload": null, "version": 1, "ref": "1"}`)

@@ -48,12 +48,12 @@ A frame for a topic carries its `topic`, and so does every reply:
 < {"action": "price_update", "payload": {"symbol": "ACME", "price": 101.5}, "version": 1, "topic": "ticker:ACME", "ref": "q1"}
 ```
 
-Refusals are error frames with a `reason`:
+Refusals are error frames whose `type` names the refusal:
 
 ```json
-< {"action": "error", "payload": {"reason": "unauthorized", "detail": "Not allowed to subscribe to 'ticker:SECRET'"}, "version": 1, "topic": "ticker:SECRET"}
-< {"action": "error", "payload": {"reason": "not_subscribed", "detail": "Not subscribed to 'ticker:OTHER'"}, "version": 1, "topic": "ticker:OTHER"}
-< {"action": "error", "payload": {"reason": "unknown_topic", "detail": "Unknown topic 'weather:paris'"}, "version": 1, "topic": "weather:paris"}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/unauthorized", "title": "Subscription not allowed", "detail": "Not allowed to subscribe to 'ticker:SECRET'"}, "version": 1, "topic": "ticker:SECRET"}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/not-subscribed", "title": "Not subscribed to topic", "detail": "Not subscribed to 'ticker:OTHER'"}, "version": 1, "topic": "ticker:OTHER"}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/unknown-topic", "title": "Unknown topic", "detail": "Unknown topic 'weather:paris'"}, "version": 1, "topic": "weather:paris"}
 ```
 
 A second subscribe to the same topic confirms again without rerunning `OnSubscribe`.

@@ -45,7 +45,7 @@ A frame that does not match the message never reaches `HandleChat`:
 
 ```json
 > {"action": "chat", "payload": {"txt": "hi"}}
-< {"action": "error", "payload": [{"type": "missing", "loc": ["chat", "payload", "text"], "msg": "Field required"}]}
+< {"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "required", "pointer": "/payload", "detail": "Field required", "property": "text"}]}}
 ```
 
 The server documents itself at `/asyncapi.json`. Generate a typed client from it, in Go

@@ -17,8 +17,9 @@ import (
 	"go.chanx.dev/v2/transport"
 )
 
-// Issue is one validation problem, as the protocol's error frames list them:
-// {"type": "missing", "loc": ["payload", "message"], "msg": "Field required"}.
+// Issue is one validation problem in Pydantic's terms, as the PydanticErrors
+// format sends it: {"type": "missing", "loc": ["payload", "message"], "msg": "Field required"}.
+// The standard format derives each error's keyword and pointer from it.
 type Issue = schema.Issue
 
 // prepare decodes a frame and its envelope on the reader goroutine and returns
@@ -45,7 +46,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 	_ = dec.Decode(&v)
 	obj, ok := v.(map[string]any)
 	if !ok {
-		c.validationError(base, c.def, []Issue{{Type: "model_type", Loc: []any{}, Msg: "Input should be a valid dictionary or instance of Envelope"}})
+		c.validationError(base, c.def, []Issue{{Type: "model_type", Loc: []any{}, Msg: "Input should be a valid dictionary or instance of Envelope"}}, v)
 		return nil
 	}
 
@@ -77,7 +78,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 		}
 	}
 	if len(issues) > 0 {
-		c.validationError(base, c.def, issues)
+		c.validationError(base, c.def, issues, obj)
 		return nil
 	}
 	content := make(map[string]any, len(obj))
@@ -137,10 +138,12 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 // rejectFrame answers a frame that is not JSON text, keeping the connection.
 func (c *Conn) rejectFrame(ctx *Context, reason string) {
 	c.log.Warn("Malformed frame", "reason", reason)
-	c.validationError(ctx, c.def, []Issue{{Type: "json_invalid", Loc: []any{}, Msg: "Invalid JSON: " + reason}})
+	c.validationError(ctx, c.def, []Issue{{Type: "json_invalid", Loc: []any{}, Msg: "Invalid JSON: " + reason}}, nil)
 }
 
-func (c *Conn) validationError(ctx *Context, def *consumerDef, issues []Issue) {
+// validationError answers issues; data is the frame as validated, which pointers
+// are checked against.
+func (c *Conn) validationError(ctx *Context, def *consumerDef, issues []Issue, data any) {
 	defer c.recoverLog("OnValidationError") // also runs on the reader goroutine
 	switch {
 	case def.onValidation != nil:
@@ -148,7 +151,7 @@ func (c *Conn) validationError(ctx *Context, def *consumerDef, issues []Issue) {
 	case c.engine.cfg.OnValidationError != nil:
 		c.engine.cfg.OnValidationError(ctx, issues)
 	default:
-		_ = ctx.Send(ErrorMessage{Payload: issues})
+		_ = ctx.Send(ErrorMessage{Payload: validationPayload(c.route.errorFormat(), issues, data, c.route.camelize())})
 	}
 }
 
@@ -160,7 +163,7 @@ func (c *Conn) handlerError(ctx *Context, def *consumerDef, action string, err e
 	case c.engine.cfg.OnHandlerError != nil:
 		c.engine.cfg.OnHandlerError(ctx, action, err)
 	default:
-		_ = ctx.Send(ErrorMessage{Payload: errorDetail{Detail: "Failed to process message for " + action}})
+		_ = ctx.Send(ErrorMessage{Payload: detailPayload(c.route.errorFormat(), protocol.ErrorHandlerFailed, "Failed to process message for "+action)})
 		ctx.Logger().Error(fmt.Sprintf("Handler error for action '%s': %v", action, err), "action", action, "err", err)
 	}
 }
@@ -189,12 +192,12 @@ func (c *Conn) handleFrame(ctx *Context, def *consumerDef, content map[string]an
 	}()
 	h, msg, issues, err := decodeMessage(def.handlers, content)
 	if err != nil {
-		_ = ctx.Send(ErrorMessage{Payload: errorDetail{Detail: "Failed to process message"}})
+		_ = ctx.Send(ErrorMessage{Payload: detailPayload(c.route.errorFormat(), protocol.ErrorInternal, "Failed to process message")})
 		ctx.Logger().Error("Failed to process message: "+err.Error(), "err", err)
 		return
 	}
 	if len(issues) > 0 {
-		c.validationError(ctx, def, issues)
+		c.validationError(ctx, def, issues, content)
 		return
 	}
 	ctx.Action = h.input.Action
@@ -345,7 +348,7 @@ func laxInt(raw any, name string) (int64, *Issue) {
 
 func (c *Conn) topicError(ctx *Context, reason, detail string) {
 	c.log.Warn("Topic error", "topic", ctx.Topic, "reason", reason, "detail", detail)
-	_ = ctx.Send(ErrorMessage{Payload: topicError{Reason: reason, Detail: detail}})
+	_ = ctx.Send(ErrorMessage{Payload: topicErrorPayload(c.route.errorFormat(), reason, detail)})
 }
 
 func (c *Conn) matchTopic(topic string) (*topicDef, Params) {
@@ -395,7 +398,7 @@ func (c *Conn) subscribe(ctx *Context, topic string) {
 	}
 	if err != nil {
 		c.log.Error("chanx: cannot join topic group", "topic", topic, "err", err)
-		_ = ctx.Send(ErrorMessage{Payload: errorDetail{Detail: "Failed to process message"}})
+		_ = ctx.Send(ErrorMessage{Payload: detailPayload(c.route.errorFormat(), protocol.ErrorInternal, "Failed to process message")})
 		return
 	}
 	c.mu.Lock()

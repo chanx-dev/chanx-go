@@ -27,7 +27,10 @@ type Config struct {
 	Camelize bool
 	// SendCompletion sends complete, event_complete and group_complete frames.
 	SendCompletion bool
-	Logger         *slog.Logger
+	// ErrorFormat is the shape of error payloads: StandardErrors (the default)
+	// or PydanticErrors.
+	ErrorFormat ErrorFormat
+	Logger      *slog.Logger
 	// LogMessages logs every frame received and sent (log_websocket_message),
 	// except LogIgnored actions and completion frames.
 	LogMessages bool
@@ -118,6 +121,7 @@ type routeOptions struct {
 	layer               string
 	sendCompletion      *bool
 	camelize            *bool
+	errorFormat         ErrorFormat
 	sequential          bool
 	maxInFlight         int
 	rejectBeforeUpgrade *bool
@@ -142,6 +146,9 @@ func SendCompletion(on bool) Option { return func(o *routeOptions) { o.sendCompl
 
 // Camelize overrides Config.Camelize for the route.
 func Camelize(on bool) Option { return func(o *routeOptions) { o.camelize = &on } }
+
+// Errors overrides Config.ErrorFormat for the route.
+func Errors(format ErrorFormat) Option { return func(o *routeOptions) { o.errorFormat = format } }
 
 // Sequential handles the route's frames one at a time, in order (Go only).
 func Sequential() Option { return func(o *routeOptions) { o.sequential = true } }
@@ -295,6 +302,18 @@ func (r *Route) camelize() bool {
 		return *r.opts.camelize
 	}
 	return r.engine.cfg.Camelize
+}
+
+// errorFormat falls back to the standard format for an unset or unknown value.
+func (r *Route) errorFormat() ErrorFormat {
+	format := r.opts.errorFormat
+	if format == "" {
+		format = r.engine.cfg.ErrorFormat
+	}
+	if format == PydanticErrors {
+		return PydanticErrors
+	}
+	return StandardErrors
 }
 
 func (r *Route) maxInFlight() int {

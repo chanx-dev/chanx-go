@@ -31,7 +31,7 @@ func TestChat(t *testing.T) {
 func TestValidation(t *testing.T) {
 	c := chanxtest.Connect(t, NewEngine(chanx.Config{}), "/ws/chat/lobby")
 	c.SendText(`{"action": "chat", "payload": {}}`)
-	c.Expect(`{"action": "error", "payload": [{"type": "missing", "loc": ["chat", "payload", "message"], "msg": "Field required"}]}`)
+	c.Expect(`{"action": "error", "payload": {"type": "https://chanx.dev/errors/validation-failed", "title": "Message failed validation", "detail": "1 validation error", "errors": [{"keyword": "required", "pointer": "/payload", "detail": "Field required", "property": "message"}]}}`)
 	c.ExpectNothing(50 * time.Millisecond) // and nothing else
 }
 
