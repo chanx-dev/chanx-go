@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.1.0 (2026-11-03)
+
+### Features
+- Send errors as RFC 9457 problem details
+- List the error payload schemas in AsyncAPI documents
+- Read error payloads as problems in clients and hooks
+
+### Maintenance
+- Handle TestReceiveHelpers frames in order
+
 ## 2.0.1 (2026-10-27)
 
 ### Bug fixes
