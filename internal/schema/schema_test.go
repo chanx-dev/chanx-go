@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"reflect"
+	"slices"
 	"testing"
 	"time"
 
@@ -363,5 +364,22 @@ func TestHookDefsValidate(t *testing.T) {
 	}
 	if got := issues(t, reflect.TypeFor[Shape](), `{"r": "big"}`); len(got) == 0 {
 		t.Fatal("a string radius passed")
+	}
+}
+
+// Circle is also a $def Shape's hook supplies; the Go type keeps the name.
+type Circle struct {
+	R float64 `json:"r"`
+}
+
+func TestAGoTypeKeepsANameAHookDefinedFirst(t *testing.T) {
+	g := NewGenerator("#/$defs/")
+	g.For(reflect.TypeFor[Shape]())
+
+	if s := g.For(reflect.TypeFor[Circle]()); s.Ref != "#/$defs/Circle" {
+		t.Fatalf("ref %s", s.Ref)
+	}
+	if n := len(slices.DeleteFunc(slices.Clone(g.Order), func(n string) bool { return n != "Circle" })); n != 1 {
+		t.Fatalf("order %v", g.Order)
 	}
 }

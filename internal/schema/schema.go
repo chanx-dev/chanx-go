@@ -135,7 +135,9 @@ func (g *Generator) define(t reflect.Type) string {
 	}
 	g.names[t] = name
 	g.taken[name] = t
-	g.Order = append(g.Order, name)
+	if _, hoisted := g.Defs[name]; !hoisted {
+		g.Order = append(g.Order, name)
+	}
 	s := &jsonschema.Schema{} // placeholder first, so recursive types terminate
 	g.Defs[name] = s
 	*s = *g.inline(t)
@@ -181,9 +183,9 @@ func (g *Generator) hoist(s *jsonschema.Schema) {
 		if _, ok := g.Defs[name]; ok {
 			continue
 		}
+		// Not marked taken: a Go type of the same name, defined later, takes the name.
 		g.Defs[name] = def
 		g.Order = append(g.Order, name)
-		g.taken[name] = reflect.TypeOf(def)
 	}
 }
 
