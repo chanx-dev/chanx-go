@@ -7,6 +7,7 @@ package schema
 import (
 	"encoding"
 	"encoding/json"
+	"maps"
 	"reflect"
 	"slices"
 	"strings"
@@ -160,8 +161,53 @@ func (g *Generator) inline(t reflect.Type) *jsonschema.Schema {
 	s := g.base(t)
 	if implements(t, hookType) {
 		callHook(t, s)
+		g.hoist(s)
 	}
 	return s
+}
+
+// hoist moves the $defs a Hook supplied into the generator's definitions, with
+// their "#/$defs/" refs pointing at RefPrefix.
+func (g *Generator) hoist(s *jsonschema.Schema) {
+	if len(s.Defs) == 0 {
+		return
+	}
+	defs := s.Defs
+	s.Defs = nil
+	rewriteRefs(s, g.RefPrefix)
+	for _, name := range slices.Sorted(maps.Keys(defs)) {
+		def := defs[name]
+		rewriteRefs(def, g.RefPrefix)
+		if _, ok := g.Defs[name]; ok {
+			continue
+		}
+		g.Defs[name] = def
+		g.Order = append(g.Order, name)
+		g.taken[name] = reflect.TypeOf(def)
+	}
+}
+
+func rewriteRefs(s *jsonschema.Schema, prefix string) {
+	if s == nil {
+		return
+	}
+	if rest, ok := strings.CutPrefix(s.Ref, "#/$defs/"); ok {
+		s.Ref = prefix + rest
+	}
+	for _, sub := range []*jsonschema.Schema{s.Items, s.AdditionalProperties, s.Not, s.If, s.Then, s.Else,
+		s.Contains, s.PropertyNames, s.UnevaluatedItems, s.UnevaluatedProperties, s.AdditionalItems} {
+		rewriteRefs(sub, prefix)
+	}
+	for _, list := range [][]*jsonschema.Schema{s.AnyOf, s.OneOf, s.AllOf, s.PrefixItems, s.ItemsArray} {
+		for _, sub := range list {
+			rewriteRefs(sub, prefix)
+		}
+	}
+	for _, m := range []map[string]*jsonschema.Schema{s.Properties, s.PatternProperties, s.DependentSchemas, s.Defs} {
+		for _, sub := range m {
+			rewriteRefs(sub, prefix)
+		}
+	}
 }
 
 func callHook(t reflect.Type, s *jsonschema.Schema) {

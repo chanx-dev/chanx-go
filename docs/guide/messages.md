@@ -87,6 +87,8 @@ Two methods on the payload type cover what tags cannot say:
 - **`JSONSchema(*jsonschema.Schema)`** edits the inferred schema: lengths, ranges,
   patterns, formats. It is Pydantic's `Field(min_length=3)`, and it shows in AsyncAPI.
   The schema type is [google/jsonschema-go](https://pkg.go.dev/github.com/google/jsonschema-go/jsonschema)'s.
+  It may also replace the schema whole, `$defs` included, such as one exported from
+  another server: the definitions join the document's, refs and all.
 - **`Validate() error`** runs after the schema passed, with the decoded value: Pydantic's
   `@field_validator`. Its error is reported with the keyword `custom`.
 
