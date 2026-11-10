@@ -7,7 +7,7 @@ require (
 	github.com/fasthttp/websocket v1.5.12
 	github.com/gofiber/contrib/v3/websocket v1.2.4
 	github.com/gofiber/fiber/v3 v3.5.0
-	go.chanx.dev/v2 v2.1.0
+	go.chanx.dev/v2 v2.2.0
 )
 
 require (

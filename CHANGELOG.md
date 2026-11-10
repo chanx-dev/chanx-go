@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0 (2026-11-10)
+
+### Bug fixes
+- Let a Go type keep a name a hook's $defs claimed first
+
+### Features
+- Lift the $defs a schema hook supplies into the document
+
 ## 2.1.0 (2026-11-03)
 
 ### Features
