@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/labstack/echo/v5 v5.4.2
-	go.chanx.dev/v2 v2.2.0
+	go.chanx.dev/v2 v2.3.0
 )
 
 require (

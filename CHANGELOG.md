@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.3.0 (2026-11-11)
+
+### Features
+- Ordered topics keep their frames in arrival order
+
 ## 2.2.0 (2026-11-10)
 
 ### Bug fixes
