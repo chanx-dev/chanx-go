@@ -325,27 +325,12 @@ func (c *Conn) run() {
 	ready()
 
 	sequential := c.route.opts.sequential
-	for {
-		typ, data, err := c.ws.Read(c.ctx)
-		if err != nil {
-			break
-		}
-		if c.closed.Load() {
-			continue // closing: drain until the close completes
-		}
-		job := c.prepare(typ, data)
-		if job == nil {
-			continue
-		}
-		if sequential {
-			job()
-			continue
-		}
+	run := func(job func()) {
 		if c.sem != nil {
 			select {
 			case c.sem <- struct{}{}:
 			case <-c.ctx.Done():
-				continue
+				return
 			}
 		}
 		// One goroutine per frame: a slow handler never blocks the socket.
@@ -357,6 +342,62 @@ func (c *Conn) run() {
 			}()
 			job()
 		})
+	}
+	var ordered inOrder
+	for {
+		typ, data, err := c.ws.Read(c.ctx)
+		if err != nil {
+			break
+		}
+		if c.closed.Load() {
+			continue // closing: drain until the close completes
+		}
+		job, order := c.prepare(typ, data)
+		switch {
+		case job == nil:
+		case sequential:
+			job()
+		case order != "":
+			if ordered.add(order, job) {
+				run(func() { ordered.drain(order) })
+			}
+		default:
+			run(job)
+		}
+	}
+}
+
+// inOrder queues an ordered topic's frames, so one goroutine per busy topic runs them in turn.
+type inOrder struct {
+	mu   sync.Mutex
+	jobs map[string][]func()
+}
+
+// add queues job under topic, reporting whether topic was idle and needs a drain.
+func (q *inOrder) add(topic string, job func()) bool {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+	if q.jobs == nil {
+		q.jobs = map[string][]func(){}
+	}
+	pending, busy := q.jobs[topic]
+	q.jobs[topic] = append(pending, job)
+	return !busy
+}
+
+// drain runs topic's jobs until none is left.
+func (q *inOrder) drain(topic string) {
+	for {
+		q.mu.Lock()
+		pending := q.jobs[topic]
+		if len(pending) == 0 {
+			delete(q.jobs, topic)
+			q.mu.Unlock()
+			return
+		}
+		q.jobs[topic] = pending[1:]
+		q.mu.Unlock()
+		pending[0]()
 	}
 }
 

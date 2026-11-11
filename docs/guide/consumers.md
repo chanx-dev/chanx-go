@@ -44,7 +44,8 @@ func (c *ChatConsumer) HandleShipped(ctx *chanx.EventContext, e OrderShipped) (N
   get Python's `handle_ping`.
 - **Each frame runs in its own goroutine**, so a slow handler never blocks the socket.
   `chanx.Sequential()` on the route handles frames one at a time, in order, and
-  `chanx.MaxInFlight(n)` caps how many run at once.
+  `chanx.MaxInFlight(n)` caps how many run at once. A topic tagged `ordered:"true"` keeps
+  only its own frames in order, such as a stream's start, chunks and end.
 
 `*chanx.Context` is also a `context.Context`, canceled when the socket closes: pass it to
 your database calls.

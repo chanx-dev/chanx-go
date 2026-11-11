@@ -24,12 +24,13 @@ import (
 type Issue = schema.Issue
 
 // prepare decodes a frame and its envelope on the reader goroutine and returns
-// the work to run for it, or nil when an error frame was already answered.
-func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
+// the work to run for it, or nil when an error frame was already answered, and
+// the topic its work must keep the order of, for an ordered topic.
+func (c *Conn) prepare(typ transport.MessageType, data []byte) (job func(), order string) {
 	base := c.baseContext()
 	if typ == transport.Binary {
 		c.rejectFrame(base, "binary frames are not supported")
-		return nil
+		return nil, ""
 	}
 	if !json.Valid(data) {
 		var v any
@@ -39,7 +40,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 			reason = err.Error()
 		}
 		c.rejectFrame(base, reason)
-		return nil
+		return nil, ""
 	}
 	dec := json.NewDecoder(bytes.NewReader(data))
 	dec.UseNumber()
@@ -48,7 +49,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 	obj, ok := v.(map[string]any)
 	if !ok {
 		c.validationError(base, c.def, []Issue{{Type: "model_type", Loc: []any{}, Msg: "Input should be a valid dictionary or instance of Envelope"}}, v)
-		return nil
+		return nil, ""
 	}
 
 	var issues []Issue
@@ -80,7 +81,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 	}
 	if len(issues) > 0 {
 		c.validationError(base, c.def, issues, obj)
-		return nil
+		return nil, ""
 	}
 	content := make(map[string]any, len(obj))
 	for k, val := range obj {
@@ -112,7 +113,10 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 		return func() {
 			defer c.recoverLog("frame")
 			c.handleFrame(ctx, c.def, content)
-		}
+		}, ""
+	}
+	if td, _ := c.matchTopic(topic); td != nil && td.ordered {
+		order = topic
 	}
 	ctx.Topic, ctx.inTopic = topic, true
 	return func() {
@@ -133,7 +137,7 @@ func (c *Conn) prepare(typ transport.MessageType, data []byte) func() {
 			ctx.Params, ctx.topic = sub.params, sub.def
 			c.handleFrame(ctx, sub.def.consumerDef, content)
 		}
-	}
+	}, order
 }
 
 // rejectFrame answers a frame that is not JSON text, keeping the connection.

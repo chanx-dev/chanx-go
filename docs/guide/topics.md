@@ -17,6 +17,7 @@ and hooks, like a small consumer:
 | `name` | the group namespace; the type name by default |
 | `description` | its description in AsyncAPI |
 | `layer` | the layer alias it publishes on |
+| `ordered` | `"true"` handles its frames one at a time, in arrival order, per topic name |
 
 | Hook | Runs |
 | --- | --- |

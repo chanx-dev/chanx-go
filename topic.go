@@ -35,6 +35,7 @@ type topicDef struct {
 	namespace   string // group namespace
 	description string
 	layer       string
+	ordered     bool
 }
 
 type topicMeta struct {
@@ -42,6 +43,7 @@ type topicMeta struct {
 	namespace   string
 	description string
 	layer       string
+	ordered     bool
 }
 
 func topicMetaOf(t reflect.Type) (*topicMeta, error) {
@@ -60,7 +62,7 @@ func topicMetaOf(t reflect.Type) (*topicMeta, error) {
 	if err != nil {
 		return nil, fmt.Errorf("chanx: %s: %w", t, err)
 	}
-	m := &topicMeta{pattern: p, namespace: t.Name(), description: base.Tag.Get("description"), layer: base.Tag.Get("layer")}
+	m := &topicMeta{pattern: p, namespace: t.Name(), description: base.Tag.Get("description"), layer: base.Tag.Get("layer"), ordered: base.Tag.Get("ordered") == "true"}
 	if name := base.Tag.Get("name"); name != "" {
 		m.namespace = name
 	}
@@ -79,7 +81,7 @@ func buildTopic(th TopicHandler) (*topicDef, error) {
 	if _, ok := th.(interface{ Topics() []TopicHandler }); ok {
 		return nil, fmt.Errorf("chanx: topic %s cannot host topics", def.typeName)
 	}
-	return &topicDef{consumerDef: def, pattern: meta.pattern, namespace: meta.namespace, description: meta.description, layer: meta.layer}, nil
+	return &topicDef{consumerDef: def, pattern: meta.pattern, namespace: meta.namespace, description: meta.description, layer: meta.layer, ordered: meta.ordered}, nil
 }
 
 // groupName is the layer group of a topic: the topic in the type's namespace.

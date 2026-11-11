@@ -10,7 +10,7 @@ recorded from Python. These are the places it differs, each on purpose.
 | `send_message_immediately` | yields after each send | not needed: each connection has a writer goroutine |
 | A client that stops reading | left to the ASGI server | a bounded outbox; closed with 1013 after `WriteTimeout` |
 | A huge frame | left to the ASGI server (uvicorn: 16 MiB) | `MaxFrameSize`, 16 MiB by default; closed with 1009 |
-| Handler concurrency | one task per message | one goroutine per frame; `Sequential` and `MaxInFlight` to limit it |
+| Handler concurrency | one task per message | one goroutine per frame; `Sequential` and `MaxInFlight` to limit it, `ordered` topics to keep a topic's frames in order |
 | Redis queue layer (`RedisChannelLayer`) | available | not yet; the pub/sub layer only |
 | Authentication before the upgrade | after the socket is accepted | the same by default; `RejectBeforeUpgrade` answers an HTTP 401 or 403 instead of upgrading |
 | Disconnect hook | `disconnect()` runs after the groups are left | `OnDisconnect` runs before, so it can still broadcast to them |

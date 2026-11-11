@@ -305,6 +305,52 @@ func TestConcurrencyOptions(t *testing.T) {
 	}
 }
 
+type orderedTopic struct {
+	chanx.BaseTopic `pattern:"ordered:{name}" ordered:"true"`
+	ordered
+}
+
+type concurrentTopic struct {
+	chanx.BaseTopic `pattern:"concurrent:{name}"`
+	ordered
+}
+
+type topicHost struct{}
+
+func (topicHost) Topics() []chanx.TopicHandler {
+	return []chanx.TopicHandler{orderedTopic{}, concurrentTopic{}}
+}
+
+// An ordered topic keeps its frames in order; other topics, and its other names, stay concurrent.
+func TestOrderedTopics(t *testing.T) {
+	for name, c := range map[string]struct {
+		first, second, want string
+	}{
+		"ordered topic":         {"ordered:a", "ordered:a", "slow,fast"},
+		"ordered, other name":   {"ordered:a", "ordered:b", "fast,slow"},
+		"topic without the tag": {"concurrent:a", "concurrent:a", "fast,slow"},
+	} {
+		t.Run(name, func(t *testing.T) {
+			e := chanx.New(chanx.Config{})
+			e.Handle("/ws", topicHost{})
+			client := chanxtest.Connect(t, e, "/ws")
+			client.Subscribe(c.first)
+			if c.second != c.first {
+				client.Subscribe(c.second)
+			}
+			client.SendText(`{"action":"slow","topic":"` + c.first + `"}`)
+			client.SendText(`{"action":"fast","topic":"` + c.second + `"}`)
+			var out []string
+			for range 2 {
+				out = append(out, client.Receive().Payload().(string))
+			}
+			if got := strings.Join(out, ","); got != c.want {
+				t.Fatalf("replies %s, want %s", got, c.want)
+			}
+		})
+	}
+}
+
 type Notify struct {
 	chanx.BaseMessage `action:"notify"`
 	Payload           AnnouncementPayload `json:"payload"`
